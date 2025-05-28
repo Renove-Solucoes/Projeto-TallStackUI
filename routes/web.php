@@ -12,6 +12,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users', Index::class)->name('users.index');
 
     Route::get('/user/profile', Profile::class)->name('user.profile');
+
+    Route::get('/clientes', App\Livewire\Clientes\Index::class)->name('clientes.index');
 });
 
 require __DIR__.'/auth.php';

@@ -60,6 +60,7 @@
                 </x-slot:brand>
                 <x-side-bar.item text="Dashboard" icon="home" :route="route('dashboard')" />
                 <x-side-bar.item text="Users" icon="users" :route="route('users.index')" />
+                <x-side-bar.item text="Clientes" icon="users" :route="route('clientes.index')" />
                 <x-side-bar.item text="Welcome Page" icon="arrow-uturn-left" :route="route('welcome')" />
             </x-side-bar>
         </x-slot:menu>

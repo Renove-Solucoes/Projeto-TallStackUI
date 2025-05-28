@@ -9,4 +9,13 @@ class Cliente extends Model
 {
     /** @use HasFactory<\Database\Factories\ClienteFactory> */
     use HasFactory;
+
+        protected $fillable = [
+        'cpf_cnpj',
+        'nome',
+        'tipo_pessoa',
+        'email',
+        'telefone',
+        'status'
+    ];
 }
