@@ -23,14 +23,14 @@ trait Alert
             ->send();
     }
 
-    public function warning(string $title = 'Ooops!', string $description = null): void
+    public function warning(string $title = 'Ooops!', string $description = ''): void
     {
         $this->dialog()
             ->warning(__($title), __($description))
             ->send();
     }
 
-    public function info(string $title = 'Warning!', string $description = null): void
+    public function info(string $title = 'Warning!', string $description = ''): void
     {
         $this->dialog()
             ->info(__($title), __($description))
