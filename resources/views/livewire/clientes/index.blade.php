@@ -15,5 +15,6 @@
             @endinteract
 
         </x-table>
+        <livewire:clientes.update @updated="$refresh" />
     </x-card>
 </div>
