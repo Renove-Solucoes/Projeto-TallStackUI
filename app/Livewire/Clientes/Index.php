@@ -33,20 +33,21 @@ class Index extends Component
         ['index' => 'nome', 'label' => 'Nome'],
         ['index' => 'email', 'label' => 'Email'],
         ['index' => 'telefone', 'label' => 'Telefone', 'sortable' => false],
+        ['index' => 'created_at', 'label' => 'Created'],
         ['index' => 'action', 'sortable' => false],
         // ...
     ];
- 
+
     public function render(): View
     {
-        return view('livewire.clientes.index');   
+        return view('livewire.clientes.index');
     }
 
     #[Computed]
     public function rows(): LengthAwarePaginator
     {
         return Cliente::query()
-            ->when($this->search !== null, fn (Builder $query) => $query->whereAny(['nome', 'email'], 'like', '%'.trim($this->search).'%'))
+            ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['nome', 'email'], 'like', '%' . trim($this->search) . '%'))
             ->orderBy(...array_values($this->sort))
             ->paginate($this->quantity)
             ->withQueryString();
