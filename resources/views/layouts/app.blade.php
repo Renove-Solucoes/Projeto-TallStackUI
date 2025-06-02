@@ -52,7 +52,7 @@
             </x-layout.header>
         </x-slot:header>
         <x-slot:menu>
-            <x-side-bar smart navigate>
+            <x-side-bar smart navigate collapsible>
                 <x-slot:brand>
                     <div class="mt-6 flex items-center justify-center">
                         <img src="{{ asset('/assets/images/tsui.png') }}" />

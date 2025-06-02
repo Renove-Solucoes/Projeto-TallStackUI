@@ -10,7 +10,7 @@
                 </div>
 
                 <div>
-                    <x-input label="{{ __('CPF/CNPJ') }} *" wire:model="cliente.cpf_cnpj" required x-model="cpf_cnpj"
+                    <x-input label="{{ __('CPF/CNPJ') }} *" wire:model="cliente.cpf_cnpj" required 
                         x-mask:dynamic="tipoPessoa === 'J' ||tipoPessoa === '' ? '99.999.999/9999-99' : '999.999.999-99'" />
                 </div>
             </div>
@@ -21,8 +21,7 @@
                 <x-input label="{{ __('Email') }} *" wire:model="cliente.email" required />
             </div>
             <div>
-                <x-input x-mask="(99) 99999-9999" label="{{ __('Telefone') }} *" wire:model="cliente.telefone"
-                    required />
+                <x-input x-mask="(99) 99999-9999" label="{{ __('Telefone') }} *" wire:model="cliente.telefone" required />
             </div>
             <div>
                 <x-select.native label="{{ __('Status') }} *" wire:model="cliente.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"

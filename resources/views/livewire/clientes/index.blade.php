@@ -1,7 +1,7 @@
 <div>
     <x-card>
         <div class="mb-2 mt-4">
-            <livewire:clientes.create @created="$refresh" />
+            {{-- <livewire:clientes.create @created="$refresh" /> --}}
         </div>
 
         <x-table :$headers :$sort :rows="$this->rows" paginate filter :quantity="[5, 10, 20]">
