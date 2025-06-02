@@ -47,8 +47,8 @@ class Update extends Component
             'cliente.cpf_cnpj' => [
                 'required',
                 'string',
-                'min:11',
-                'max:14',
+                'min:14',
+                'max:18',
                 Rule::unique('clientes', 'cpf_cnpj')->ignore($this->cliente->id),
             ],
 
@@ -66,7 +66,7 @@ class Update extends Component
             ],
             'cliente.telefone' => [
                 'required',
-                'numeric',
+                'string',
             ],
             'cliente.status' => [
                 'required',
