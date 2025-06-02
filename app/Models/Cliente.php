@@ -19,6 +19,7 @@ class Cliente extends Model
         'tipo_pessoa',
         'email',
         'telefone',
+        'nascimento',
         'status'
     ];
 }

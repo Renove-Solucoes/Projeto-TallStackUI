@@ -30,8 +30,6 @@ class Update extends Component
     public function load(Cliente $cliente): void
     {
         $this->cliente = $cliente;
-
-
         $this->modal = true;
     }
 
@@ -67,6 +65,10 @@ class Update extends Component
             'cliente.telefone' => [
                 'required',
                 'string',
+            ],
+            'cliente.nascimento' => [
+                'required',
+                'date',
             ],
             'cliente.status' => [
                 'required',

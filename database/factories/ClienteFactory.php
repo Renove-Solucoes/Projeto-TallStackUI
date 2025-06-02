@@ -16,13 +16,17 @@ class ClienteFactory extends Factory
      */
     public function definition(): array
     {
+        $tipoPessoa = fake()->randomElement(['F', 'J']);
+
         return [
-            //
-            'cpf_cnpj' =>  fake()->bothify('###########'),
+            'cpf_cnpj' => $tipoPessoa === 'F'
+                ? fake()->numerify('###.###.###-##')
+                : fake()->numerify('##.###.###/####-##'),
             'nome' => fake('pt_BR')->name(),
-            'tipo_pessoa' => $this->faker->randomElement(['F','J']),
+            'tipo_pessoa' => $tipoPessoa,
             'email' => fake('pt_BR')->email(),
-            'telefone' =>  fake()->bothify('#########'),
+            'telefone' => fake()->numerify('#########'),
+            'nascimento' => fake()->dateTimeBetween('-50 years', '-20 years')->format('Y-m-d'),
             'status' => 'A',
         ];
     }

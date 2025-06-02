@@ -28,12 +28,14 @@ class Index extends Component
 
     public $headers = [
         ['index' => 'id', 'label' => '#'],
-        ['index' => 'tipo_pessoa', 'label' => 'Tipo Pessoa'],
+        ['index' => 'tipo_pessoa', 'label' => 'TP'],
         ['index' => 'cpf_cnpj', 'label' => 'CPF/CNPJ', 'sortable' => false],
         ['index' => 'nome', 'label' => 'Nome'],
         ['index' => 'email', 'label' => 'Email'],
         ['index' => 'telefone', 'label' => 'Telefone', 'sortable' => false],
+        ['index' => 'nascimento', 'label' => 'Nacimento'],
         ['index' => 'created_at', 'label' => 'Created'],
+        ['index' => 'status', 'label' => 'Status'],
         ['index' => 'action', 'sortable' => false],
         // ...
     ];

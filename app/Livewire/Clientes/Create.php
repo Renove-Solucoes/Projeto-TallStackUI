@@ -62,6 +62,10 @@ class Create extends Component
                 'required',
                 'string',
             ],
+            'cliente.nascimento' => [
+                'required',
+                'date',
+            ],
             'cliente.status' => [
                 'required',
                 'string',
