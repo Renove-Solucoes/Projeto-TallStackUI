@@ -9,6 +9,10 @@
                 {{ date('d/m/Y', strtotime($row->nascimento)) }}
             @endinteract
 
+            @interact('column_credito', $row)
+                {{ number_format($row->credito, 2, ',', '.') }}
+            @endinteract
+
             @interact('column_created_at', $row)
                 {{ $row->created_at->diffForHumans() }}
             @endinteract

@@ -25,6 +25,9 @@
                 <x-date format="DD/MM/YYYY" label="{{ __('Nascimento') }}" wire:model="cliente.nascimento" required />
             </div>
             <div>
+                <x-currency locale="pt-BR" symbol="R$" label="{{ __('Crédito') }}" wire:model="cliente.credito" required />
+            </div>
+            <div>
                 <x-select.native label="{{ __('Status') }} *" wire:model="cliente.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
                     select="label:name|value:id" required />
 

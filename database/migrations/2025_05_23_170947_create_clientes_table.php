@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('telefone');
             $table->date('nascimento');
+            $table->decimal('credito', 10, 2);
             $table->char('status');
             $table->timestamps();
         });

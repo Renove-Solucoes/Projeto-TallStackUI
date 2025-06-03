@@ -70,6 +70,10 @@ class Update extends Component
                 'required',
                 'date',
             ],
+            'cliente.credito' => [
+                'required',
+                
+            ],
             'cliente.status' => [
                 'required',
                 'string',

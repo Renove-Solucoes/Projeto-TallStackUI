@@ -20,6 +20,7 @@ class Cliente extends Model
         'email',
         'telefone',
         'nascimento',
+        'credito',
         'status'
     ];
 }
