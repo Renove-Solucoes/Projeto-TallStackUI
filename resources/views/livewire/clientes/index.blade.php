@@ -4,6 +4,9 @@
             <livewire:clientes.create @created="$refresh" />
         </div>
 
+        {{-- //TODO na table index, colocar coluna da tabela fixa
+            definir altura da div para que a tabela tenha rolagem horizontal
+            mudar local do botão criar para ganhar espaço --}}
         <x-table striped :$headers :$sort :rows="$this->rows" paginate filter :quantity="[5, 10, 20]">
 
 
@@ -13,7 +16,7 @@
 
             @interact('column_credito', $row)
                 <div class="flex items-center justify-end">
-                    {{ number_format($row->credito, 2, ',', '.') }} <x-boolean  icon-when-true="currency-dollar"
+                   R$ {{ number_format($row->credito, 2, ',', '.') }} <x-boolean  icon-when-true="currency-dollar"
            icon-when-false="currency-dollar" :boolean="$row->credito_ativo" class="ml-2 float-right" />
                 </div>
             @endinteract
