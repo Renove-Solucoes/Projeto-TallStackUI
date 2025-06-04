@@ -21,6 +21,7 @@ class Create extends Component
         $this->cliente = new Cliente();
         $this->cliente->tipo_pessoa = 'F';
         $this->cliente->status = 'A';
+        $this->cliente->credito = '';
     }
 
 
@@ -93,9 +94,15 @@ class Create extends Component
 
         $this->dispatch('created');
 
+        //TODO: Limpar o campo moeda do formulario create depois que salvar o registro.
         $this->reset();
         $this->cliente = new Cliente();
-        $this->cliente->credito = 0;
+        $this->cliente->tipo_pessoa = 'J';
+        $this->cliente->status = 'I';
+
+
+
+
 
         $this->success();
     }
