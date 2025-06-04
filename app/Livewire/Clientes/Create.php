@@ -20,7 +20,7 @@ class Create extends Component
     {
         $this->cliente = new Cliente();
         $this->cliente->tipo_pessoa = 'F';
-        $this->cliente->status = 'I';
+        $this->cliente->status = 'A';
     }
 
 
@@ -62,6 +62,9 @@ class Create extends Component
                 'required',
                 'string',
             ],
+            'cliente.credito' => [
+                'required',
+            ],
             'cliente.nascimento' => [
                 'required',
                 'date',
@@ -75,6 +78,13 @@ class Create extends Component
         ];
     }
 
+
+    public function updatedClienteCredito()
+    {
+
+        $this->cliente->credito = str_replace(['.', ','], ['', '.'], $this->cliente->credito);
+    }
+
     public function save(): void
     {
         $this->validate();
@@ -85,6 +95,7 @@ class Create extends Component
 
         $this->reset();
         $this->cliente = new Cliente();
+        $this->cliente->credito = 0;
 
         $this->success();
     }

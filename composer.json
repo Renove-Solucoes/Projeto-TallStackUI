@@ -17,7 +17,7 @@
         "laravel/sanctum": "^4.1",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.0.0",
-        "tallstackui/tallstackui": "^2.0.0"
+        "tallstackui/tallstackui": "^2.8.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",

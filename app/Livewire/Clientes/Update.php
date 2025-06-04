@@ -53,6 +53,7 @@ class Update extends Component
             'cliente.nome' => [
                 'required',
                 'string',
+                'min:3',
                 'max:255'
             ],
             'cliente.email' => [
@@ -72,7 +73,7 @@ class Update extends Component
             ],
             'cliente.credito' => [
                 'required',
-                
+
             ],
             'cliente.status' => [
                 'required',
@@ -83,9 +84,17 @@ class Update extends Component
         ];
     }
 
+    public function updatedClienteCredito()
+    {
+        $this->cliente->credito = str_replace(['.', ','], ['', '.'], $this->cliente->credito);
+    }
+
+
     public function save(): void
     {
+
         $this->validate();
+
 
         $this->cliente->update();
 
