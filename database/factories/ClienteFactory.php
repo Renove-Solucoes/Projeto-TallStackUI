@@ -28,6 +28,7 @@ class ClienteFactory extends Factory
             'telefone' => fake()->numerify('#########'),
             'nascimento' => fake()->dateTimeBetween('-50 years', '-20 years')->format('Y-m-d'),
             'credito' => fake()->randomFloat(2, 600, 19000),
+            'credito_ativo' => fake()->boolean(),
             'status' => 'A',
         ];
     }

@@ -25,12 +25,17 @@
                 <x-date format="DD/MM/YYYY" label="{{ __('Nascimento') }}" wire:model="cliente.nascimento" required />
             </div>
             <div>
-                <x-currency mutate locale="pt-BR" symbol="R$" label="{{ __('Crédito') }}" wire:model="cliente.credito" required />
+                <x-currency mutate locale="pt-BR" symbol="R$" label="{{ __('Crédito') }}"
+                    wire:model="cliente.credito" required />
+            </div>
+
+            {{-- TODO: Boolean Toggle: Credito ativo boolean --}}
+            <div>
+                <x-toggle  actived color="green" label="Crédito Ativo" wire:model="cliente.credito_ativo" />
             </div>
             <div>
                 <x-select.native label="{{ __('Status') }} *" wire:model="cliente.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
                     select="label:name|value:id" required />
-
             </div>
         </form>
         <x-slot:footer>

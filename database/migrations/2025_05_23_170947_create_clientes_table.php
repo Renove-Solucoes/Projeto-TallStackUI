@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('telefone');
             $table->date('nascimento');
             $table->decimal('credito', 10, 2);
+            $table->boolean('credito_ativo')->default(true);
             $table->char('status');
             $table->timestamps();
         });

@@ -75,6 +75,10 @@ class Update extends Component
                 'required',
 
             ],
+            'cliente.credito_ativo' => [
+                'required',
+                'boolean',
+            ],
             'cliente.status' => [
                 'required',
                 'string',

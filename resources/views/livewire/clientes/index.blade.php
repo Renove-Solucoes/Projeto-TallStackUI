@@ -4,7 +4,11 @@
             <livewire:clientes.create @created="$refresh" />
         </div>
 
-        <x-table :$headers :$sort :rows="$this->rows" paginate filter :quantity="[5, 10, 20]">
+        <x-table striped :$headers :$sort :rows="$this->rows" paginate filter :quantity="[5, 10, 20]">
+            @interact('column_status', $row)
+                <x-badge text="{{$row->status->getText() }}" color="{{ $row->status->getColor() }}" outline />
+            @endinteract
+
             @interact('column_nascimento', $row)
                 {{ date('d/m/Y', strtotime($row->nascimento)) }}
             @endinteract
@@ -19,9 +23,9 @@
 
             @interact('column_action', $row)
                 <div class="flex gap-1">
-                    <x-button.circle icon="pencil" color="blue"
-                        wire:click="$dispatch('load::cliente', { 'cliente' : '{{ $row->id }}'})" />
-                    <livewire:clientes.delete :cliente="$row" :key="uniqid('', true)" @deleted="$refresh" />
+                    <x-button.circle icon="pencil" color="sky"
+                        wire:click="$dispatch('load::cliente', { 'cliente' : '{{ $row->id }}'})" outline />
+                    <livewire:clientes.delete :cliente="$row" :key="uniqid('', true)" @deleted="$refresh"  />
                 </div>
             @endinteract
 
