@@ -5,27 +5,36 @@
         </div>
 
         <x-table striped :$headers :$sort :rows="$this->rows" paginate filter :quantity="[5, 10, 20]">
-            @interact('column_status', $row)
-                <x-badge text="{{$row->status->getText() }}" color="{{ $row->status->getColor() }}" outline />
-            @endinteract
+
 
             @interact('column_nascimento', $row)
                 {{ date('d/m/Y', strtotime($row->nascimento)) }}
             @endinteract
 
             @interact('column_credito', $row)
-                {{ number_format($row->credito, 2, ',', '.') }}
+                <div class="flex items-center justify-end">
+                    {{ number_format($row->credito, 2, ',', '.') }} <x-boolean  icon-when-true="currency-dollar"
+           icon-when-false="currency-dollar" :boolean="$row->credito_ativo" class="ml-2 float-right" />
+                </div>
+            @endinteract
+
+            @interact('column_credito_ativo', $row)
+                <x-toggle :checked="$row->credito_ativo ? true : false" />
             @endinteract
 
             @interact('column_created_at', $row)
                 {{ $row->created_at->diffForHumans() }}
             @endinteract
 
+            @interact('column_status', $row)
+                <x-badge text="{{ $row->status->getText() }}" color="{{ $row->status->getColor() }}" outline />
+            @endinteract
+
             @interact('column_action', $row)
                 <div class="flex gap-1">
                     <x-button.circle icon="pencil" color="sky"
                         wire:click="$dispatch('load::cliente', { 'cliente' : '{{ $row->id }}'})" outline />
-                    <livewire:clientes.delete :cliente="$row" :key="uniqid('', true)" @deleted="$refresh"  />
+                    <livewire:clientes.delete :cliente="$row" :key="uniqid('', true)" @deleted="$refresh" />
                 </div>
             @endinteract
 
