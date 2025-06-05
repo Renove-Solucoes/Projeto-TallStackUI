@@ -29,9 +29,9 @@
                     wire:model="cliente.credito" required />
             </div>
 
-            {{-- TODO: Boolean Toggle: Credito ativo boolean --}}
+
             <div>
-                <x-toggle  label="Crédito Ativo" wire:model="cliente.credito_ativo" 
+                <x-toggle  label="Crédito Ativo" wire:model="cliente.credito_ativo"
                     :checked="$cliente?->credito_ativo? true : false"
                />
             </div>

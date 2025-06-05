@@ -65,7 +65,13 @@ class Create extends Component
             ],
             'cliente.credito' => [
                 'required',
+                'numeric',
             ],
+            'cliente.credito_ativo' => [
+                'required',
+                'boolean',
+            ],
+
             'cliente.nascimento' => [
                 'required',
                 'date',

@@ -15,15 +15,16 @@
             @endinteract
 
             @interact('column_credito', $row)
-                <div class="flex items-center justify-end">
-                   R$ {{ number_format($row->credito, 2, ',', '.') }} <x-boolean  icon-when-true="currency-dollar"
-           icon-when-false="currency-dollar" :boolean="$row->credito_ativo" class="ml-2 float-right" />
+                <div class="flex items-center justify-end gap-1">
+                    R$ {{ number_format($row->credito, 2, ',', '.') }}
+                    <x-boolean :boolean="$row->credito_ativo" icon-when-true="currency-dollar"
+                        icon-when-false="currency-dollar" />
                 </div>
             @endinteract
 
-            @interact('column_credito_ativo', $row)
+            {{-- @interact('column_credito_ativo', $row)
                 <x-toggle :checked="$row->credito_ativo ? true : false" />
-            @endinteract
+            @endinteract --}}
 
             @interact('column_created_at', $row)
                 {{ $row->created_at->diffForHumans() }}

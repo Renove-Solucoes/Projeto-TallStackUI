@@ -32,6 +32,9 @@
                     wire:model="cliente.credito" required />
             </div>
             <div>
+                <x-toggle label="Crédito Ativo" wire:model="cliente.credito_ativo" :checked="$cliente?->credito_ativo ? true : false" />
+            </div>
+            <div>
                 <x-select.native label="{{ __('Status') }} *" wire:model="cliente.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
                     select="label:name|value:id" required />
 

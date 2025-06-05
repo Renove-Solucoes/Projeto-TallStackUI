@@ -35,7 +35,7 @@ class Index extends Component
         ['index' => 'telefone', 'label' => 'Telefone', 'sortable' => false],
         ['index' => 'nascimento', 'label' => 'Nacimento'],
         ['index' => 'credito', 'label' => 'Credito'],
-        ['index' => 'credito_ativo', 'label' => 'Ativo'],
+        // ['index' => 'credito_ativo', 'label' => 'Ativo'],
         ['index' => 'created_at', 'label' => 'Created', 'sortable' => false],
         ['index' => 'status', 'label' => 'Status'],
         ['index' => 'action', 'sortable' => false],
