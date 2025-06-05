@@ -23,6 +23,7 @@ class Cliente extends Model
         'nascimento',
         'credito',
         'credito_ativo',
+        'foto',
         'status'
     ];
 

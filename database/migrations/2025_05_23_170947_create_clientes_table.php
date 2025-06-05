@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('nascimento');
             $table->decimal('credito', 10, 2);
             $table->boolean('credito_ativo')->default(true);
+            $table->string('foto')->nullable();
             $table->char('status');
             $table->timestamps();
         });

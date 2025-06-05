@@ -1,6 +1,14 @@
 <div>
     <x-modal :title="__('Editar Cliente', ['id' => $cliente?->id])" wire x-on:open="setTimeout(() => $refs.name.focus(), 250)">
         <form id="cliente-update-{{ $cliente?->id }}" wire:submit="save" class="space-y-4">
+
+           {{-- TODO: Upload Vizualization --}}
+            <div>
+                <x-upload delete label="Screenshot" hint="We need to analyze your screenshot"
+                    tip="Drag and drop your screenshot here" wire:model='fotoTemp' required />
+
+            </div>
+
             <div x-data="{ tipoPessoa: '{{ $cliente?->tipo_pessoa }}' }">
                 <div class="mb-4">
                     <x-select.native x-model="tipoPessoa" label="{{ __('Tipo Pessoa') }} *"
@@ -31,9 +39,7 @@
 
 
             <div>
-                <x-toggle  label="Crédito Ativo" wire:model="cliente.credito_ativo"
-                    :checked="$cliente?->credito_ativo? true : false"
-               />
+                <x-toggle label="Crédito Ativo" wire:model="cliente.credito_ativo" :checked="$cliente?->credito_ativo ? true : false" />
             </div>
             <div>
                 <x-select.native label="{{ __('Status') }} *" wire:model="cliente.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"

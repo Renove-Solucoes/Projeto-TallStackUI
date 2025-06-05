@@ -8,17 +8,22 @@ use App\Livewire\Traits\Alert;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Arr;
+use Illuminate\Http\UploadedFile;
 
+use function Pest\Laravel\delete;
 
 class Update extends Component
 {
-
+    use WithFileUploads;
     use Alert;
 
     public ?Cliente $cliente;
 
     public bool $modal = false;
 
+    public $fotoTemp = '';
 
 
     public function render(): View
@@ -36,6 +41,13 @@ class Update extends Component
     public function rules(): array
     {
         return [
+            'cliente.foto' => [
+                'nullable',
+                'file',
+                'image',
+                'mimes:jpeg,png,jpg,svg,bmp',
+                'max:2048'
+            ],
             'cliente.tipo_pessoa' => [
                 'required',
                 'string',
@@ -94,9 +106,31 @@ class Update extends Component
         $this->cliente->credito = str_replace(['.', ','], ['', '.'], $this->cliente->credito);
     }
 
+    public function deleteUpload(array $content): void
+    {
+
+
+        $files = Arr::wrap($this->fotoTemp);
+
+        /** @var UploadedFile $file */
+        $file = collect($files)->filter(fn(UploadedFile $item) => $item->getFilename() === $content['temporary_name'])->first();
+
+        rescue(fn() => $file->delete(), report: false);
+
+        $collect = collect($files)->filter(fn(UploadedFile $item) => $item->getFilename() !== $content['temporary_name']);
+
+        $this->photo = is_array($this->fotoTemp) ? $collect->toArray('') : $collect->first();
+    }
+
 
     public function save(): void
     {
+
+        if ($this->fotoTemp) {
+            $path = $this->fotoTemp->store('clientes', 'public');
+            $this->cliente->foto = $path;
+        }
+
 
         $this->validate();
 

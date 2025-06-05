@@ -27,13 +27,14 @@
         <x-slot:header>
             <x-layout.header>
                 <x-slot:left>
-                    
+
                 </x-slot:left>
                 <x-slot:right >
                     <div class="mr-4">
                         <x-theme-switch />
                     </div>
-                
+                    <x-avatar class="mr-2" :model="auth()->user()" color="fff" sm />
+
                     <x-dropdown>
                         <x-slot:action>
                             <div>
