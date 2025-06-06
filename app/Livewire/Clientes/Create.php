@@ -7,14 +7,18 @@ use App\Models\Cliente;
 use GuzzleHttp\Client;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class Create extends Component
 {
+    use WithFileUploads;
     use Alert;
 
     public Cliente $cliente;
 
     public bool $modal = false;
+
+    public $fotoTemp = '';
 
     public function mount(): void
     {
@@ -22,6 +26,7 @@ class Create extends Component
         $this->cliente->tipo_pessoa = 'F';
         $this->cliente->status = 'A';
         $this->cliente->credito = '';
+        $this->imagemTemp = '';
     }
 
 
@@ -33,6 +38,13 @@ class Create extends Component
     public function rules(): array
     {
         return [
+            'fotoTemp' => [
+                'nullable',
+                'file',
+                'image',
+                'mimes:jpeg,png,jpg,svg,bmp',
+                'max:2048'
+            ],
             'cliente.tipo_pessoa' => [
                 'required',
                 'string',
