@@ -30,4 +30,10 @@ class Cliente extends Model
     protected $casts = [
         'status' => ClienteStatus::class,
     ];
+
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tags_clientes');
+    }
 }

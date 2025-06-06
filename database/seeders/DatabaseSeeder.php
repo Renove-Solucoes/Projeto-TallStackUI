@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Cliente;
+use App\Models\Tag;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,6 +19,14 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Cliente::factory(24)->create();
+        $clientes = Cliente::factory(24)->create();
+        $tags = Tag::factory(10)->create();
+
+        // Associar tags aleatórias aos clientes
+        $clientes->each(function ($cliente) use ($tags) {
+            $cliente->tags()->attach(
+                $tags->random(rand(1, 3))->pluck('id')->toArray()
+            );
+        });
     }
 }
