@@ -35,13 +35,14 @@ class Update extends Component
     public function load(Cliente $cliente): void
     {
         $this->cliente = $cliente;
+        $this->fotoTemp = '';
         $this->modal = true;
     }
 
     public function rules(): array
     {
         return [
-            'cliente.foto' => [
+            'fotoTemp' => [
                 'nullable',
                 'file',
                 'image',
