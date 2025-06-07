@@ -4,6 +4,7 @@ namespace App\Livewire\Clientes;
 
 use App\Livewire\Traits\Alert;
 use App\Models\Cliente;
+use App\Models\Tag;
 use GuzzleHttp\Client;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -15,10 +16,13 @@ class Create extends Component
     use Alert;
 
     public Cliente $cliente;
+    public $fotoTemp = '';
+
+    public $tags;
+    public $tags_selecionadas = [];
 
     public bool $modal = false;
 
-    public $fotoTemp = '';
 
     public function mount(): void
     {
@@ -26,7 +30,13 @@ class Create extends Component
         $this->cliente->tipo_pessoa = 'F';
         $this->cliente->status = 'A';
         $this->cliente->credito = '';
+        $this->cliente->credito_ativo = 1;
         $this->imagemTemp = '';
+
+        $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
+            'nome' => $tag->nome,
+            'id' => $tag->id,
+        ])->toArray();
     }
 
 
@@ -109,7 +119,7 @@ class Create extends Component
         $this->validate();
 
         $this->cliente->save();
-
+        $this->cliente->tags()->sync($this->tags_selecionadas);
         $this->dispatch('created');
 
         //TODO: Limpar o campo moeda do formulario create depois que salvar o registro.
@@ -118,9 +128,10 @@ class Create extends Component
         $this->cliente->tipo_pessoa = 'J';
         $this->cliente->status = 'I';
 
-
-
-
+        $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
+            'nome' => $tag->nome,
+            'id' => $tag->id,
+        ])->toArray();
 
         $this->success();
     }

@@ -25,10 +25,9 @@
             </div>
 
             <div>
-                
                 <x-select.styled  label="{{ __('Tags') }} *" placeholder="Selecione uma Tag" wire:model="tags_selecionadas" :options="$tags" select="label:nome|value:id" multiple />
-               
             </div>
+            
             <div x-data="{ tipoPessoa: '{{ $cliente?->tipo_pessoa }}' }">
                 <div class="mb-4">
                     <x-select.native x-model="tipoPessoa" label="{{ __('Tipo Pessoa') }} *"

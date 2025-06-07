@@ -23,7 +23,7 @@ class Index extends Component
 
     public array $sort = [
         'column'    => 'id',
-        'direction' => 'asc',
+        'direction' => 'desc',
     ];
 
     public $headers = [

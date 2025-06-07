@@ -5,11 +5,11 @@
         <form id="cliente-create" wire:submit="save" class="space-y-4">
             <div>
                 @if ($fotoTemp)
-                    <img src="{{ $fotoTemp->temporaryUrl() }}" alt="" width="400" height="400">
+                    <img src="{{ $fotoTemp->temporaryUrl() }}" alt="" width="200" height="200">
                 @elseif($cliente?->foto)
-                    <img src="{{ 'storage/' . $cliente?->foto }}" alt="" width="400" height="400">
+                    <img src="{{ 'storage/' . $cliente?->foto }}" alt="" width="200" height="200">
                 @else
-                    <img src="{{ asset('assets/images/no-image.png') }}" alt="" width="400" height="400">
+                    <img src="{{ asset('assets/images/no-image.png') }}" alt="" width="200" height="200">
                 @endif
 
                 @if ($errors->get('fotoTemp'))
@@ -27,6 +27,11 @@
                     tip="Drag and drop your screenshot here" wire:model='fotoTemp' required :preview="false" />
             </div>
 
+            <div>
+                <x-select.styled label="{{ __('Tags') }} *" placeholder="Selecione uma Tag"
+                    wire:model="tags_selecionadas" :options="$tags" select="label:nome|value:id" multiple />
+            
+                </div>
             <div x-data="{ tipoPessoa: '' }" x-init="tipoPessoa = 'F'">
                 <div class="mb-4">
                     <x-select.native label="{{ __('Tipo Pessoa') }} *" wire:model="cliente.tipo_pessoa"
