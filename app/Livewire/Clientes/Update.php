@@ -5,6 +5,7 @@ namespace App\Livewire\Clientes;
 use Livewire\Component;
 use App\Models\Cliente;
 use App\Livewire\Traits\Alert;
+use App\Models\Tag;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
@@ -22,8 +23,18 @@ class Update extends Component
     public ?Cliente $cliente;
 
     public bool $modal = false;
-
     public $fotoTemp = '';
+
+    public $tags;
+    public $tags_selecionadas = [];
+
+    public function mount()
+    {
+        $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
+            'nome' => $tag->nome,
+            'id' => $tag->id,
+        ])->toArray();
+    }
 
 
     public function render(): View
@@ -34,8 +45,12 @@ class Update extends Component
     #[On('load::cliente')]
     public function load(Cliente $cliente): void
     {
+
+
         $this->cliente = $cliente;
+        $this->tags_selecionadas = $cliente->tags ? $cliente->tags()->pluck('tag_id')->toArray() : [];
         $this->fotoTemp = '';
+        $this->resetErrorBag();
         $this->modal = true;
     }
 
@@ -132,16 +147,21 @@ class Update extends Component
             $this->cliente->foto = $path;
         }
 
-
         $this->validate();
 
 
         $this->cliente->update();
+        $this->cliente->tags()->sync($this->tags_selecionadas);
 
         $this->dispatch('updated');
-
         $this->resetExcept('cliente');
-
         $this->success();
+
+        $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
+            'nome' => $tag->nome,
+            'id' => $tag->id,
+        ])->toArray();
+
+        // dd($this->tags);
     }
 }
