@@ -23,7 +23,7 @@ class Update extends Component
     public ?Cliente $cliente;
 
     public bool $modal = false;
-    public $fotoTemp = '';
+    public $imagemTemp = '';
 
     public $tags;
     public $tags_selecionadas = [];
@@ -49,7 +49,7 @@ class Update extends Component
 
         $this->cliente = $cliente;
         $this->tags_selecionadas = $cliente->tags ? $cliente->tags()->pluck('tag_id')->toArray() : [];
-        $this->fotoTemp = '';
+        $this->imagemTemp = '';
         $this->resetErrorBag();
         $this->modal = true;
     }
@@ -57,7 +57,7 @@ class Update extends Component
     public function rules(): array
     {
         return [
-            'fotoTemp' => [
+            'imagemTemp' => [
                 'nullable',
                 'file',
                 'image',
@@ -126,7 +126,7 @@ class Update extends Component
     {
 
 
-        $files = Arr::wrap($this->fotoTemp);
+        $files = Arr::wrap($this->imagemTemp);
 
         /** @var UploadedFile $file */
         $file = collect($files)->filter(fn(UploadedFile $item) => $item->getFilename() === $content['temporary_name'])->first();
@@ -135,15 +135,15 @@ class Update extends Component
 
         $collect = collect($files)->filter(fn(UploadedFile $item) => $item->getFilename() !== $content['temporary_name']);
 
-        $this->photo = is_array($this->fotoTemp) ? $collect->toArray('') : $collect->first();
+        $this->photo = is_array($this->imagemTemp) ? $collect->toArray('') : $collect->first();
     }
 
 
     public function save(): void
     {
 
-        if ($this->fotoTemp) {
-            $path = $this->fotoTemp->store('clientes', 'public');
+        if ($this->imagemTemp) {
+            $path = $this->imagemTemp->store('clientes', 'public');
             $this->cliente->foto = $path;
         }
 

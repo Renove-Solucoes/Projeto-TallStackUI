@@ -4,16 +4,16 @@
     <x-modal :title="__('Criar Novo Cliente')" wire x-on:open="setTimeout(() => $refs.name.focus(), 250)">
         <form id="cliente-create" wire:submit="save" class="space-y-4">
             <div>
-                @if ($fotoTemp)
-                    <img src="{{ $fotoTemp->temporaryUrl() }}" alt="" width="200" height="200">
+                @if ($imagemTemp)
+                    <img src="{{ $imagemTemp->temporaryUrl() }}" alt="" width="200" height="200">
                 @elseif($cliente?->foto)
                     <img src="{{ 'storage/' . $cliente?->foto }}" alt="" width="200" height="200">
                 @else
                     <img src="{{ asset('assets/images/no-image.png') }}" alt="" width="200" height="200">
                 @endif
 
-                @if ($errors->get('fotoTemp'))
-                    <span id="nome-error" class="error invalid-feedback d-block">{{ $errors->first('fotoTemp') }}</span>
+                @if ($errors->get('imagemTemp'))
+                    <span id="nome-error" class="error invalid-feedback d-block">{{ $errors->first('imagemTemp') }}</span>
                 @endif
                 @if ($errors->get('cliente.foto'))
                     <span id="nome-error"
@@ -24,7 +24,7 @@
 
             <div>
                 <x-upload close-after-upload label="Screenshot" hint="We need to analyze your screenshot"
-                    tip="Drag and drop your screenshot here" wire:model='fotoTemp' required :preview="false" />
+                    tip="Drag and drop your screenshot here" wire:model='imagemTemp' required :preview="false" />
             </div>
 
             <div>

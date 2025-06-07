@@ -16,7 +16,7 @@ class Create extends Component
     use Alert;
 
     public Cliente $cliente;
-    public $fotoTemp = '';
+    public $imagemTemp = '';
 
     public $tags;
     public $tags_selecionadas = [];
@@ -48,7 +48,7 @@ class Create extends Component
     public function rules(): array
     {
         return [
-            'fotoTemp' => [
+            'imagemTemp' => [
                 'nullable',
                 'file',
                 'image',
