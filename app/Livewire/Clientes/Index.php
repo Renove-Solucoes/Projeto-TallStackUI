@@ -31,7 +31,7 @@ class Index extends Component
         ['index' => 'tipo_pessoa', 'label' => 'TP'],
         ['index' => 'cpf_cnpj', 'label' => 'CPF/CNPJ', 'sortable' => false],
         ['index' => 'nome', 'label' => 'Nome'],
-        ['index' => 'email', 'label' => 'Email'],
+        // ['index' => 'email', 'label' => 'Email'],
         ['index' => 'telefone', 'label' => 'Telefone', 'sortable' => false],
         ['index' => 'nascimento', 'label' => 'Nacimento'],
         ['index' => 'credito', 'label' => 'Credito'],

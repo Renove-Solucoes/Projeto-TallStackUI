@@ -29,7 +29,7 @@ class TagFactory extends Factory
             'Cliente Internacional'
         ];
         return [
-            'nome' => $this->faker->randomElement($tags),
+            'nome' => $this->faker->unique()->randomElement($tags),
             'status' => 'A',
         ];
     }

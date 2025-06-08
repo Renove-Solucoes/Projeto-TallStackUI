@@ -25,7 +25,7 @@
             </div>
 
             <div>
-                <x-select.styled  label="{{ __('Tags') }} *" placeholder="Selecione uma Tag" wire:model="tags_selecionadas" :options="$tags" select="label:nome|value:id" multiple />
+                <x-select.styled  label="{{ __('Tags') }} *" placeholder="Selecione uma Tag" wire:model="tags_selecionadas" :options="$tags" select="label:nome|value:id" searchable multiple />
             </div>
             
             <div x-data="{ tipoPessoa: '{{ $cliente?->tipo_pessoa }}' }">
