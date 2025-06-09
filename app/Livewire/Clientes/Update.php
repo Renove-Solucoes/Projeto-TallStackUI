@@ -154,14 +154,7 @@ class Update extends Component
         $this->cliente->tags()->sync($this->tags_selecionadas);
 
         $this->dispatch('updated');
-        $this->resetExcept('cliente');
+        $this->resetExcept('cliente', 'tags');
         $this->success();
-
-        $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
-            'nome' => $tag->nome,
-            'id' => $tag->id,
-        ])->toArray();
-
-        // dd($this->tags);
     }
 }
