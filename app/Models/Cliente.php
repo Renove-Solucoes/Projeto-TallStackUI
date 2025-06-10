@@ -36,4 +36,9 @@ class Cliente extends Model
     {
         return $this->belongsToMany(Tag::class, 'tags_clientes');
     }
+
+    public function enderecos()
+    {
+        return $this->hasMany(Endereco::class);
+    }
 }
