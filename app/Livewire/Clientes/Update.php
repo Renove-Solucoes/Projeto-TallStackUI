@@ -66,14 +66,19 @@ class Update extends Component
 
 
     public $headers = [
-        ['index' => 'cidade', 'label' => 'Cidade'],
-        ['index' => 'uf', 'label' => 'UF'],
+        ['index' => 'dados', 'label' => 'Endereço Completo'],
+        ['index' => 'action', 'sortable' => false],
     ];
 
     #[Computed]
     public function rows()
     {
-        return $this->enderecos;
+        return collect($this->enderecos)->map(function ($endereco) {
+            return [
+                'id' => $endereco['id'] ?? null,
+                'dados' => "{$endereco['endereco']}, {$endereco['numero']}, {$endereco['bairro']}, {$endereco['cidade']} - {$endereco['uf']} CEP: {$endereco['cep']}",
+            ];
+        })->toArray();
     }
 
     public function rules(): array
