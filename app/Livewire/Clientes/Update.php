@@ -5,6 +5,7 @@ namespace App\Livewire\Clientes;
 use Livewire\Component;
 use App\Models\Cliente;
 use App\Livewire\Traits\Alert;
+use App\Models\Endereco;
 use App\Models\Tag;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
@@ -12,6 +13,8 @@ use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Arr;
 use Illuminate\Http\UploadedFile;
+use Livewire\Attributes\Computed;
+use Livewire\WithPagination;
 
 use function Pest\Laravel\delete;
 
@@ -22,6 +25,7 @@ class Update extends Component
 
     public ?Cliente $cliente;
 
+    public $enderecos = [];
     public bool $modal = false;
     public $imagemTemp = '';
 
@@ -50,8 +54,26 @@ class Update extends Component
         $this->cliente = $cliente;
         $this->tags_selecionadas = $cliente->tags ? $cliente->tags()->pluck('tag_id')->toArray() : [];
         $this->imagemTemp = '';
+        $this->enderecos = $this->cliente->enderecos()->get()->toArray();
         $this->resetErrorBag();
         $this->modal = true;
+    }
+
+    public array $sort = [
+        'column'    => 'cidade',
+        'direction' => 'desc',
+    ];
+
+
+    public $headers = [
+        ['index' => 'cidade', 'label' => 'Cidade'],
+        ['index' => 'uf', 'label' => 'UF'],
+    ];
+
+    #[Computed]
+    public function rows()
+    {
+        return $this->enderecos;
     }
 
     public function rules(): array
@@ -116,6 +138,8 @@ class Update extends Component
             ],
         ];
     }
+
+
 
     public function updatedClienteCredito()
     {

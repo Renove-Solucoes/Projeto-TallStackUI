@@ -4,11 +4,11 @@
             <div class="grid md:grid-cols-12 md:gap-4">
                 <div class="md:col-span-3">
                     @if ($imagemTemp)
-                        <img src="{{ $imagemTemp->temporaryUrl() }}" alt="" >
+                        <img src="{{ $imagemTemp->temporaryUrl() }}" alt="">
                     @elseif($cliente?->foto)
-                        <img src="{{ 'storage/' . $cliente?->foto }}" alt="" >
+                        <img src="{{ 'storage/' . $cliente?->foto }}" alt="">
                     @else
-                        <img src="{{ asset('assets/images/no-image.png') }}" alt="" class="rounded-lg" >
+                        <img src="{{ asset('assets/images/no-image.png') }}" alt="" class="rounded-lg">
                     @endif
 
                     @if ($errors->get('imagemTemp'))
@@ -74,8 +74,28 @@
                             wire:model="tags_selecionadas" :options="$tags" select="label:nome|value:id" searchable
                             multiple />
                     </div>
+
+                    <div class="mt-4">
+                        <x-table striped :$headers :rows="$this->rows">
+
+                            @interact('column_action', $row)
+                                <div class="flex gap-1">
+                                    <x-button.circle icon="pencil" color="sky"
+
+                                        outline />
+                                    {{-- <livewire:clientes.delete :cliente="$row" :key="uniqid('', true)" @deleted="$refresh" /> --}}
+                                </div>
+                            @endinteract
+
+                        </x-table>
+                    </div>
+
+
                 </div>
+
             </div>
+
+
 
         </form>
         <x-slot:footer>
