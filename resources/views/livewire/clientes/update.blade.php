@@ -81,12 +81,13 @@
                             @interact('column_action', $row)
                                 <div class="flex gap-1">
                                     <x-button.circle icon="pencil" color="sky"
-
+                                        wire:click="$dispatch('load::endereco', { 'endereco' : '{{ $row['id'] }}'})"
                                         outline />
+
                                     {{-- <livewire:clientes.delete :cliente="$row" :key="uniqid('', true)" @deleted="$refresh" /> --}}
                                 </div>
-                            @endinteract
 
+                            @endinteract
                         </x-table>
                     </div>
 
@@ -103,5 +104,7 @@
                 @lang('Save')
             </x-button>
         </x-slot:footer>
+
     </x-modal>
+    <livewire:enderecos.update @updated="$refresh" />
 </div>
