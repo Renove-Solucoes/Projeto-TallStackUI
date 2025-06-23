@@ -1,7 +1,8 @@
 <div>
 
-    <x-modal :title="__('Editar Cliente', ['id' => $cliente?->id])" wire  blur size="6xl">
-       <livewire:enderecos.update @updated="$refresh" />
+    <x-modal :title="__('Editar Cliente', ['id' => $cliente?->id])" wire blur size="6xl">
+        <livewire:enderecos.update @updated="$refresh" />
+        <livewire:enderecos.create @created="$refresh" />
         <form id="cliente-update-{{ $cliente?->id }}" wire:submit="save" class="space-y-4">
             <div class="grid md:grid-cols-12 md:gap-4">
                 <div class="md:col-span-3">
@@ -78,17 +79,19 @@
                     </div>
 
                     <div class="mt-4">
+
                         <x-table striped :$headers :rows="$this->rows">
 
                             @interact('column_action', $row)
-                                <div class="flex gap-1">
-                                    <x-button.circle icon="pencil" color="sky"
-                                        wire:click="$dispatch('load::endereco', { 'endereco' : '{{ $row['id'] }}'})"
-                                        outline />
+                                <div>
+                                    <div class="flex gap-1">
+                                        <x-button.circle icon="pencil" color="sky"
+                                            wire:click="$dispatch('load::endereco', { 'endereco' : '{{ $row['id'] }}'})"
+                                            outline />
 
-                                    {{-- <livewire:clientes.delete :cliente="$row" :key="uniqid('', true)" @deleted="$refresh" /> --}}
+                                        {{-- <livewire:clientes.delete :cliente="$row" :key="uniqid('', true)" @deleted="$refresh" /> --}}
+                                    </div>
                                 </div>
-
                             @endinteract
                         </x-table>
                     </div>
