@@ -1,5 +1,8 @@
 <div>
-    <x-modal :title="__('Editar Cliente', ['id' => $cliente?->id])" wire x-on:open="setTimeout(() => $refs.name.focus(), 250)" blur size="6xl">
+    
+    <x-modal :title="__('Editar Cliente', ['id' => $cliente?->id])" wire  blur size="6xl">
+       {{-- <livewire:tags.create @created="$refresh" /> --}}
+       <livewire:enderecos.update @updated="$refresh" />
         <form id="cliente-update-{{ $cliente?->id }}" wire:submit="save" class="space-y-4">
             <div class="grid md:grid-cols-12 md:gap-4">
                 <div class="md:col-span-3">
@@ -38,7 +41,7 @@
                         </div>
 
                         <div class="md:col-span-3">
-                            <x-input label="{{ __('Nome') }} *" x-ref="nome" wire:model="cliente.nome" required />
+                            <x-input label="{{ __('Nome') }} *" wire:model="cliente.nome" required />
                         </div>
                     </div>
                     <div class="grid md:grid-cols-3 md:gap-4">
@@ -106,5 +109,5 @@
         </x-slot:footer>
 
     </x-modal>
-    <livewire:enderecos.update @updated="$refresh" />
+    
 </div>
