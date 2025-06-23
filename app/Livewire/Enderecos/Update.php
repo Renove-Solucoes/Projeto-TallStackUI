@@ -21,18 +21,56 @@ class Update extends Component
     public function rules(): array
     {
         return [
-            'endereco.cliente_id' => ['required'],
-            'endereco.descricao' => ['required'],
-            'endereco.cep' => ['required'],
-            'endereco.endereco' => ['required'],
-            'endereco.bairro' => ['required'],
-            'endereco.numero' => ['required'],
-            'endereco.cidade' => ['required'],
-            'endereco.uf' => ['required'],
-            'endereco.complemento' => ['nullable'],
-            'endereco.status' => ['required'],
-            
-            
+
+            'endereco.descricao' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+
+            'endereco.cep' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+            'endereco.endereco' => [
+                'required',
+                'string',
+                'max:255'
+
+            ],
+            'endereco.bairro' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+            'endereco.numero' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+            'endereco.uf' => [
+                'required',
+                'string',
+                'uppercase',
+                'max:2'
+            ],
+            'endereco.cidade' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+            'endereco.complemento' => [
+                'nullable',
+                'string',
+                'max:255'
+            ],
+            'endereco.status' => [
+                'required',
+                'string',
+                'max:1'
+            ],
+
         ];
     }
 
@@ -57,7 +95,7 @@ class Update extends Component
         $this->validate();
         $this->endereco->update();
         $this->modal = false;
-        $this->dispatch('updated_enderecos');
+        $this->dispatch('refresh::endereco');
         // $this->resetExcept('endereco');
         // $this->success();
     }

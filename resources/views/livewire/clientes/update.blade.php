@@ -1,7 +1,6 @@
 <div>
-    
+
     <x-modal :title="__('Editar Cliente', ['id' => $cliente?->id])" wire  blur size="6xl">
-       {{-- <livewire:tags.create @created="$refresh" /> --}}
        <livewire:enderecos.update @updated="$refresh" />
         <form id="cliente-update-{{ $cliente?->id }}" wire:submit="save" class="space-y-4">
             <div class="grid md:grid-cols-12 md:gap-4">
@@ -109,5 +108,5 @@
         </x-slot:footer>
 
     </x-modal>
-    
+
 </div>

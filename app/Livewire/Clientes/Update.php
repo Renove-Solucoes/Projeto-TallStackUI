@@ -71,9 +71,17 @@ class Update extends Component
         ['index' => 'action', 'sortable' => false],
     ];
 
+    #[On('refresh::endereco')]
+    public function listAndress()
+    {
+        $this->enderecos = $this->cliente->enderecos()->get()->toArray();
+        $this->rows();
+    }
+
     #[Computed]
     public function rows()
     {
+
         return collect($this->enderecos)->map(function ($endereco) {
             return [
                 'id' => $endereco['id'] ?? null,
@@ -167,6 +175,7 @@ class Update extends Component
 
         $this->photo = is_array($this->imagemTemp) ? $collect->toArray('') : $collect->first();
     }
+
 
 
     public function save(): void
