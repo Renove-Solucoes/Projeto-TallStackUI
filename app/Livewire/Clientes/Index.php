@@ -17,10 +17,10 @@ class Index extends Component
 {
     use WithPagination;
 
+     public bool $slide = false;
+
     public ?int $quantity = 10;
-
     public ?string $search = null;
-
     public array $sort = [
         'column'    => 'id',
         'direction' => 'desc',

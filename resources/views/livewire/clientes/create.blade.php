@@ -1,16 +1,16 @@
 <div>
-    <x-button :text="__('Criar Novo Cliente')" wire:click="$toggle('modal')" sm />
+    <x-button icon="plus" :text="__('Novo Cliente')" wire:click="$toggle('modal')" sm />
 
     <x-modal :title="__('Criar Novo Cliente')" wire x-on:open="setTimeout(() => $refs.name.focus(), 250)" size="6xl" blur>
         <form id="cliente-create" wire:submit="save" class="space-y-4">
             <div class="grid md:grid-cols-12 md:gap-4">
                 <div class="md:col-span-3">
                     @if ($imagemTemp)
-                        <img src="{{ $imagemTemp->temporaryUrl() }}" alt="">
+                        <img src="{{ $imagemTemp->temporaryUrl() }}" class="rounded-lg">
                     @elseif($cliente?->foto)
-                        <img src="{{ 'storage/' . $cliente?->foto }}" alt="">
+                        <img src="{{ 'storage/' . $cliente?->foto }}" class="rounded-lg">
                     @else
-                        <img src="{{ asset('assets/images/no-image.png') }}" alt="" class="rounded-lg">
+                        <img src="{{ asset('assets/images/no-image.png') }}" class="rounded-lg">
                     @endif
 
                     @if ($errors->get('imagemTemp'))
@@ -23,7 +23,7 @@
                     @endif
 
 
-                    <div>
+                    <div class="mt-2">
                         <x-upload close-after-upload
                             tip="Arraste e Solte a imagem aqui" wire:model='imagemTemp' required
                             :preview="false" />

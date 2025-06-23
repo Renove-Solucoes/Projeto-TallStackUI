@@ -1,8 +1,15 @@
 <div>
     <x-card>
-        <div class="mb-2 mt-4">
-            <livewire:clientes.create @created="$refresh" />
+        <div class="flex items-center justify-between">
+            <h1 class="mb-2 font-medium text-2xl">Cadastro de Clientes</h1>
+            <div class="flex items-center gap-2">
+                <x-button icon="funnel" :text="__('Filtrar')" x-on:click="$slideOpen('filtro')" sm />
+                <livewire:clientes.create @created="$refresh" />
+            </div>
         </div>
+        <x-slide id="filtro">
+            Right
+        </x-slide>
 
         {{-- //TODO na table index, colocar coluna da tabela fixa
             definir altura da div para que a tabela tenha rolagem horizontal

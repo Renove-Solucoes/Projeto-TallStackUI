@@ -4,11 +4,11 @@
             <div class="grid md:grid-cols-12 md:gap-4">
                 <div class="md:col-span-3">
                     @if ($imagemTemp)
-                        <img src="{{ $imagemTemp->temporaryUrl() }}" alt="">
+                        <img src="{{ $imagemTemp->temporaryUrl() }}" class="rounded-lg">
                     @elseif($cliente?->foto)
-                        <img src="{{ 'storage/' . $cliente?->foto }}" alt="">
+                        <img src="{{ 'storage/' . $cliente?->foto }}" class="rounded-lg">
                     @else
-                        <img src="{{ asset('assets/images/no-image.png') }}" alt="" class="rounded-lg">
+                        <img src="{{ asset('assets/images/no-image.png') }}" class="rounded-lg">
                     @endif
 
                     @if ($errors->get('imagemTemp'))
@@ -19,7 +19,7 @@
                         <span id="nome-error"
                             class="error invalid-feedback d-block">{{ $errors->first('cliente.foto') }}</span>
                     @endif
-                    <div>
+                    <div class="mt-2">
                         <x-upload close-after-upload tip="Arraste e Solte a imagem aqui" wire:model='imagemTemp'
                             required :preview="false" />
                     </div>
