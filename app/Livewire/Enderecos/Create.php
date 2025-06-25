@@ -18,6 +18,9 @@ class Create extends Component
 
     public bool $modal = false;
 
+
+
+
     public function mount(): void
     {
         $this->endereco = new Endereco();
@@ -27,62 +30,55 @@ class Create extends Component
     public function rules(): array
     {
         return [
-            'imagemTemp' => [
+            'endereco.descricao' => [
+                'required',
+                'string',
+                'max:20'
+            ],
+
+            'endereco.cep' => [
+                'required',
+                'string',
+                'max:8'
+            ],
+            'endereco.endereco' => [
+                'required',
+                'string',
+                'max:60'
+
+            ],
+            'endereco.bairro' => [
+                'required',
+                'string',
+                'max:60'
+            ],
+            'endereco.numero' => [
+                'required',
+                'string',
+                'max:10'
+            ],
+            'endereco.uf' => [
+                'required',
+                'string',
+                'uppercase',
+                'max:2'
+            ],
+            'endereco.cidade' => [
+                'required',
+                'string',
+                'max:60'
+            ],
+            'endereco.complemento' => [
                 'nullable',
-                'file',
-                'image',
-                'mimes:jpeg,png,jpg,svg,bmp',
-                'max:2048'
+                'string',
+                'max:100'
             ],
-            'cliente.tipo_pessoa' => [
+            'endereco.status' => [
                 'required',
                 'string',
-                'min:1',
                 'max:1'
             ],
-            'cliente.cpf_cnpj' => [
-                'required',
-                'string',
-                'min:14',
-                'max:18',
-                Rule::unique('clientes', 'cpf_cnpj'),
-            ],
 
-            'cliente.nome' => [
-                'required',
-                'string',
-                'max:255'
-            ],
-            'cliente.email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('clientes', 'email'),
-            ],
-            'cliente.telefone' => [
-                'required',
-                'string',
-            ],
-            'cliente.credito' => [
-                'required',
-                'numeric',
-            ],
-            'cliente.credito_ativo' => [
-                'required',
-                'boolean',
-            ],
-
-            'cliente.nascimento' => [
-                'required',
-                'date',
-            ],
-            'cliente.status' => [
-                'required',
-                'string',
-                'min:1',
-                'max:1'
-            ],
         ];
     }
 
@@ -103,7 +99,7 @@ class Create extends Component
 
 
         $this->reset();
-        $this->endereco = new Cliente();
+        $this->endereco = new Endereco();
         // $this->resetExcept('endereco');
         // $this->success();
     }
