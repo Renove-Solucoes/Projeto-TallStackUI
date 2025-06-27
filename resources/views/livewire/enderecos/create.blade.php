@@ -4,7 +4,6 @@
     </div>
     <x-modal :title="__('Criar Novo Endereço')" wire size="5xl" blur>
         <form id="endereco-create" wire:submit="save" class="space-y-6">
-
             <div class="grid md:grid-cols-12 md:gap-4">
                 <div class="md:col-span-4">
                     <x-input label="{{ __('CEP') }} *" wire:model="endereco.cep" required />

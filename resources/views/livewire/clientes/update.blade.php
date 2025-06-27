@@ -1,8 +1,8 @@
 <div>
 
-    <x-modal :title="__('Editar Cliente', ['id' => $cliente?->id])" wire blur size="6xl">
+    <x-modal :title="__('Editar Cliente #:id', ['id' => $cliente?->id])" wire blur size="6xl">
         <livewire:enderecos.update @updated="$refresh" />
-        <livewire:enderecos.create @created="$refresh" />
+        
         <form id="cliente-update-{{ $cliente?->id }}" wire:submit="save" class="space-y-4">
             <div class="grid md:grid-cols-12 md:gap-4">
                 <div class="md:col-span-3">
@@ -77,7 +77,9 @@
                             wire:model="tags_selecionadas" :options="$tags" select="label:nome|value:id" searchable
                             multiple />
                     </div>
-
+                    <div class="mt-4 flex justify-end">
+                        <livewire:enderecos.create @created="$refresh" :key="uniqid('', true)" :cliente_id="$cliente?->id" />
+                    </div>
                     <div class="mt-4">
 
                         <x-table striped :$headers :rows="$this->rows">

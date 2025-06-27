@@ -4,6 +4,7 @@ namespace App\Livewire\Enderecos;
 
 use Livewire\Component;
 use App\Livewire\Traits\Alert;
+use App\Models\Cliente;
 use App\Models\Endereco;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
@@ -18,6 +19,7 @@ class Create extends Component
 
     public bool $modal = false;
 
+    public $cliente_id;
 
 
 
@@ -94,8 +96,10 @@ class Create extends Component
     public function save(): void
     {
         $this->validate();
+        $this->endereco->cliente_id = $this->cliente_id;
         $this->endereco->save();
-        $this->dispatch('created');
+        $this->modal = false;
+        $this->dispatch('refresh::endereco');
 
 
         $this->reset();

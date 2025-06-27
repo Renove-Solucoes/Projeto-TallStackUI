@@ -66,11 +66,18 @@ class Update extends Component
 
 
     public $headers = [
-        ['index' => 'dados', 'label' => 'Endereço Completo'],
+        ['index' => 'dados', 'label' => 'Endereço(s)'],
         ['index' => 'action', 'sortable' => false],
         ['index' => 'actions', 'label' => 'Ações', 'sortable' => false, 'text-align' => 'right'],
 
     ];
+
+    #[On('refresh::endereco')]
+    public function loadEndereco(Endereco $endereco)
+    {
+        $this->enderecos = $this->cliente->enderecos()->get()->toArray();
+        $this->rows();
+    }
 
     #[Computed]
     public function rows()
