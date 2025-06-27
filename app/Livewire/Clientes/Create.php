@@ -4,6 +4,7 @@ namespace App\Livewire\Clientes;
 
 use App\Livewire\Traits\Alert;
 use App\Models\Cliente;
+use App\Models\Endereco;
 use App\Models\Tag;
 use GuzzleHttp\Client;
 use Illuminate\Validation\Rule;
@@ -16,6 +17,8 @@ class Create extends Component
     use Alert;
 
     public Cliente $cliente;
+    public Endereco $endereco;
+
     public $imagemTemp = '';
 
     public $tags;
@@ -37,6 +40,9 @@ class Create extends Component
             'nome' => $tag->nome,
             'id' => $tag->id,
         ])->toArray();
+
+        $this->endereco = new Endereco();
+        $this->endereco->status = 'A';
     }
 
 
@@ -104,6 +110,54 @@ class Create extends Component
                 'min:1',
                 'max:1'
             ],
+            'endereco.descricao' => [
+                'required',
+                'string',
+                'max:20'
+            ],
+
+            'endereco.cep' => [
+                'required',
+                'string',
+                'max:8'
+            ],
+            'endereco.endereco' => [
+                'required',
+                'string',
+                'max:60'
+
+            ],
+            'endereco.bairro' => [
+                'required',
+                'string',
+                'max:60'
+            ],
+            'endereco.numero' => [
+                'required',
+                'string',
+                'max:10'
+            ],
+            'endereco.uf' => [
+                'required',
+                'string',
+                'uppercase',
+                'max:2'
+            ],
+            'endereco.cidade' => [
+                'required',
+                'string',
+                'max:60'
+            ],
+            'endereco.complemento' => [
+                'nullable',
+                'string',
+                'max:100'
+            ],
+            'endereco.status' => [
+                'required',
+                'string',
+                'max:1'
+            ],
         ];
     }
 
@@ -119,6 +173,8 @@ class Create extends Component
         $this->validate();
 
         $this->cliente->save();
+        $this->endereco->cliente_id = $this->cliente->id;
+        $this->endereco->save();
         $this->cliente->tags()->sync($this->tags_selecionadas);
         $this->dispatch('created');
 

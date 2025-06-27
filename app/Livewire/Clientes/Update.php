@@ -68,7 +68,6 @@ class Update extends Component
     public $headers = [
         ['index' => 'dados', 'label' => 'Endereço(s)'],
         ['index' => 'action', 'sortable' => false],
-        ['index' => 'actions', 'label' => 'Ações', 'sortable' => false, 'text-align' => 'right'],
 
     ];
 

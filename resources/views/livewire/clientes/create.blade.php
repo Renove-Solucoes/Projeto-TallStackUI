@@ -14,8 +14,8 @@
                     @endif
 
                     @if ($errors->get('imagemTemp'))
-                        <span id="nome-error"
-                            class="error invalid-feedback d-block">{{ $errors->first('imagemTemp') }} </span>
+                        <span id="nome-error" class="error invalid-feedback d-block">{{ $errors->first('imagemTemp') }}
+                        </span>
                     @endif
                     @if ($errors->get('cliente.foto'))
                         <span id="nome-error"
@@ -24,9 +24,8 @@
 
 
                     <div class="mt-2">
-                        <x-upload close-after-upload
-                            tip="Arraste e Solte a imagem aqui" wire:model='imagemTemp' required
-                            :preview="false" />
+                        <x-upload close-after-upload tip="Arraste e Solte a imagem aqui" wire:model='imagemTemp'
+                            required :preview="false" />
                     </div>
                 </div>
 
@@ -47,33 +46,33 @@
                         </div>
                     </div>
 
-                <div class="grid md:grid-cols-3 md:gap-4">
-                    <div>
-                        <x-input label="{{ __('Email') }} *" wire:model="cliente.email" required />
+                    <div class="grid md:grid-cols-3 md:gap-4">
+                        <div>
+                            <x-input label="{{ __('Email') }} *" wire:model="cliente.email" required />
+                        </div>
+                        <div>
+                            <x-input x-mask="(99) 99999-9999" label="{{ __('Telefone') }} *"
+                                wire:model="cliente.telefone" required />
+                        </div>
+                        <div>
+                            <x-date format="DD/MM/YYYY" label="{{ __('Nascimento') }}" wire:model="cliente.nascimento"
+                                required />
+                        </div>
                     </div>
-                    <div>
-                        <x-input x-mask="(99) 99999-9999" label="{{ __('Telefone') }} *" wire:model="cliente.telefone"
-                            required />
-                    </div>
-                    <div>
-                        <x-date format="DD/MM/YYYY" label="{{ __('Nascimento') }}" wire:model="cliente.nascimento"
-                            required />
-                    </div>
-                </div>
-                <div class="grid md:grid-cols-3 md:gap-4">
-                    <div>
-                        <x-currency mutate locale="pt-BR" symbol="R$" label="{{ __('Crédito') }}"
-                            wire:model="cliente.credito" required />
-                    </div>
-                    <div class="md:pt-8">
-                        <x-toggle label="Crédito Ativo" wire:model="cliente.credito_ativo" :checked="$cliente?->credito_ativo ? true : false" />
-                    </div>
-                    <div>
-                        <x-select.native label="{{ __('Status') }} *" wire:model="cliente.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
-                            select="label:name|value:id" required />
+                    <div class="grid md:grid-cols-3 md:gap-4">
+                        <div>
+                            <x-currency mutate locale="pt-BR" symbol="R$" label="{{ __('Crédito') }}"
+                                wire:model="cliente.credito" required />
+                        </div>
+                        <div class="md:pt-8">
+                            <x-toggle label="Crédito Ativo" wire:model="cliente.credito_ativo" :checked="$cliente?->credito_ativo ? true : false" />
+                        </div>
+                        <div>
+                            <x-select.native label="{{ __('Status') }} *" wire:model="cliente.status"
+                                :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]" select="label:name|value:id" required />
 
+                        </div>
                     </div>
-                </div>
                     <div>
                         <x-select.styled label="{{ __('Tags') }} *" placeholder="Selecione uma Tag"
                             wire:model="tags_selecionadas" :options="$tags" select="label:nome|value:id" multiple />
@@ -81,6 +80,46 @@
                     </div>
                 </div>
 
+            </div>
+
+            <div>
+                <div class="grid md:grid-cols-12 md:gap-4">
+                    <div class="md:col-span-4">
+                        <x-input label="{{ __('CEP') }} *" wire:model="endereco.cep" required />
+                    </div>
+                    <div class="md:col-span-6">
+                        <x-input label="{{ __('Endereço') }} *" wire:model="endereco.endereco" required />
+                    </div>
+                    <div class="md:col-span-2">
+                        <x-input label="{{ __('Número') }} *" wire:model="endereco.numero" required />
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-12 md:gap-4">
+                    <div class="md:col-span-5">
+                        <x-input label="{{ __('Cidade') }} *" wire:model="endereco.cidade" required />
+                    </div>
+                    <div class="md:col-span-5">
+                        <x-input label="{{ __('Bairro') }} *" wire:model="endereco.bairro" required />
+                    </div>
+                    <div class="md:col-span-2">
+                        <x-input label="{{ __('Sigla do Estado') }} *" wire:model="endereco.uf" required />
+                    </div>
+                </div>
+
+
+                <div class="grid md:grid-cols-12 md:gap-4">
+                    <div class="md:col-span-3">
+                        <x-input label="{{ __('Complemento') }} *" wire:model="endereco.complemento" required />
+                    </div>
+                    <div class="md:col-span-6">
+                        <x-input label="{{ __('Descrição') }} *" wire:model="endereco.descricao" required />
+                    </div>
+                    <div class="md:col-span-3">
+                        <x-select.native label="{{ __('Status') }} *" wire:model="endereco.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
+                            select="label:name|value:id" required />
+                    </div>
+                </div>
             </div>
 
 
