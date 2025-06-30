@@ -88,12 +88,19 @@
 
             <x-table striped :$headers :rows="$this->rows">
 
+                @interact('column_principal', $row)
+                    <div class="flex items-center justify-center">
+                        <x-boolean :boolean="$row['principal']" icon-when-true="star" color-when-true="yellow" icon-when-false="star" wire:click="setPrincipal({{ $row['id'] }})" />
+                    </div>
+                @endinteract
+
                 @interact('column_action', $row)
                     <div class="flex items-center justify-center">
                         <x-button.circle icon="pencil" color="sky"
                             wire:click="$dispatch('load::endereco', { 'endereco' : '{{ $row['id'] }}'})" outline />
                     </div>
                 @endinteract
+
             </x-table>
         </div>
         <x-slot:footer>

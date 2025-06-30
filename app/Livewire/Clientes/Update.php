@@ -32,6 +32,8 @@ class Update extends Component
     public $tags;
     public $tags_selecionadas = [];
 
+    public $setPrincipal;
+
     public function mount()
     {
         $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
@@ -67,6 +69,7 @@ class Update extends Component
 
     public $headers = [
         ['index' => 'dados', 'label' => 'Endereço(s)'],
+        ['index' => 'principal', 'label' => 'Principal'],
         ['index' => 'action', 'sortable' => false],
 
     ];
@@ -85,6 +88,8 @@ class Update extends Component
             return [
                 'id' => $endereco['id'] ?? null,
                 'dados' => "{$endereco['endereco']}, {$endereco['numero']}, {$endereco['bairro']}, {$endereco['cidade']} - {$endereco['uf']} CEP: {$endereco['cep']}",
+                'principal' => $endereco['principal'],
+
             ];
         })->toArray();
     }

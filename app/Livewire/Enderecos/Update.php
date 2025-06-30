@@ -4,6 +4,7 @@ namespace App\Livewire\Enderecos;
 
 use App\Livewire\Traits\Alert;
 use App\Models\Endereco;
+use App\Services\ViacepServices;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
@@ -14,7 +15,6 @@ class Update extends Component
     use Alert;
 
     public Endereco $endereco;
-
 
     public bool $modal = false;
 
@@ -88,6 +88,41 @@ class Update extends Component
     {
         return view('livewire.enderecos.update');
     }
+
+
+    public function updatedEnderecoCep()
+    {
+
+        // $this->endereco->cep = str_replace(['.', '-'], ['', ''], $this->endereco->cep);
+
+        $viacepService = new ViacepServices();
+
+        $result = $viacepService->getLocation($this->endereco->cep);
+
+
+        if (!empty($result)) {
+            $this->endereco->endereco = $result['logradouro'];
+            $this->endereco->bairro = $result['bairro'];
+            $this->endereco->cidade = $result['localidade'];
+            $this->endereco->uf = $result['uf'];
+        } else {
+            $this->endereco->endereco = '';
+            $this->endereco->bairro = '';
+            $this->endereco->cidade = '';
+            $this->endereco->uf = '';
+            $this->dispatch('message', ['tipo_message' => 'info', 'message' => 'CEP não encontrado']);
+        }
+    }
+
+    public function updatedEnderecoPrincipal()
+    {
+        if ($this->endereco->principal) {
+            Endereco::where('cliente_id', $this->endereco->cliente_id)->where('principal', true)->update(['principal' => false]);
+        } else {
+            Endereco::where('cliente_id', $this->endereco->cliente_id)->where('principal', true)->update(['principal' => true]);
+        }
+    }
+
 
     public function save(): void
     {

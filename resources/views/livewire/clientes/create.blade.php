@@ -85,7 +85,7 @@
             <div>
                 <div class="grid md:grid-cols-12 md:gap-4">
                     <div class="md:col-span-4">
-                        <x-input label="{{ __('CEP') }} *" wire:model="endereco.cep" required maxlength="8" />
+                        <x-input label="{{ __('CEP') }} *" wire:model.blur="endereco.cep"  required maxlength="8" />
                     </div>
                     <div class="md:col-span-6">
                         <x-input label="{{ __('Endereço') }} *" wire:model="endereco.endereco" required maxlength="120" />
@@ -110,10 +110,10 @@
 
                 <div class="grid md:grid-cols-12 md:gap-4">
                     <div class="md:col-span-3">
-                        <x-input label="{{ __('Complemento') }} *" wire:model="endereco.complemento" required maxlength="120" />
+                        <x-input label="{{ __('Complemento') }}" wire:model="endereco.complemento" maxlength="120" />
                     </div>
                     <div class="md:col-span-6">
-                        <x-input label="{{ __('Descrição') }} *" wire:model="endereco.descricao" required maxlength="20"/>
+                        <x-input label="{{ __('Descrição') }} *" wire:model="endereco.descricao" required maxlength="20" placeholder="Ex: Casa, Trabalho"/>
                     </div>
                     <div class="md:col-span-3">
                         <x-select.native label="{{ __('Status') }} *" wire:model="endereco.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"

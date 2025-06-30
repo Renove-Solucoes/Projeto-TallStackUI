@@ -17,9 +17,9 @@ class EnderecoFactory extends Factory
     public function definition(): array
     {
         return [
+            'principal' => fake()->boolean(10),
             'cliente_id' => null,
             'endereco' =>  fake('pt_BR')->streetAddress(),
-            // 'principal' => '0',
             'cep' =>  fake()->numberBetween(60000000, 69999999),
             'numero' => fake('pt_BR')->buildingNumber(),
             'bairro' => fake('pt_BR')->streetName(),

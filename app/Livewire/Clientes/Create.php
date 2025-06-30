@@ -6,6 +6,7 @@ use App\Livewire\Traits\Alert;
 use App\Models\Cliente;
 use App\Models\Endereco;
 use App\Models\Tag;
+use App\Services\ViacepServices;
 use GuzzleHttp\Client;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -21,6 +22,8 @@ class Create extends Component
 
     public $imagemTemp = '';
 
+
+    public $cep;
     public $tags;
     public $tags_selecionadas = [];
 
@@ -162,6 +165,30 @@ class Create extends Component
         ];
     }
 
+    public function updatedEnderecoCep()
+    {
+
+        // $this->endereco->cep = str_replace(['.', '-'], ['', ''], $this->endereco->cep);
+
+        $viacepService = new ViacepServices();
+
+        $result = $viacepService->getLocation($this->endereco->cep);
+
+
+        if (!empty($result)) {
+            $this->endereco->endereco = $result['logradouro'];
+            $this->endereco->bairro = $result['bairro'];
+            $this->endereco->cidade = $result['localidade'];
+            $this->endereco->uf = $result['uf'];
+        } else {
+            $this->endereco->endereco = '';
+            $this->endereco->bairro = '';
+            $this->endereco->cidade = '';
+            $this->endereco->uf = '';
+            $this->dispatch('message', ['tipo_message' => 'info', 'message' => 'CEP não encontrado']);
+        }
+    }
+
 
     public function updatedClienteCredito()
     {
@@ -175,6 +202,7 @@ class Create extends Component
 
         $this->cliente->save();
         $this->endereco->cliente_id = $this->cliente->id;
+        $this->endereco->principal = true;
         $this->endereco->save();
         $this->cliente->tags()->sync($this->tags_selecionadas);
         $this->dispatch('created');
