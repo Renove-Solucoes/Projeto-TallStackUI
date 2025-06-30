@@ -20,7 +20,7 @@ class EnderecoFactory extends Factory
             'cliente_id' => null,
             'endereco' =>  fake('pt_BR')->streetAddress(),
             // 'principal' => '0',
-            'cep' =>  fake('pt_BR')->postcode(),
+            'cep' =>  fake()->numberBetween(60000000, 69999999),
             'numero' => fake('pt_BR')->buildingNumber(),
             'bairro' => fake('pt_BR')->streetName(),
             'cidade' => fake('pt_BR')->city(),

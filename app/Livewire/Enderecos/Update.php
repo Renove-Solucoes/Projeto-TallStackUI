@@ -21,33 +21,32 @@ class Update extends Component
     public function rules(): array
     {
         return [
-
             'endereco.descricao' => [
                 'required',
                 'string',
-                'max:255'
+                'max:20'
             ],
 
             'endereco.cep' => [
                 'required',
                 'string',
-                'max:255'
+                'max:8'
             ],
             'endereco.endereco' => [
                 'required',
                 'string',
-                'max:255'
+                'max:120'
 
             ],
             'endereco.bairro' => [
                 'required',
                 'string',
-                'max:255'
+                'max:80'
             ],
             'endereco.numero' => [
                 'required',
                 'string',
-                'max:255'
+                'max:10'
             ],
             'endereco.uf' => [
                 'required',
@@ -58,12 +57,12 @@ class Update extends Component
             'endereco.cidade' => [
                 'required',
                 'string',
-                'max:255'
+                'max:80'
             ],
             'endereco.complemento' => [
                 'nullable',
                 'string',
-                'max:255'
+                'max:120'
             ],
             'endereco.status' => [
                 'required',

@@ -46,13 +46,13 @@ class Create extends Component
             'endereco.endereco' => [
                 'required',
                 'string',
-                'max:60'
+                'max:120'
 
             ],
             'endereco.bairro' => [
                 'required',
                 'string',
-                'max:60'
+                'max:80'
             ],
             'endereco.numero' => [
                 'required',
@@ -68,12 +68,12 @@ class Create extends Component
             'endereco.cidade' => [
                 'required',
                 'string',
-                'max:60'
+                'max:80'
             ],
             'endereco.complemento' => [
                 'nullable',
                 'string',
-                'max:100'
+                'max:120'
             ],
             'endereco.status' => [
                 'required',

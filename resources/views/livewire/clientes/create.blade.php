@@ -85,35 +85,35 @@
             <div>
                 <div class="grid md:grid-cols-12 md:gap-4">
                     <div class="md:col-span-4">
-                        <x-input label="{{ __('CEP') }} *" wire:model="endereco.cep" required />
+                        <x-input label="{{ __('CEP') }} *" wire:model="endereco.cep" required maxlength="8" />
                     </div>
                     <div class="md:col-span-6">
-                        <x-input label="{{ __('Endereço') }} *" wire:model="endereco.endereco" required />
+                        <x-input label="{{ __('Endereço') }} *" wire:model="endereco.endereco" required maxlength="120" />
                     </div>
                     <div class="md:col-span-2">
-                        <x-input label="{{ __('Número') }} *" wire:model="endereco.numero" required />
+                        <x-input label="{{ __('Número') }} *" wire:model="endereco.numero" required maxlength="10" />
                     </div>
                 </div>
 
                 <div class="grid md:grid-cols-12 md:gap-4">
                     <div class="md:col-span-5">
-                        <x-input label="{{ __('Cidade') }} *" wire:model="endereco.cidade" required />
+                        <x-input label="{{ __('Cidade') }} *" wire:model="endereco.cidade" required maxlength="80" />
                     </div>
                     <div class="md:col-span-5">
-                        <x-input label="{{ __('Bairro') }} *" wire:model="endereco.bairro" required />
+                        <x-input label="{{ __('Bairro') }} *" wire:model="endereco.bairro" required maxlength="80"/>
                     </div>
                     <div class="md:col-span-2">
-                        <x-input label="{{ __('Sigla do Estado') }} *" wire:model="endereco.uf" required />
+                        <x-input label="{{ __('Sigla do Estado') }} *" wire:model="endereco.uf" required maxlength="2"/>
                     </div>
                 </div>
 
 
                 <div class="grid md:grid-cols-12 md:gap-4">
                     <div class="md:col-span-3">
-                        <x-input label="{{ __('Complemento') }} *" wire:model="endereco.complemento" required />
+                        <x-input label="{{ __('Complemento') }} *" wire:model="endereco.complemento" required maxlength="120" />
                     </div>
                     <div class="md:col-span-6">
-                        <x-input label="{{ __('Descrição') }} *" wire:model="endereco.descricao" required />
+                        <x-input label="{{ __('Descrição') }} *" wire:model="endereco.descricao" required maxlength="20"/>
                     </div>
                     <div class="md:col-span-3">
                         <x-select.native label="{{ __('Status') }} *" wire:model="endereco.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
