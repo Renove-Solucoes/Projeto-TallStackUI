@@ -60,8 +60,16 @@ class Index extends Component
     public function rows(): LengthAwarePaginator
     {
         return Cliente::query()
-            ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['nome', 'email'], 'like', '%' . trim($this->search) . '%'))
-            ->when($this->filtro['nome'] !== null, fn(Builder $query) => $query->where('nome', 'like', '%' . trim($this->filtro['nome']) . '%'))
+            ->when(
+                filled($this->search) && blank($this->filtro['nome']),
+                fn(Builder $query) =>
+                $query->whereAny(['nome', 'email'], 'like', '%' . trim($this->search) . '%')
+            )
+            ->when(
+                filled($this->filtro['nome']) && blank($this->search),
+                fn(Builder $query) =>
+                $query->where('nome', 'like', '%' . trim($this->filtro['nome']) . '%')
+            )
             ->orderBy(...array_values($this->sort))
             ->paginate($this->quantity)
             ->withQueryString();
