@@ -148,10 +148,7 @@ class Update extends Component
                 'required',
                 'boolean',
             ],
-            'endereco.principal' => [
-                'required',
-                'boolean',
-            ],
+
             'cliente.status' => [
                 'required',
                 'string',

@@ -1,6 +1,6 @@
 <div>
 
-    <x-modal :title="__('Editar Cliente #:id', ['id' => $cliente?->id])" wire blur size="6xl">
+    <x-modal :title="__('Editar Cliente #:id', ['id' => $cliente?->id])" wire blur size="6xl" z-index="z-40" >
         <livewire:enderecos.update @updated="$refresh" />
 
         <form id="cliente-update-{{ $cliente?->id }}" wire:submit="save" class="space-y-4">
@@ -90,14 +90,17 @@
 
                 @interact('column_principal', $row)
                     <div class="flex items-center justify-center">
-                        <x-boolean :boolean="$row['principal']" icon-when-true="star" color-when-true="yellow" icon-when-false="star" wire:click="endPrincipal({{ $row['id'] }})" />
+                        <x-boolean :boolean="$row['principal']" icon-when-true="star" color-when-true="yellow" icon-when-false="star"
+                            wire:click="endPrincipal({{ $row['id'] }})" />
                     </div>
                 @endinteract
 
                 @interact('column_action', $row)
-                    <div class="flex items-center justify-center">
+                    <div class="flex items-center justify-center gap-1">
                         <x-button.circle icon="pencil" color="sky"
                             wire:click="$dispatch('load::endereco', { 'endereco' : '{{ $row['id'] }}'})" outline />
+                        <livewire:enderecos.delete :endereco-id="$row['id']" :key="uniqid('', true)" @deleted="$refresh" />
+
                     </div>
                 @endinteract
 
