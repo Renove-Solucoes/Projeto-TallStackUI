@@ -30,19 +30,19 @@
 
 
             <div class="grid md:grid-cols-12 md:gap-4">
-                <div class="md:col-span-3">
+                <div class="md:col-span-4">
                     <x-input label="{{ __('Complemento') }} " wire:model="endereco.complemento" maxlength="120" />
                 </div>
-                <div class="md:col-span-6">
+                <div class="md:col-span-4">
                     <x-input label="{{ __('Descrição') }} *" wire:model="endereco.descricao" required maxlength="20"
                         placeholder="Ex: Casa, Trabalho" />
                 </div>
-                <div class="md:pt-4">
-                    <x-toggle label="Endereço Principal" wire:model="endereco.principal" :checked="$endereco?->principal ? true : false" />
-                </div>
-                <div class="md:col-span-3">
+                <div class="md:col-span-2">
                     <x-select.native label="{{ __('Status') }} *" wire:model="endereco.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
                         select="label:name|value:id" required />
+                </div>
+                <div class="md:pt-4 md:col-span-2">
+                    <x-toggle label="Endereço Principal" wire:model="endereco.principal" :checked="$endereco?->principal ? true : false" />
                 </div>
             </div>
 
