@@ -36,6 +36,9 @@
                 <div class="md:col-span-6">
                     <x-input label="{{ __('Descrição') }} *" wire:model="endereco.descricao" required maxlength="20" placeholder="Ex: Casa, Trabalho"/>
                 </div>
+                <div class="md:pt-4">
+                     <x-toggle label="Endereço Principal" wire:model="endereco.principal" :checked="$endereco?->principal ? true : false" />
+                </div>
                 <div class="md:col-span-3">
                     <x-select.native label="{{ __('Status') }} *" wire:model="endereco.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
                         select="label:name|value:id" required />

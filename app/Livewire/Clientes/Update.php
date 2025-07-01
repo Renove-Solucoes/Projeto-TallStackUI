@@ -148,6 +148,10 @@ class Update extends Component
                 'required',
                 'boolean',
             ],
+            'endereco.principal' => [
+                'required',
+                'boolean',
+            ],
             'cliente.status' => [
                 'required',
                 'string',
@@ -178,6 +182,17 @@ class Update extends Component
         $collect = collect($files)->filter(fn(UploadedFile $item) => $item->getFilename() !== $content['temporary_name']);
 
         $this->photo = is_array($this->imagemTemp) ? $collect->toArray('') : $collect->first();
+    }
+
+
+    public function endPrincipal(Endereco $endereco)
+    {
+        $endereco->principal = $endereco->principal ? false : true;
+        if ($endereco->principal) {
+            Endereco::where('cliente_id', $endereco->cliente_id)->where('principal', true)->update(['principal' => false]);
+        }
+        $endereco->save();
+        $this->dispatch('refresh::endereco');
     }
 
 

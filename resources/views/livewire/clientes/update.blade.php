@@ -90,7 +90,7 @@
 
                 @interact('column_principal', $row)
                     <div class="flex items-center justify-center">
-                        <x-boolean :boolean="$row['principal']" icon-when-true="star" color-when-true="yellow" icon-when-false="star" wire:click="setPrincipal({{ $row['id'] }})" />
+                        <x-boolean :boolean="$row['principal']" icon-when-true="star" color-when-true="yellow" icon-when-false="star" wire:click="endPrincipal({{ $row['id'] }})" />
                     </div>
                 @endinteract
 

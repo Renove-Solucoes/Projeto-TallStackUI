@@ -78,6 +78,10 @@ class Create extends Component
                 'string',
                 'max:120'
             ],
+            'endereco.principal' => [
+                'required',
+                'boolean',
+            ],
             'endereco.status' => [
                 'required',
                 'string',
@@ -120,11 +124,21 @@ class Create extends Component
     }
 
 
+    public function updatedEnderecoPrincipal()
+    {
+        if ($this->endereco->principal) {
+            Endereco::where('cliente_id', $this->endereco->cliente_id)->where('principal', true)->update(['principal' => false]);
+        }
+    }
+
+
+
 
     public function save(): void
     {
         $this->validate();
         $this->endereco->cliente_id = $this->cliente_id;
+        $this->updatedEnderecoPrincipal();
         $this->endereco->save();
         $this->modal = false;
         $this->dispatch('refresh::endereco');

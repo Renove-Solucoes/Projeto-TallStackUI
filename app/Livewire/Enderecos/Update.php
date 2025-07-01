@@ -21,6 +21,7 @@ class Update extends Component
     public function rules(): array
     {
         return [
+
             'endereco.descricao' => [
                 'required',
                 'string',
@@ -63,6 +64,10 @@ class Update extends Component
                 'nullable',
                 'string',
                 'max:120'
+            ],
+            'endereco.principal' => [
+                'required',
+                'boolean',
             ],
             'endereco.status' => [
                 'required',
@@ -118,8 +123,6 @@ class Update extends Component
     {
         if ($this->endereco->principal) {
             Endereco::where('cliente_id', $this->endereco->cliente_id)->where('principal', true)->update(['principal' => false]);
-        } else {
-            Endereco::where('cliente_id', $this->endereco->cliente_id)->where('principal', true)->update(['principal' => true]);
         }
     }
 
