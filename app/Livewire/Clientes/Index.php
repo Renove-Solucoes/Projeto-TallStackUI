@@ -17,7 +17,11 @@ class Index extends Component
 {
     use WithPagination;
 
-     public bool $slide = false;
+    public $filtro = [
+        'nome' => null,
+    ];
+
+    public bool $slide = false;
 
     public ?int $quantity = 10;
     public ?string $search = null;
@@ -47,11 +51,17 @@ class Index extends Component
         return view('livewire.clientes.index');
     }
 
+    public function filtrar()
+    {
+        $this->rows();
+    }
+
     #[Computed]
     public function rows(): LengthAwarePaginator
     {
         return Cliente::query()
             ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['nome', 'email'], 'like', '%' . trim($this->search) . '%'))
+            ->when($this->filtro['nome'] !== null, fn(Builder $query) => $query->where('nome', 'like', '%' . trim($this->filtro['nome']) . '%'))
             ->orderBy(...array_values($this->sort))
             ->paginate($this->quantity)
             ->withQueryString();

@@ -8,7 +8,8 @@
             </div>
         </div>
         <x-slide id="filtro">
-            Right
+            <x-input label="Nome" wire:model="filtro.nome" />
+            <x-button icon="funnel" :text="__('Filtrar')" x-on:click="$slideClose('filtro')" wire:click='filtrar' sm />
         </x-slide>
 
         {{-- //TODO na table index, colocar coluna da tabela fixa
