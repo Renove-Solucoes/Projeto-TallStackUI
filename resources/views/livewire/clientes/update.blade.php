@@ -1,6 +1,6 @@
 <div>
 
-    <x-modal :title="__('Editar Cliente #:id', ['id' => $cliente?->id])" wire blur size="6xl" z-index="z-40" >
+    <x-modal :title="__('Editar Cliente #:id', ['id' => $cliente?->id])" wire blur size="6xl" z-index="z-40">
         <livewire:enderecos.update @updated="$refresh" />
 
         <form id="cliente-update-{{ $cliente?->id }}" wire:submit="save" class="space-y-4">
@@ -53,8 +53,11 @@
                                 wire:model="cliente.telefone" required />
                         </div>
                         <div>
-                            <x-date format="DD/MM/YYYY" label="{{ __('Nascimento') }}" wire:model="cliente.nascimento"
-                                required />
+                            {{-- <x-date format="DD/MM/YYYY" label="{{ __('Nascimento') }}" wire:model="cliente.nascimento"
+                                required /> --}}
+
+                            <x-input type="date" wire:model="cliente.nascimento" label="Nascimento" />
+
                         </div>
                     </div>
                     <div class="grid md:grid-cols-3 md:gap-4">

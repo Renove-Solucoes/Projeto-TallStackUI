@@ -55,8 +55,7 @@
                                 wire:model="cliente.telefone" required />
                         </div>
                         <div>
-                            <x-date format="DD/MM/YYYY" label="{{ __('Nascimento') }}" wire:model="cliente.nascimento"
-                                required />
+                            <x-input type="date" wire:model="cliente.nascimento" label="Nascimento" />
                         </div>
                     </div>
                     <div class="grid md:grid-cols-3 md:gap-4">

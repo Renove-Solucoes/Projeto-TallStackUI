@@ -4,18 +4,46 @@
             <h1 class="mb-2 font-medium text-2xl">Cadastro de Clientes</h1>
             <div class="flex items-center gap-2">
                 <x-button icon="funnel" :text="__('Filtrar')" x-on:click="$slideOpen('filtro')" sm />
+                <x-button icon="x-mark" :text="__('Limpar Filtro')" wire:click="limparFiltros()" sm />
                 <livewire:clientes.create @created="$refresh" />
             </div>
         </div>
         <x-slide id="filtro">
-            <x-input label="Nome" wire:model="filtro.nome" />
-            <x-button icon="funnel" :text="__('Filtrar')" x-on:click="$slideClose('filtro')" wire:click='filtrar' sm />
+            <x-select.native label="Tipo Pessoa(F/J)" :options="[['name' => 'Fisica', 'id' => 'F'], ['name' => 'Juridica', 'id' => 'J']]" select="label:name|value:id"
+                wire:model="filtro.tipo_pessoa" />
+            <x-input label="Telefone" wire:model="filtro.telefone" />
+            <x-select.native label="Crédito Ativo" wire:model="filtro.credito_ativo" :options="[
+                ['name' => 'Ativo', 'id' => 1],
+                ['name' => 'Inativo', 'id' => 0],
+                ['name' => 'Todos', 'id' => ''],
+            ]" :checked="$cliente?->credito_ativo ? true : false"
+                select="label:name|value:id" />
+            <div>
+                <x-select.native label="Status" wire:model="filtro.status" :options="[
+                    ['name' => 'Ativo', 'id' => 'A'],
+                    ['name' => 'Inativo', 'id' => 'I'],
+                    ['name' => 'Todos', 'id' => ''],
+                ]"
+                    select="label:name|value:id" required />
+
+            </div>
+            <div>
+                <x-dates-period modelDataDe="filtro.nascimento_de" modelDataAte="filtro.nascimento_ate"
+                    filtroPeriodo="filtro.periodo" :dataDe="$filtro['nascimento_de'] ?? ''" :dataAte="$filtro['nascimento_ate'] ?? ''" labelPeriodo="Periodo"
+                    labelDataDe="Nascimento de" labelDataAte="Nascimento até" />
+            </div>
+
+            <div class="mt-4">
+
+                <x-button icon="funnel" :text="__('Filtrar')" x-on:click="$slideClose('filtro')" wire:click='filtrar' sm />
+                <x-button icon="x-mark" :text="__('Limpar Filtro')" wire:click="limparFiltros()" sm />
+            </div>
         </x-slide>
 
         {{-- //TODO na table index, colocar coluna da tabela fixa
             definir altura da div para que a tabela tenha rolagem horizontal
             mudar local do botão criar para ganhar espaço --}}
-        <x-table striped :$headers :$sort :rows="$this->rows" paginate filter :quantity="[5, 10, 20]">
+        <x-table striped :$headers :$sort :rows="$this->rows" paginate filter :quantity="[5, 10, 20]" :placeholders="['search' => 'Pesquisar por nome, email ou CPF']">
 
 
             @interact('column_nascimento', $row)

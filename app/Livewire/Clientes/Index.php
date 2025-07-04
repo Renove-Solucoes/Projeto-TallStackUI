@@ -17,8 +17,17 @@ class Index extends Component
 {
     use WithPagination;
 
+    public Cliente $cliente;
+
+
     public $filtro = [
-        'nome' => null,
+        'tipo_pessoa' => null,
+        'telefone' => null,
+        'credito_ativo' => '',
+        'status' => '',
+        'nascimento_de' => null,
+        'nascimento_ate' => null,
+        'periodo' => 'default',
     ];
 
     public bool $slide = false;
@@ -56,19 +65,67 @@ class Index extends Component
         $this->rows();
     }
 
+
+    public function limparFiltros()
+    {
+        $this->search = null;
+        $this->reset('filtro');
+        // $this->filtro = [
+        //     'tipo_pessoa' => null,
+        //     'telefone' => null,
+        //     'credito_ativo' => null,
+        //     'status' => '',
+        // ];
+    }
+
+
     #[Computed]
     public function rows(): LengthAwarePaginator
     {
         return Cliente::query()
             ->when(
-                filled($this->search) && blank($this->filtro['nome']),
+                filled($this->search),
                 fn(Builder $query) =>
-                $query->whereAny(['nome', 'email'], 'like', '%' . trim($this->search) . '%')
+                $query->whereAny(['nome', 'email', 'cpf_cnpj'], 'like', '%' . trim($this->search) . '%')
             )
             ->when(
-                filled($this->filtro['nome']) && blank($this->search),
+                filled($this->filtro['tipo_pessoa']),
                 fn(Builder $query) =>
-                $query->where('nome', 'like', '%' . trim($this->filtro['nome']) . '%')
+                $query->where('tipo_pessoa', 'like', '%' . trim($this->filtro['tipo_pessoa']) . '%')
+            )
+            ->when(
+                filled($this->filtro['telefone']),
+                fn(Builder $query) =>
+                $query->where('telefone', 'like', '%' . trim($this->filtro['telefone']) . '%')
+            )
+            ->when(
+                filled($this->filtro['credito_ativo']),
+                fn(Builder $query) =>
+                $query->where('credito_ativo', $this->filtro['credito_ativo'])
+            )
+            ->when(
+                filled($this->filtro['status']),
+                fn(Builder $query) =>
+                $query->where('status', $this->filtro['status'])
+            )
+            ->when(
+                filled($this->filtro['nascimento_de']) && filled($this->filtro['nascimento_ate']),
+                fn(Builder $query) =>
+                $query->whereBetween('nascimento', [
+                    $this->filtro['nascimento_de'],
+                    $this->filtro['nascimento_ate']
+                ])
+            )
+            ->when(
+                blank($this->search) &&
+                    blank($this->filtro['tipo_pessoa']) &&
+                    blank($this->filtro['telefone']) &&
+                    blank($this->filtro['credito_ativo']) &&
+                    blank($this->filtro['status']) &&
+                    blank($this->filtro['nascimento_de']) &&
+                    blank($this->filtro['nascimento_ate']),
+                fn(Builder $query) =>
+                $query // Nenhum filtro ativo — retorna todos os clientes
             )
             ->orderBy(...array_values($this->sort))
             ->paginate($this->quantity)
