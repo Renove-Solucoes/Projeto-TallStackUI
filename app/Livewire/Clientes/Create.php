@@ -41,7 +41,7 @@ class Create extends Component
         $this->imagemTemp = '';
 
         $this->tags = Tag::where('tipo', 'CLIENTE')
-            ->where('status', 'Ativo')
+            ->where('status', 'A')
             ->get(['id', 'nome'])
             ->map(fn($tag) => [
                 'id' => $tag->id,

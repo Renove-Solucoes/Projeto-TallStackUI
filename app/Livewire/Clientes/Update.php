@@ -36,10 +36,14 @@ class Update extends Component
 
     public function mount()
     {
-        $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
-            'nome' => $tag->nome,
-            'id' => $tag->id,
-        ])->toArray();
+        $this->tags = Tag::where('tipo', 'CLIENTE')
+            ->where('status', 'A')
+            ->get(['id', 'nome'])
+            ->map(fn($tag) => [
+                'id' => $tag->id,
+                'nome' => $tag->nome,
+            ])
+            ->toArray();
     }
 
 
