@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
+            $table->string('tipo');
             $table->string('nome');
             $table->char('status');
             $table->timestamps();

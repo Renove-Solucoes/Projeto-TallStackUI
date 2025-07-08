@@ -21,13 +21,19 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $clientes = Cliente::factory(24)->create();
-        $tags = Tag::factory(10)->create();
+        $tags = Tag::factory(14)->create();
         // $Enderecos = Endereco::factory(24)->create();
 
-        // Associar tags aleatórias aos clientes
-        $clientes->each(function ($cliente) use ($tags) {
+
+        // Carrega apenas as tags do tipo CLIENTE
+        $tagsCliente = Tag::where('tipo', 'CLIENTE')->get();
+
+        // Associa de 1 a 3 tags CLIENTE a cada cliente
+        $clientes->each(function ($cliente) use ($tagsCliente) {
+            $quantidade = min($tagsCliente->count(), rand(1, 3));
+
             $cliente->tags()->attach(
-                $tags->random(rand(1, 3))->pluck('id')->toArray()
+                $tagsCliente->random($quantidade)->pluck('id')->toArray()
             );
         });
 

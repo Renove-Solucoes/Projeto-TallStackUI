@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Clientes;
 
+use App\Enum\TagsStatus;
 use App\Livewire\Traits\Alert;
 use App\Models\Cliente;
 use App\Models\Endereco;
@@ -39,10 +40,16 @@ class Create extends Component
         $this->cliente->credito_ativo = 1;
         $this->imagemTemp = '';
 
-        $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
-            'nome' => $tag->nome,
-            'id' => $tag->id,
-        ])->toArray();
+        $this->tags = Tag::where('tipo', 'CLIENTE')
+            ->where('status', 'Ativo')
+            ->get(['id', 'nome'])
+            ->map(fn($tag) => [
+                'id' => $tag->id,
+                'nome' => $tag->nome,
+            ])
+            ->toArray();
+
+
 
         $this->endereco = new Endereco();
         $this->endereco->status = 'A';

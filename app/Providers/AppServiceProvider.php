@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use TallStackUi\Facades\TallStackUi;
+use TallStackUi\View\Components\Layout\SideBar\SideBar;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,22 +13,5 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    public function boot(): void
-    {
-        $blocks = [
-            'desktop.wrapper.first.size',
-            'desktop.wrapper.second',
-            'desktop.wrapper.third',
-            'desktop.wrapper.fourth',
-            'desktop.wrapper.fifth',
-            'desktop.collapse.wrapper',
-
-        ];
-
-        $sidebar = TallStackUi::personalize()->sideBar();
-
-        foreach ($blocks as $block) {
-            $sidebar->block($block, 'bg-dark-700');
-        }
-    }
+    public function boot(): void {}
 }

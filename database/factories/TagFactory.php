@@ -16,7 +16,7 @@ class TagFactory extends Factory
      */
     public function definition(): array
     {
-        $tags = [
+        $tagCliente = [
             'Novo Cliente',
             'Cliente VIP',
             'Inadimplente',
@@ -28,8 +28,43 @@ class TagFactory extends Factory
             'Cliente Individual',
             'Cliente Internacional'
         ];
+
+        $tagProdutos = [
+            'Lançamentos',
+            'Promoções',
+            'Novidades',
+            'Fora de Linha',
+        ];
+
+        // Junta as tags com seus tipos
+        $tags = collect($tagCliente)
+            ->map(fn($nome) => ['nome' => $nome, 'tipo' => 'CLIENTE'])
+            ->merge(
+                collect($tagProdutos)
+                    ->map(fn($nome) => ['nome' => $nome, 'tipo' => 'PRODUTO'])
+            )
+            ->shuffle() // Embaralha aleatoriamente
+            ->values();
+
+        // Seleciona um aleatório
+        $usados = session('tags_usadas', []);
+
+        $tagSelecionada = $tags->first(fn($tag) => !in_array($tag['nome'], $usados));
+
+        if ($tagSelecionada) {
+            // Marca como usada
+            session(['tags_usadas' => [...$usados, $tagSelecionada['nome']]]);
+
+            return [
+                'tipo' => $tagSelecionada['tipo'],
+                'nome' => $tagSelecionada['nome'],
+                'status' => 'A',
+            ];
+        }
+
         return [
-            'nome' => $this->faker->unique()->randomElement($tags),
+            'tipo' => $tagSelecionada['tipo'],
+            'nome' => $tagSelecionada['nome'],
             'status' => 'A',
         ];
     }
