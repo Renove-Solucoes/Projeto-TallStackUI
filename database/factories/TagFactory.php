@@ -38,10 +38,10 @@ class TagFactory extends Factory
 
         // Junta as tags com seus tipos
         $tags = collect($tagCliente)
-            ->map(fn($nome) => ['nome' => $nome, 'tipo' => 'CLIENTE'])
+            ->map(fn($nome) => ['nome' => $nome, 'tipo' => 'C'])
             ->merge(
                 collect($tagProdutos)
-                    ->map(fn($nome) => ['nome' => $nome, 'tipo' => 'PRODUTO'])
+                    ->map(fn($nome) => ['nome' => $nome, 'tipo' => 'P'])
             )
             ->shuffle() // Embaralha aleatoriamente
             ->values();

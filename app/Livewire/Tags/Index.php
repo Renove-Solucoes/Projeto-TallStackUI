@@ -22,14 +22,18 @@ class Index extends Component
 
     public Tag $tag;
 
+    public bool $slide = false;
+
     public array $sort = [
         'column'    => 'id',
         'direction' => 'desc',
     ];
 
+
+
     public $headers = [
         ['index' => 'id', 'label' => '#'],
-        ['index' => 'tipo', 'label' => 'Tipo'],
+        ['index' => 'tipo_nome', 'label' => 'Tipo'],
         ['index' => 'nome', 'label' => 'Nome'],
         ['index' => 'status', 'label' => 'Status'],
         ['index' => 'action', 'sortable' => false],
@@ -49,7 +53,7 @@ class Index extends Component
     {
         return Tag::query()
             ->whereNotIn('id', [Auth::id()])
-            ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['name', 'tipo'], 'like', '%' . trim($this->search) . '%'))
+            ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['nome', 'tipo_nome'], 'like', '%' . trim($this->search) . '%'))
             ->orderBy(...array_values($this->sort))
             ->paginate($this->quantity)
             ->withQueryString();

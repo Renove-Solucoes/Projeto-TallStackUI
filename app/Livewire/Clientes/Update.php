@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Livewire\Traits\Alert;
 use App\Models\Endereco;
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
@@ -14,6 +15,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Arr;
 use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\Log;
 use Livewire\WithPagination;
 
 use function Pest\Laravel\delete;
@@ -36,7 +38,7 @@ class Update extends Component
 
     public function mount()
     {
-        $this->tags = Tag::where('tipo', 'CLIENTE')
+        $this->tags = Tag::where('tipo', 'C')
             ->where('status', 'A')
             ->get(['id', 'nome'])
             ->map(fn($tag) => [
@@ -200,19 +202,30 @@ class Update extends Component
     public function save(): void
     {
 
-        if ($this->imagemTemp) {
-            $path = $this->imagemTemp->store('clientes', 'public');
-            $this->cliente->foto = $path;
+
+        try {
+            if ($this->imagemTemp) {
+                $path = $this->imagemTemp->store('clientes', 'public');
+                $this->cliente->foto = $path;
+            }
+
+            $this->validate();
+
+            DB::transaction(function () {
+                $this->cliente->update();
+                $this->cliente->tags()->sync($this->tags_selecionadas);
+            });
+
+
+            $this->dispatch('updated');
+            $this->resetExcept('cliente', 'tags');
+            $this->success();
+        } catch (\Exception $e) {
+            Log::error('Erro ao atualizar cliente - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
+            $this->error('Atenção!', 'Não foi possivel atualizar o cliente.');
         }
-
-        $this->validate();
-
-
-        $this->cliente->update();
-        $this->cliente->tags()->sync($this->tags_selecionadas);
-
-        $this->dispatch('updated');
-        $this->resetExcept('cliente', 'tags');
-        $this->success();
     }
 }

@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
 
 
         // Carrega apenas as tags do tipo CLIENTE
-        $tagsCliente = Tag::where('tipo', 'CLIENTE')->get();
+        $tagsCliente = Tag::where('tipo', 'C')->get();
 
         // Associa de 1 a 3 tags CLIENTE a cada cliente
         $clientes->each(function ($cliente) use ($tagsCliente) {

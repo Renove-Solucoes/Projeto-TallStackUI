@@ -40,7 +40,7 @@ class Create extends Component
         $this->cliente->credito_ativo = 1;
         $this->imagemTemp = '';
 
-        $this->tags = Tag::where('tipo', 'CLIENTE')
+        $this->tags = Tag::where('tipo', 'C')
             ->where('status', 'A')
             ->get(['id', 'nome'])
             ->map(fn($tag) => [

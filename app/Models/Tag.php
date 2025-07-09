@@ -17,6 +17,14 @@ class Tag extends Model
         'status',
     ];
 
+    public function getTipoNomeAttribute(): string
+    {
+        return match ($this->tipo) {
+            'C' => 'Cliente',
+            'P' => 'Produto',
+        };
+    }
+
     protected $casts = [
         'status' => TagsStatus::class
     ];
