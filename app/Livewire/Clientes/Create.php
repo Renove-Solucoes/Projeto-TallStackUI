@@ -9,6 +9,7 @@ use App\Models\Endereco;
 use App\Models\Tag;
 use App\Services\ViacepServices;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
@@ -207,26 +208,40 @@ class Create extends Component
 
     public function save(): void
     {
-        $this->validate();
 
-        $this->cliente->save();
-        $this->endereco->cliente_id = $this->cliente->id;
-        $this->endereco->principal = true;
-        $this->endereco->save();
-        $this->cliente->tags()->sync($this->tags_selecionadas);
-        $this->dispatch('created');
 
-        //TODO: Limpar o campo moeda do formulario create depois que salvar o registro.
-        $this->reset();
-        $this->cliente = new Cliente();
-        $this->cliente->tipo_pessoa = 'J';
-        $this->cliente->status = 'I';
+        try {
+            $this->validate();
 
-        $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
-            'nome' => $tag->nome,
-            'id' => $tag->id,
-        ])->toArray();
 
-        $this->success();
+            DB::transaction(function () {
+                $this->cliente->save();
+                $this->endereco->cliente_id = $this->cliente->id;
+                $this->endereco->principal = true;
+                $this->endereco->save();
+                $this->cliente->tags()->sync($this->tags_selecionadas);
+            });
+
+            $this->dispatch('created');
+
+            //TODO: Limpar o campo moeda do formulario create depois que salvar o registro.
+            $this->reset();
+            $this->cliente = new Cliente();
+            $this->cliente->tipo_pessoa = 'J';
+            $this->cliente->status = 'I';
+
+            $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
+                'nome' => $tag->nome,
+                'id' => $tag->id,
+            ])->toArray();
+
+            $this->success();
+        } catch (\Exception $e) {
+            Log::error('Erro ao criar cliente - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
+            $this->error('Atenção!', 'Não foi possivel criar o cliente.');
+        }
     }
 }

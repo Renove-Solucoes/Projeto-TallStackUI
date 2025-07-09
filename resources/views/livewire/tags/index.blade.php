@@ -8,7 +8,7 @@
                 <livewire:tags.create @created="$refresh" />
             </div>
         </div>
-        <x-table stripped striped :sort :$headers :rows="$this->rows" paginate filter :quantity="[5, 10, 20]" :placeholders="['search' => 'Pesquisar por nome, email ou CPF']">
+        <x-table stripped striped :sort :$headers :rows="$this->rows" paginate filter :quantity="[5, 10, 20]" :placeholders="['search' => 'Pesquisar por nome da tag']">
             @interact('column_status', $row)
                 <x-badge text="{{ $row->status->getText() }}" color="{{ $row->status->getColor() }}" outline />
             @endinteract

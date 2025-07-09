@@ -10,6 +10,7 @@ use App\Services\ViacepServices;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Log;
 
 
 class Create extends Component
@@ -136,17 +137,24 @@ class Create extends Component
 
     public function save(): void
     {
-        $this->validate();
-        $this->endereco->cliente_id = $this->cliente_id;
-        $this->updatedEnderecoPrincipal();
-        $this->endereco->save();
-        $this->modal = false;
-        $this->dispatch('refresh::endereco');
+
+        try {
+            $this->validate();
+            $this->endereco->cliente_id = $this->cliente_id;
+            $this->updatedEnderecoPrincipal();
+            $this->endereco->save();
+            $this->modal = false;
+            $this->dispatch('refresh::endereco');
 
 
-        $this->reset();
-        $this->endereco = new Endereco();
-        // $this->resetExcept('endereco');
-        // $this->success();
+            $this->reset();
+            $this->endereco = new Endereco();
+        } catch (\Exception $e) {
+            Log::error('Erro ao criar endereco - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
+            $this->error('Atenção!', 'Não foi possivel criar o endereco.');
+        }
     }
 }

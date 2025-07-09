@@ -8,6 +8,7 @@ use App\Services\ViacepServices;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Update extends Component
@@ -129,11 +130,17 @@ class Update extends Component
 
     public function save(): void
     {
-        $this->validate();
-        $this->endereco->update();
-        $this->modal = false;
-        $this->dispatch('refresh::endereco');
-        // $this->resetExcept('endereco');
-        // $this->success();
+        try {
+            $this->validate();
+            $this->endereco->update();
+            $this->modal = false;
+            $this->dispatch('refresh::endereco');
+        } catch (\Exception $e) {
+            Log::error('Erro ao atualizar endereco - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
+            $this->error('Atenção!', 'Não foi possivel atualizar o endereco.');
+        }
     }
 }

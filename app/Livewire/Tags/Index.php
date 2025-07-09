@@ -53,7 +53,7 @@ class Index extends Component
     {
         return Tag::query()
             ->whereNotIn('id', [Auth::id()])
-            ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['nome', 'tipo_nome'], 'like', '%' . trim($this->search) . '%'))
+            ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['nome'], 'like', '%' . trim($this->search) . '%'))
             ->orderBy(...array_values($this->sort))
             ->paginate($this->quantity)
             ->withQueryString();
