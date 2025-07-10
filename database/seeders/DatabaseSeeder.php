@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
-        $categorias = Categoria::factory(8)->create();
+        $categorias = Categoria::factory(17)->create();
 
         // Cria 60 endereços, cada um com cliente_id aleatório
         // Endereco::factory(60)->create([

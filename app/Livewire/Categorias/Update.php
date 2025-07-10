@@ -34,6 +34,7 @@ class Update extends Component
     public function rules(): array
     {
         return [
+            'categoria.tipo' => ['required', 'string', 'max:1'],
             'categoria.nome' => [
                 'required',
                 'string',

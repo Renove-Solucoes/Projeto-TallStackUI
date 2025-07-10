@@ -12,9 +12,18 @@ class Categoria extends Model
     use HasFactory;
 
     protected $fillable = [
+        'tipo',
         'nome',
         'status',
     ];
+
+    public function getTipoNomeAttribute(): string
+    {
+        return match ($this->tipo) {
+            'C' => 'Cliente',
+            'P' => 'Produto',
+        };
+    }
 
     protected $casts = [
         'status' => CategoriasStatus::class,

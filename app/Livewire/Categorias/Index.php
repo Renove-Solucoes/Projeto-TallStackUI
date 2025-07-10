@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
 
+
 class Index extends Component
 {
     use WithPagination;
@@ -32,6 +33,7 @@ class Index extends Component
 
     public $headers = [
         ['index' => 'id', 'label' => '#'],
+        ['index' => 'tipo_nome', 'label' => 'Tipo'],
         ['index' => 'nome', 'label' => 'Nome'],
         ['index' => 'status', 'label' => 'Status'],
         ['index' => 'action', 'sortable' => false],

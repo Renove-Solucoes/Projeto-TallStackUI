@@ -19,12 +19,14 @@ class Create extends Component
     public function mount()
     {
         $this->categoria = new Categoria();
+        $this->categoria->tipo = 'C';
         $this->categoria->status = 'A';
     }
 
     public function rules(): array
     {
         return [
+            'categoria.tipo' => ['required', 'string', 'max:1'],
             'categoria.nome' => ['required', 'string', 'max:25', Rule::unique('categorias', 'nome')],
             'categoria.status' => ['required', 'string', 'max:1'],
         ];
@@ -44,6 +46,10 @@ class Create extends Component
             $this->categoria->save();
             $this->dispatch('created');
             $this->reset();
+            $this->categoria = new Categoria();
+            $this->categoria->tipo = 'C';
+            $this->categoria->status = 'A';
+
             $this->toast()->success('Atenção!', 'Categoria criada com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao criar categoria - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
