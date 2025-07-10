@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\Endereco;
+use App\Models\Produto;
 use App\Models\Tag;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -46,6 +47,7 @@ class DatabaseSeeder extends Seeder
         });
 
         $categorias = Categoria::factory(17)->create();
+        $produtos = Produto::factory(20)->create();
 
         // Cria 60 endereços, cada um com cliente_id aleatório
         // Endereco::factory(60)->create([
