@@ -130,8 +130,9 @@ class Update extends Component
 
     public function save(): void
     {
+        $this->validate();
         try {
-            $this->validate();
+
             $this->endereco->update();
             $this->modal = false;
             $this->dispatch('refresh::endereco');

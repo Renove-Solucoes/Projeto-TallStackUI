@@ -209,9 +209,9 @@ class Create extends Component
     public function save(): void
     {
 
-
+        $this->validate();
         try {
-            $this->validate();
+
 
 
             DB::transaction(function () {

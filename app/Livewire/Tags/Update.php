@@ -41,9 +41,10 @@ class Update extends Component
 
     public function save(): void
     {
+        $this->validate();
 
         try {
-            $this->validate();
+
             $this->tag->update();
             $this->dispatch('updated');
             $this->reset();

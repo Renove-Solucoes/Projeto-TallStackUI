@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\Endereco;
 use App\Models\Tag;
@@ -43,6 +44,8 @@ class DatabaseSeeder extends Seeder
                 'cliente_id' => $cliente->id
             ]);
         });
+
+        $categorias = Categoria::factory(8)->create();
 
         // Cria 60 endereços, cada um com cliente_id aleatório
         // Endereco::factory(60)->create([

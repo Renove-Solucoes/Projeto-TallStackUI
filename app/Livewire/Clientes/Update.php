@@ -201,15 +201,15 @@ class Update extends Component
 
     public function save(): void
     {
+        if ($this->imagemTemp) {
+            $path = $this->imagemTemp->store('clientes', 'public');
+            $this->cliente->foto = $path;
+        }
 
+        $this->validate();
 
         try {
-            if ($this->imagemTemp) {
-                $path = $this->imagemTemp->store('clientes', 'public');
-                $this->cliente->foto = $path;
-            }
 
-            $this->validate();
 
             DB::transaction(function () {
                 $this->cliente->update();
