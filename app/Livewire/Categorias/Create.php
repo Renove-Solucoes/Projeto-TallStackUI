@@ -44,7 +44,7 @@ class Create extends Component
             $this->categoria->save();
             $this->dispatch('created');
             $this->reset();
-            $this->success();
+            $this->toast()->success('Atenção!', 'Categoria criada com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao criar categoria - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
                 'message' => $e->getMessage(),

@@ -13,6 +13,7 @@ class Delete extends Component
 {
     use Alert;
 
+
     public Categoria $categoria;
 
     public function render()
@@ -39,7 +40,7 @@ class Delete extends Component
             $this->categoria->delete();
             $this->dispatch('deleted');
 
-            $this->success('Atenção!', 'Categoria deletada com sucesso.');
+            $this->toast()->info('Atenção!', 'Categoria deletada com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao deletar categoria - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
                 'message' => $e->getMessage(),

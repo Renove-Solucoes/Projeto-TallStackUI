@@ -235,7 +235,7 @@ class Create extends Component
                 'id' => $tag->id,
             ])->toArray();
 
-            $this->success();
+            $this->toast()->success('Atenção!', 'Cliente criado com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao criar cliente - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
                 'message' => $e->getMessage(),

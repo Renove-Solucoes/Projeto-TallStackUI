@@ -54,7 +54,7 @@ class Delete extends Component
 
             $this->dispatch('deleted');
             $this->dispatch('refresh::endereco');
-            $this->success('Atenção!', 'Endereço deletado com sucesso.');
+            $this->toast()->info('Atenção!', 'Endereço deletado com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao deletar endereco - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
                 'message' => $e->getMessage(),

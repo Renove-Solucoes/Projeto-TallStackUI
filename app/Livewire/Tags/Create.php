@@ -52,7 +52,7 @@ class Create extends Component
             $this->tag->status = 'A';
             $this->tag->tipo = 'C';
 
-            $this->success();
+            $this->toast()->success('Atenção!', 'Tag criada com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao criar tag - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
                 'message' => $e->getMessage(),

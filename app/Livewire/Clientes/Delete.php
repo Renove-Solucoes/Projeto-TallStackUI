@@ -39,6 +39,6 @@ class Delete extends Component
 
         $this->dispatch('deleted');
 
-        $this->success('Atenção!', 'Cliente deletado com sucesso.');
+        $this->toast()->info('Atenção!', 'Cliente deletado com sucesso.')->send();
     }
 }

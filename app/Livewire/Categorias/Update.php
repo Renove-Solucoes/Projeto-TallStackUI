@@ -7,11 +7,12 @@ use App\Models\Categoria;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
+use TallStackUi\Traits\Interactions;
 use Illuminate\Validation\Rule;
 
 class Update extends Component
 {
-    use Alert;
+    use Interactions;
 
     public Categoria $categoria;
 
@@ -53,7 +54,7 @@ class Update extends Component
 
             $this->reset();
 
-            $this->success();
+            $this->toast()->success('Atenção!', 'Categoria atualizada com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao atualizar categoria - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name, [
                 'message' => $e->getMessage(),

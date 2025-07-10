@@ -48,7 +48,7 @@ class Update extends Component
             $this->tag->update();
             $this->dispatch('updated');
             $this->reset();
-            $this->success();
+            $this->toast()->success('Atenção!', 'Tag atualizada com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao atualizar tag - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
                 'message' => $e->getMessage(),
