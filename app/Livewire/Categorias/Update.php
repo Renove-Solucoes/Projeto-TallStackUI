@@ -13,9 +13,10 @@ class Update extends Component
 {
     use Alert;
 
-    public ?Categoria $categoria;
+    public Categoria $categoria;
 
     public bool $modal = false;
+
 
     public function render()
     {
@@ -32,27 +33,33 @@ class Update extends Component
     public function rules(): array
     {
         return [
-            'categoria.nome' => ['required', 'string', 'max:25', Rule::unique('categorias', 'nome')->ignore($this->categoria->id)],
+            'categoria.nome' => [
+                'required',
+                'string',
+                'max:25',
+                Rule::unique('categorias', 'nome')->ignore($this->categoria->id),
+            ],
             'categoria.status' => ['required', 'string', 'max:1'],
         ];
     }
 
     public function save()
     {
-        $this->validate();
+        $this->validate($this->rules());
 
         try {
-
             $this->categoria->save();
             $this->dispatch('updated');
+
             $this->reset();
+
             $this->success();
         } catch (\Exception $e) {
-            Log::error('Erro ao atualizar categoria - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
+            Log::error('Erro ao atualizar categoria - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name, [
                 'message' => $e->getMessage(),
                 'exception' => $e,
             ]);
-            $this->error('Atenção!', 'Não foi possivel atualizar a categoria.');
+            $this->error('Atenção!', 'Não foi possível atualizar a categoria.');
         }
     }
 }

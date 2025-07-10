@@ -1,5 +1,5 @@
 <div>
-    <x-modal :title="__('Update Category: #:id', ['id' => $categoria?->id])" wire>
+    <x-modal :title="__('Update Category: #:id', ['id' => $categoria?->id])" wire  x-on:open="setTimeout(() => $refs.name.focus(), 250)" size="sm" blu >
         <form id="categoria-update-{{ $categoria?->id }}" wire:submit="save" class="space-y-4">
             <div class="grid md:grid-cols-12 md:gap-4">
                 <div class="md:col-span-6">
