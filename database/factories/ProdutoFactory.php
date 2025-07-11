@@ -116,8 +116,8 @@ class ProdutoFactory extends Factory
         ];
         return [
             'nome' => $this->faker->randomElement($produtos_nomes),
-            'sku' =>  fake()->bothify('???####'),
-            'tipo' => $this->faker->randomElement(['F', 'D']), // Juridica ou Fisica
+            'sku' => strtoupper(fake()->unique()->bothify('???####')),
+            'tipo' => $this->faker->randomElement(['F', 'D']),
             'unidade' => $this->faker->randomElement(['UN', 'CX', 'MT', 'EM']),
             'data_validade' => $this->faker->dateTimeBetween('-1 years', 'now'),
             'preco_padrao' => $this->faker->randomFloat(2, 500.5, 2000),

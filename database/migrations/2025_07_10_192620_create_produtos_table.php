@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('sku');
-            $table->string('tipo');
+            $table->string('tipo', 1);
             $table->char('unidade', 2);
             $table->date('data_validade');
             $table->decimal('preco_padrao');

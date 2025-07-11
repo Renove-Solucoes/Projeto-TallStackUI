@@ -22,6 +22,14 @@ class Produto extends Model
         'status'
     ];
 
+    public function getTipoNomeAttribute(): string
+    {
+        return match ($this->tipo) {
+            'F' => 'Fisico',
+            'D' => 'Digital',
+        };
+    }
+
     protected $casts = [
         'status' => ProdutoStatus::class,
     ];
