@@ -32,6 +32,9 @@
                     filtroPeriodo="filtro.periodo" :dataDe="$filtro['nascimento_de'] ?? ''" :dataAte="$filtro['nascimento_ate'] ?? ''" labelPeriodo="Periodo"
                     labelDataDe="Nascimento de" labelDataAte="Nascimento até" />
             </div>
+            <div>
+                <x-select.native label="tag" wire:model="filtro.tag" :options="array_merge([['nome' => 'Todos', 'id' => '']], $tags)" select="label:nome|value:id" />
+            </div>
 
             <div class="mt-4">
 

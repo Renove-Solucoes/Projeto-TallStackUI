@@ -31,6 +31,14 @@ class Cliente extends Model
         'status' => ClienteStatus::class,
     ];
 
+    public function getTipoPessoaNomeAttribute(): string
+    {
+        return match ($this->tipo_pessoa) {
+            'F' => 'Fisico',
+            'J' => 'Juridico',
+        };
+    }
+
 
     public function tags()
     {

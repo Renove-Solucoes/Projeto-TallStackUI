@@ -3,6 +3,7 @@
 namespace App\Livewire\Clientes;
 
 use App\Models\Cliente;
+use App\Models\Tag;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -28,12 +29,29 @@ class Index extends Component
         'nascimento_de' => null,
         'nascimento_ate' => null,
         'periodo' => 'default',
+        'tag' => '',
     ];
+
+    public $tags = [];
 
     public bool $slide = false;
 
     public ?int $quantity = 10;
     public ?string $search = null;
+
+    public function mount(): void
+    {
+        $this->tags = Tag::where('tipo', 'C')
+            ->where('status', 'A')
+            ->get(['id', 'nome'])
+            ->map(fn($tag) => [
+                'id' => $tag->id,
+                'nome' => $tag->nome,
+            ])
+            ->toArray();
+    }
+
+
     public array $sort = [
         'column'    => 'id',
         'direction' => 'desc',
@@ -41,7 +59,7 @@ class Index extends Component
 
     public $headers = [
         ['index' => 'id', 'label' => '#'],
-        ['index' => 'tipo_pessoa', 'label' => 'TP'],
+        ['index' => 'tipo_pessoa_nome', 'label' => 'TP'],
         ['index' => 'cpf_cnpj', 'label' => 'CPF/CNPJ', 'sortable' => false],
         ['index' => 'nome', 'label' => 'Nome'],
         // ['index' => 'email', 'label' => 'Email'],
@@ -111,13 +129,23 @@ class Index extends Component
                 ])
             )
             ->when(
+                filled($this->filtro['tag']),
+                fn(Builder $query) =>
+                $query->whereHas(
+                    'tags',
+                    fn($q) =>
+                    $q->where('tag_id', $this->filtro['tag'])
+                )
+            )
+            ->when(
                 blank($this->search) &&
                     blank($this->filtro['tipo_pessoa']) &&
                     blank($this->filtro['telefone']) &&
                     blank($this->filtro['credito_ativo']) &&
                     blank($this->filtro['status']) &&
                     blank($this->filtro['nascimento_de']) &&
-                    blank($this->filtro['nascimento_ate']),
+                    blank($this->filtro['nascimento_ate']) &&
+                    blank($this->filtro['tag']),
                 fn(Builder $query) =>
                 $query // Nenhum filtro ativo — retorna todos os clientes
             )
