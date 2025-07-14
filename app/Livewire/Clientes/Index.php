@@ -70,12 +70,6 @@ class Index extends Component
     {
         $this->search = null;
         $this->reset('filtro');
-        // $this->filtro = [
-        //     'tipo_pessoa' => null,
-        //     'telefone' => null,
-        //     'credito_ativo' => null,
-        //     'status' => '',
-        // ];
     }
 
 

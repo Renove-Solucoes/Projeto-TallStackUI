@@ -3,13 +3,39 @@
         <div class="flex items-center justify-between">
             <h1 class="mb-2 font-medium text-2xl">Cadastro de Produtos</h1>
             <div class="flex items-center gap-2">
-                {{-- <x-button icon="funnel" :text="__('Filtrar')" x-on:click="$slideOpen('filtro')" sm />
-                <x-button icon="x-mark" :text="__('Limpar Filtro')" wire:click="limparFiltros()" sm /> --}}
+                <x-button icon="funnel" :text="__('Filtrar')" x-on:click="$slideOpen('filtro')" sm />
+                <x-button icon="x-mark" :text="__('Limpar Filtro')" wire:click="limparFiltros()" sm />
                 <livewire:produtos.create @created="$refresh" />
             </div>
         </div>
+        <x-slide id="filtro">
+            <x-select.native label="Categoria" :options="array_merge([['nome' => 'Todos', 'id' => '']], $categorias)" select="label:nome|value:id"
+                wire:model="filtro.categoria" />
 
-        <x-table stripped striped :sort :$headers :rows="$this->rows" paginate filter :quantity="[5, 10, 20]" :placeholders="['search' => 'Pesquisar por nome']">
+            <x-select.native label="Tags" :options="array_merge([['nome' => 'Todos', 'id' => '']], $tags)" select="label:nome|value:id" wire:model="filtro.tag" />
+            <x-select.native label="Status" :options="[
+                ['name' => 'Todos', 'id' => ''],
+                ['name' => 'Ativo', 'id' => 'A'],
+                ['name' => 'Inativo', 'id' => 'I'],
+            ]" select="label:name|value:id" wire:model="filtro.status" />
+            <x-select.native label="Tipo" :options="[
+                ['name' => 'Todos', 'id' => ''],
+                ['name' => 'Fisico', 'id' => 'F'],
+                ['name' => 'Digital', 'id' => 'D'],
+                ['name' => 'Serviço', 'id' => 'S'],
+            ]" select="label:name|value:id" wire:model="filtro.tipo" />
+
+
+            <div class="mt-4">
+
+                <x-button icon="funnel" :text="__('Filtrar')" x-on:click="$slideClose('filtro')" wire:click='filtrar' sm />
+                <x-button icon="x-mark" :text="__('Limpar Filtro')" wire:click="limparFiltros()" sm />
+            </div>
+        </x-slide>
+
+
+        <x-table stripped striped :sort :$headers :rows="$this->rows" paginate filter :quantity="[5, 10, 20]"
+            :placeholders="['search' => 'Pesquisar por nome']">
             @interact('column_data_validade', $row)
                 {{ date('d/m/Y', strtotime($row->data_validade)) }}
             @endinteract

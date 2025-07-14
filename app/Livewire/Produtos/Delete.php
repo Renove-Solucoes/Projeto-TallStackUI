@@ -37,7 +37,7 @@ class Delete extends Component
 
     public function delete(): void
     {
-
+        //TODO: Verificar quando deletar dar error no edit
         try {
             $this->produto->delete();
 
