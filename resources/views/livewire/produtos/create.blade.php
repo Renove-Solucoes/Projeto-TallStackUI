@@ -35,7 +35,15 @@
                     <div class="grid md:grid-cols-2 gap-4">
                         <x-input label="Nome *" x-ref="name" wire:model="produto.nome" required />
                         <x-input label="SKU *" wire:model="produto.sku" required />
+
+                        <div class="md:col-span-2">
+                            <x-select.styled :limit="3"   label="{{ __('Categorias') }} *" placeholder="Selecione uma categoria"
+                                wire:model="categorias_selecionadas" :options="$categorias" select="label:nome|value:id"
+                                multiple />
+                        </div>
                     </div>
+
+
 
                     <!-- Unidade e Data -->
                     <div class="grid md:grid-cols-2 gap-4">

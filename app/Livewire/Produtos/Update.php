@@ -3,7 +3,9 @@
 namespace App\Livewire\Produtos;
 
 use App\Livewire\Traits\Alert;
+use App\Models\Categoria;
 use App\Models\Produto;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Arr;
@@ -19,8 +21,25 @@ class Update extends Component
     use WithFileUploads;
 
     public Produto $produto;
+
+
     public bool $modal = false;
     public $imagemTemp = '';
+
+    public $categorias;
+    public $categorias_selecionadas = [];
+
+    public function mount()
+    {
+        $this->categorias = Categoria::where('tipo', 'P')
+            ->where('status', 'A')
+            ->get(['id', 'nome'])
+            ->map(fn($categoria) => [
+                'id' => $categoria->id,
+                'nome' => $categoria->nome,
+            ])
+            ->toArray();
+    }
 
     public function render(): View
     {
@@ -31,6 +50,7 @@ class Update extends Component
     public function load(Produto $produto): void
     {
         $this->produto = $produto;
+        $this->categorias_selecionadas = $produto->categorias()->pluck('categoria_id')->toArray();
         $this->imagemTemp = ''; // Corrigida atribuição
         $this->resetErrorBag();
         $this->modal = true;
@@ -111,10 +131,13 @@ class Update extends Component
                 $this->produto->imagem = $path;
             }
 
-            $this->produto->update();
+            DB::transaction(function () {
+                $this->produto->update();
+                $this->produto->categorias()->sync($this->categorias_selecionadas);
+            });
 
             $this->dispatch('updated');
-            $this->resetExcept('produto');
+            $this->resetExcept('produto', 'categorias');
             $this->toast()->success('Atenção!', 'Produto atualizado com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao atualizar produto - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [

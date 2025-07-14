@@ -28,4 +28,9 @@ class Categoria extends Model
     protected $casts = [
         'status' => CategoriasStatus::class,
     ];
+
+    public function produtos()
+    {
+        return $this->belongsToMany(Produto::class, 'categorias_produtos');
+    }
 }

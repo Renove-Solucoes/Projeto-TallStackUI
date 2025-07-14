@@ -49,6 +49,16 @@ class DatabaseSeeder extends Seeder
         $categorias = Categoria::factory(17)->create();
         $produtos = Produto::factory(20)->create();
 
+
+        // Associa de 1 a 3 categorias a cada produto
+        $produtos->each(function ($produto) use ($categorias) {
+            $quantidade = min($categorias->count(), rand(1, 3));
+
+            $produto->categorias()->attach(
+                $categorias->random($quantidade)->pluck('id')->toArray()
+            );
+        });
+
         // Cria 60 endereços, cada um com cliente_id aleatório
         // Endereco::factory(60)->create([
         //     'cliente_id' => function () use ($clientes) {

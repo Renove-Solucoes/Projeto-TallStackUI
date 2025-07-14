@@ -3,9 +3,11 @@
 namespace App\Livewire\Produtos;
 
 use App\Livewire\Traits\Alert;
+use App\Models\Categoria;
 use App\Models\Produto;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class Create extends Component
@@ -14,8 +16,11 @@ class Create extends Component
     use Alert;
 
     public Produto $produto;
+    public Categoria $categoria;
 
     public $imagemTemp = '';
+    public $categorias;
+    public $categorias_selecionadas = [];
 
     public bool $modal = false;
 
@@ -24,6 +29,14 @@ class Create extends Component
         $this->produto = new Produto();
         $this->produto->status = 'A';
         $this->produto->unidade = 'UN';
+        $this->categorias = Categoria::where('tipo', 'P')
+            ->where('status', 'A')
+            ->get(['id', 'nome'])
+            ->map(fn($categoria) => [
+                'id' => $categoria->id,
+                'nome' => $categoria->nome,
+            ])
+            ->toArray();
         $this->produto->tipo = 'F';
         $this->imagemTemp = '';
     }
@@ -64,7 +77,11 @@ class Create extends Component
             $this->validate();
 
 
-            $this->produto->save();
+            DB::transaction(function () {
+                $this->produto->save();
+                $this->produto->categorias()->sync($this->categorias_selecionadas);
+            });
+
 
             $this->dispatch('created');
 
@@ -74,6 +91,10 @@ class Create extends Component
             $this->produto->unidade = 'UN';
             $this->produto->tipo = 'F';
 
+            $this->categorias = Categoria::all(['id', 'nome'])->map(fn($categoria) => [
+                'nome' => $categoria->nome,
+                'id' => $categoria->id,
+            ])->toArray();
 
 
             $this->toast()->success('Atenção!', 'Produto cadastrado com sucesso.')->send();

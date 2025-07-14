@@ -33,4 +33,10 @@ class Produto extends Model
     protected $casts = [
         'status' => ProdutoStatus::class,
     ];
+
+
+    public function categorias()
+    {
+        return $this->belongsToMany(Categoria::class, 'categorias_produtos');
+    }
 }
