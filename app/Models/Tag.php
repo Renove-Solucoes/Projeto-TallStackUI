@@ -33,4 +33,9 @@ class Tag extends Model
     {
         return $this->belongsToMany(Cliente::class, 'tags_clientes');
     }
+
+    public function produto()
+    {
+        return $this->belongsToMany(Produto::class, 'tags_produtos');
+    }
 }

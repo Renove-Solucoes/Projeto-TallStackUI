@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
 
         $clientes = Cliente::factory(24)->create();
         $tags = Tag::factory(14)->create();
+        $categorias = Categoria::factory(17)->create();
+        $produtos = Produto::factory(20)->create();
         // $Enderecos = Endereco::factory(24)->create();
 
 
@@ -39,6 +41,18 @@ class DatabaseSeeder extends Seeder
             );
         });
 
+        // Carrega apenas as tags do tipo PRODUTO
+        $tagsProduto = Tag::where('tipo', 'P')->get();
+
+        //Assoscia de 1 a 3 tags PRODUTO a cada produto
+        $produtos->each(function ($produto) use ($tagsProduto) {
+            $quantidade = min($tagsProduto->count(), rand(1, 3));
+
+            $produto->tags()->attach(
+                $tagsProduto->random($quantidade)->pluck('id')->toArray()
+            );
+        });
+
         // Criar endereços aleatórios para todos os clientes
         $clientes->each(function ($cliente) {
             Endereco::factory(rand(1, 3))->create([
@@ -46,8 +60,7 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
-        $categorias = Categoria::factory(17)->create();
-        $produtos = Produto::factory(20)->create();
+
 
 
         // Associa de 1 a 3 categorias a cada produto

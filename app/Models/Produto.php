@@ -27,6 +27,7 @@ class Produto extends Model
         return match ($this->tipo) {
             'F' => 'Fisico',
             'D' => 'Digital',
+            'S' => 'Serviço',
         };
     }
 
@@ -38,5 +39,10 @@ class Produto extends Model
     public function categorias()
     {
         return $this->belongsToMany(Categoria::class, 'categorias_produtos');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tags_produtos');
     }
 }

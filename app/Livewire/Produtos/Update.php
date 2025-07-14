@@ -5,6 +5,7 @@ namespace App\Livewire\Produtos;
 use App\Livewire\Traits\Alert;
 use App\Models\Categoria;
 use App\Models\Produto;
+use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -26,8 +27,14 @@ class Update extends Component
     public bool $modal = false;
     public $imagemTemp = '';
 
+
+    // Sync categorias
     public $categorias;
     public $categorias_selecionadas = [];
+
+    // Sync tags
+    public $tags;
+    public $tags_selecionadas = [];
 
     public function mount()
     {
@@ -37,6 +44,15 @@ class Update extends Component
             ->map(fn($categoria) => [
                 'id' => $categoria->id,
                 'nome' => $categoria->nome,
+            ])
+            ->toArray();
+
+        $this->tags = Tag::where('tipo', 'P')
+            ->where('status', 'A')
+            ->get(['id', 'nome'])
+            ->map(fn($tag) => [
+                'id' => $tag->id,
+                'nome' => $tag->nome,
             ])
             ->toArray();
     }
@@ -51,6 +67,7 @@ class Update extends Component
     {
         $this->produto = $produto;
         $this->categorias_selecionadas = $produto->categorias()->pluck('categoria_id')->toArray();
+        $this->tags_selecionadas = $produto->tags()->pluck('tag_id')->toArray();
         $this->imagemTemp = ''; // Corrigida atribuição
         $this->resetErrorBag();
         $this->modal = true;
@@ -74,7 +91,7 @@ class Update extends Component
             'produto.tipo' => [
                 'required',
                 'string',
-                'in:F,D'
+                'in:F,D,S'
             ],
             'produto.unidade' => [
                 'required',
@@ -123,8 +140,10 @@ class Update extends Component
 
     public function save(): void
     {
+        $this->validate();
+
         try {
-            $this->validate();
+
 
             if ($this->imagemTemp) {
                 $path = $this->imagemTemp->store('produtos', 'public');
@@ -134,10 +153,11 @@ class Update extends Component
             DB::transaction(function () {
                 $this->produto->update();
                 $this->produto->categorias()->sync($this->categorias_selecionadas);
+                $this->produto->tags()->sync($this->tags_selecionadas);
             });
 
             $this->dispatch('updated');
-            $this->resetExcept('produto', 'categorias');
+            $this->resetExcept('produto', 'categorias', 'tags');
             $this->toast()->success('Atenção!', 'Produto atualizado com sucesso.')->send();
         } catch (\Exception $e) {
             Log::error('Erro ao atualizar produto - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [

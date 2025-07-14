@@ -5,6 +5,7 @@ namespace App\Livewire\Produtos;
 use App\Livewire\Traits\Alert;
 use App\Models\Categoria;
 use App\Models\Produto;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
@@ -17,10 +18,17 @@ class Create extends Component
 
     public Produto $produto;
     public Categoria $categoria;
+    public Tag $tag;
 
     public $imagemTemp = '';
+
+    // Sync Categorias
     public $categorias;
     public $categorias_selecionadas = [];
+
+    // Sync Tags
+    public $tags;
+    public $tags_selecionadas = [];
 
     public bool $modal = false;
 
@@ -35,6 +43,14 @@ class Create extends Component
             ->map(fn($categoria) => [
                 'id' => $categoria->id,
                 'nome' => $categoria->nome,
+            ])
+            ->toArray();
+        $this->tags = Tag::where('tipo', 'P')
+            ->where('status', 'A')
+            ->get(['id', 'nome'])
+            ->map(fn($tag) => [
+                'id' => $tag->id,
+                'nome' => $tag->nome,
             ])
             ->toArray();
         $this->produto->tipo = 'F';
@@ -52,7 +68,7 @@ class Create extends Component
         return [
             'produto.nome' => 'required|string|max:255',
             'produto.sku' => 'required|string|max:100',
-            'produto.tipo' => 'required|string|in:F,D',
+            'produto.tipo' => 'required|string|in:F,D,S',
             'produto.unidade' => 'required|string|max:10',
             'produto.data_validade' => 'required|date',
             'produto.preco_padrao' => 'required|numeric|min:0',
@@ -80,6 +96,7 @@ class Create extends Component
             DB::transaction(function () {
                 $this->produto->save();
                 $this->produto->categorias()->sync($this->categorias_selecionadas);
+                $this->produto->tags()->sync($this->tags_selecionadas);
             });
 
 
@@ -94,6 +111,11 @@ class Create extends Component
             $this->categorias = Categoria::all(['id', 'nome'])->map(fn($categoria) => [
                 'nome' => $categoria->nome,
                 'id' => $categoria->id,
+            ])->toArray();
+
+            $this->tags = Tag::all(['id', 'nome'])->map(fn($tag) => [
+                'nome' => $tag->nome,
+                'id' => $tag->id,
             ])->toArray();
 
 
