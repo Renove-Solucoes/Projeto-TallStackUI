@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="md:col-span-9">
+                <div class="md:col-span-9 space-y-2">
                     <div x-data="{ tipoPessoa: '{{ $cliente?->tipo_pessoa }}' }" class="grid md:grid-cols-6 md:gap-4">
                         <div>
                             <x-select.native x-model="tipoPessoa" label="{{ __('Tipo Pessoa') }} *"
