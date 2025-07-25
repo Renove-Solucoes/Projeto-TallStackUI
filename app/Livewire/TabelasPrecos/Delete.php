@@ -3,7 +3,7 @@
 namespace App\Livewire\TabelasPrecos;
 
 use App\Livewire\Traits\Alert;
-use App\Models\TabelasPreco;
+use App\Models\TabelaPreco;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;
 
@@ -12,7 +12,7 @@ class Delete extends Component
 
     use Alert;
 
-    public TabelasPreco $tabelasPreco;
+    public TabelaPreco $tabelaPreco;
 
     public function render()
     {
@@ -27,7 +27,7 @@ class Delete extends Component
     public function confirm(): void
     {
 
-        $this->question('Atenção!', 'Você tem certeza de deletar o produto ' . $this->tabelasPreco->descricao . '?')
+        $this->question('Atenção!', 'Você tem certeza de deletar o produto ' . $this->tabelaPreco->descricao . '?')
             ->confirm(method: 'delete')
             ->cancel()
             ->send();
@@ -35,7 +35,7 @@ class Delete extends Component
 
     public function delete(): void
     {
-        $this->tabelasPreco->delete();
+        $this->tabelaPreco->delete();
         $this->dispatch('deleted');
         $this->toast()->info('Atenção!', 'Tabela de preço deletada com sucesso.')->send();
     }

@@ -6,10 +6,12 @@ use App\Enum\TabelasPrecoStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TabelasPreco extends Model
+class TabelaPreco extends Model
 {
     /** @use HasFactory<\Database\Factories\TabelasPrecoFactory> */
     use HasFactory;
+
+    protected $table = 'tabelas_precos';
 
     protected $fillable = [
         'descricao',

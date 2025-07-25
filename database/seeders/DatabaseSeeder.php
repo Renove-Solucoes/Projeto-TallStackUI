@@ -6,7 +6,7 @@ use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\Endereco;
 use App\Models\Produto;
-use App\Models\TabelasPreco;
+use App\Models\TabelaPreco;
 use App\Models\Tag;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         $tags = Tag::factory(14)->create();
         $categorias = Categoria::factory(17)->create();
         $produtos = Produto::factory(20)->create();
-        $tabelasPreco = TabelasPreco::factory(4)->create();
+        $tabelasPreco = TabelaPreco::factory(4)->create();
         // $Enderecos = Endereco::factory(24)->create();
 
 

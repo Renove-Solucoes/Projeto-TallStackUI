@@ -2,12 +2,13 @@
 
 namespace App\Livewire\TabelasPrecos;
 
-use App\Models\TabelasPreco;
+use App\Models\TabelaPreco;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
+use Illuminate\Database\Eloquent\Builder;
 
 class Index extends Component
 {
@@ -19,7 +20,7 @@ class Index extends Component
 
     public ?string $search = null;
 
-    public TabelasPreco $tabelasPreco;
+    public TabelaPreco $TabelaPreco;
 
     public bool $slide = false;
 
@@ -48,7 +49,7 @@ class Index extends Component
     #[Computed]
     public function rows(): LengthAwarePaginator
     {
-        return TabelasPreco::query()
+        return TabelaPreco::query()
             ->whereNotIn('id', [Auth::id()])
             ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['descricao'], 'like', '%' . trim($this->search) . '%'))
             ->orderBy(...array_values($this->sort))

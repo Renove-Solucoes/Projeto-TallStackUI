@@ -26,8 +26,8 @@
                 @interact('column_action', $row)
                     <div class="flex gap-1">
                         <x-button.circle icon="pencil" color="sky"
-                            wire:click="$dispatch('load::tabelasPreco', { 'tabelasPreco' : '{{ $row->id }}'})" outline />
-                        <livewire:tabelas-precos.delete :tabelasPreco="$row" :key="uniqid('', true)" @deleted="$refresh" />
+                            wire:click="$dispatch('load::tabelaPreco', { 'tabelaPreco' : '{{ $row->id }}'})" outline />
+                        <livewire:tabelas-precos.delete :tabelaPreco="$row" :key="uniqid('', true)" @deleted="$refresh" />
                     </div>
                 @endinteract
             </x-table>

@@ -3,7 +3,7 @@
 namespace App\Livewire\TabelasPrecos;
 
 use App\Livewire\Traits\Alert;
-use App\Models\TabelasPreco;
+use App\Models\TabelaPreco;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -13,28 +13,28 @@ class Create extends Component
 
     use Alert;
 
-    public TabelasPreco $tabelasPreco;
+    public TabelaPreco $tabelaPreco;
 
     public bool $modal = false;
 
     public function mount()
     {
-        $this->tabelasPreco = new TabelasPreco();
-        $this->tabelasPreco->status = 'A';
+        $this->tabelaPreco = new tabelaPreco();
+        $this->tabelaPreco->status = 'I';
     }
 
     public function Rules()
     {
         return [
-            'tabelasPreco.descricao' => [
+            'tabelaPreco.descricao' => [
                 'required',
                 'string',
                 'max:40',
                 Rule::unique('tabelas_precos', 'descricao'),
             ],
-            'tabelasPreco.data_de' => ['required', 'date'],
-            'tabelasPreco.data_ate' => ['required', 'date', 'after_or_equal:data_de'],
-            'tabelasPreco.status' => ['required', 'string', 'max:1'],
+            'tabelaPreco.data_de' => ['required', 'date'],
+            'tabelaPreco.data_ate' => ['required', 'date', 'after_or_equal:tabelaPreco.data_de'],
+            'tabelaPreco.status' => ['required', 'string', 'max:1'],
 
         ];
     }
@@ -47,12 +47,12 @@ class Create extends Component
     public function save()
     {
         $this->validate();
-        $this->tabelasPreco->save();
+        $this->tabelaPreco->save();
         $this->dispatch('created');
 
-        $this->reset('tabelasPreco');
-        $this->tabelasPreco = new TabelasPreco();
-        $this->tabelasPreco->status = 'A';
+        $this->reset('tabelaPreco');
+        $this->tabelaPreco = new TabelaPreco();
+        $this->tabelaPreco->status = 'A';
 
         $this->modal = false;
 

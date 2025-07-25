@@ -3,16 +3,17 @@
 namespace App\Livewire\TabelasPrecos;
 
 use App\Livewire\Traits\Alert;
-use App\Models\TabelasPreco;
+use App\Models\TabelaPreco;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
 class Update extends Component
 {
     use Alert;
 
-    public ?TabelasPreco $tabelasPreco;
+    public ?TabelaPreco $tabelaPreco;
 
     public bool $modal = false;
 
@@ -21,25 +22,25 @@ class Update extends Component
         return view('livewire.tabelas-precos.update');
     }
 
-    #[On('load::tabelasPreco')]
-    public function load(TabelasPreco $tabelasPreco)
+    #[On('load::tabelaPreco')]
+    public function load(tabelaPreco $tabelaPreco)
     {
-        $this->tabelasPreco = $tabelasPreco;
+        $this->tabelaPreco = $tabelaPreco;
         $this->modal = true;
     }
 
     public function Rules()
     {
         return [
-            'tabelasPreco.descricao' => [
+            'tabelaPreco.descricao' => [
                 'required',
                 'string',
                 'max:40',
-                Rule::unique('tabelas_precos', 'descricao')->ignore($this->tabelasPreco->id),
+                Rule::unique('tabelas_precos', 'descricao')->ignore($this->tabelaPreco->id),
             ],
-            'tabelasPreco.data_de' => ['required', 'date'],
-            'tabelasPreco.data_ate' => ['required', 'date'],
-            'tabelasPreco.status' => ['required', 'string', 'max:1'],
+            'tabelaPreco.data_de' => ['required', 'date'],
+            'tabelaPreco.data_ate' => ['required', 'date', 'after_or_equal:tabelaPreco.data_de'],
+            'tabelaPreco.status' => ['required', 'string', 'max:1'],
 
         ];
     }
@@ -50,7 +51,7 @@ class Update extends Component
 
         try {
 
-            $this->tabelasPreco->save();
+            $this->tabelaPreco->save();
             $this->dispatch('updated');
             $this->toast()->success('Atenção!', 'Tabela de preços atualizada com sucesso.')->send();
 
