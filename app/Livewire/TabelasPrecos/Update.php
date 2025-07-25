@@ -14,6 +14,7 @@ class Update extends Component
     use Alert;
 
     public ?TabelaPreco $tabelaPreco;
+    public $itens = [];
 
     public bool $modal = false;
 
@@ -27,6 +28,27 @@ class Update extends Component
     {
         $this->tabelaPreco = $tabelaPreco;
         $this->modal = true;
+
+        $this->itens = [];
+        
+        if ($this->tabelaPreco->items()->count() > 0) {
+            $itemsTabela = $this->tabelaPreco->items()->get();
+
+            foreach ($itemsTabela as $item) {
+
+                $this->itens[] = [
+                    'id' => $item->id,
+                    'produto_id' => $item->produto_id,
+                    'descricao' => $item->produto->nome ?? '',
+                    'sku' => $item->produto->sku ?? '',
+                    'unidade' => $item->produto->unidade ?? '',
+                    'preco' => $item->preco,
+                    'status' => $item->status,
+                ];
+                
+            }
+        }
+
     }
 
     public function Rules()

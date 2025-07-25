@@ -23,4 +23,9 @@ class TabelaPreco extends Model
     protected $casts = [
         'status' => TabelasPrecoStatus::class
     ];
+
+    public function items()
+    {
+        return $this->hasMany(TabelaPrecoItem::class);
+    }
 }
