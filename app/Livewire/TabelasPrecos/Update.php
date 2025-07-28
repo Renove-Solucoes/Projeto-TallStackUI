@@ -4,14 +4,18 @@ namespace App\Livewire\TabelasPrecos;
 
 use App\Livewire\Traits\Alert;
 use App\Models\TabelaPreco;
+use App\Models\TabelaPrecoItem;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
 class Update extends Component
 {
     use Alert;
+    use WithPagination;
 
     public ?TabelaPreco $tabelaPreco;
     public $itens = [];
@@ -30,25 +34,59 @@ class Update extends Component
         $this->modal = true;
 
         $this->itens = [];
-        
+
         if ($this->tabelaPreco->items()->count() > 0) {
             $itemsTabela = $this->tabelaPreco->items()->get();
 
             foreach ($itemsTabela as $item) {
 
+                // $this->itens[] = [
+                //     'id' => $item->id,
+                //     'produto_id' => $item->produto_id,
+                //     'descricao' => $item->produto->nome ?? '',
+                //     'sku' => $item->produto->sku ?? '',
+                //     'unidade' => $item->produto->unidade ?? '',
+                //     'preco' => $item->preco,
+                //     'status' => $item->status,
+                // ];
+
                 $this->itens[] = [
                     'id' => $item->id,
                     'produto_id' => $item->produto_id,
-                    'descricao' => $item->produto->nome ?? '',
                     'sku' => $item->produto->sku ?? '',
-                    'unidade' => $item->produto->unidade ?? '',
+                    'descricao' => $item->produto->nome ?? '',
                     'preco' => $item->preco,
                     'status' => $item->status,
+                    'updated' => 0,
+                    'deleted' => 0
                 ];
-                
             }
+        } else {
+            $this->addItem();
         }
+    }
 
+    public function addItem()
+    {
+        $this->itens[] =
+            [
+                'id' => '',
+                'produto_id' => '',
+                'sku' => '',
+                'descricao' => '',
+                'preco' => 0.00,
+                'status' => 'A',
+                'updated' => 0,
+                'deleted' => 0
+            ];
+    }
+
+
+    public function removeItem($index)
+    {
+        // unset($this->itens[$index]);
+        // $this->itens = array_values($this->itens); // reindexa
+        $this->itens[$index]['deleted'] = 1;
     }
 
     public function Rules()
@@ -67,13 +105,56 @@ class Update extends Component
         ];
     }
 
+    public function updatedItens($value, $key)
+    {
+        $index = explode('.', $key);
+        $this->itens[$index[0]]['updated'] = 1;
+    }
+
     public function save()
     {
         $this->validate();
 
         try {
 
-            $this->tabelaPreco->save();
+            DB::transaction(function () {
+                $this->tabelaPreco->save();
+
+                foreach ($this->itens as $item) {
+                    // Atualiza ou cria?
+
+                    if (!empty($item['id']) && $item['deleted'] == 1) {
+                        // Deleta
+                        $itemModel = TabelaPrecoItem::find($item['id']);
+                        if ($itemModel) {
+                            $itemModel->delete();
+                        }
+                    } else if (!empty($item['id']) && $item['updated'] == 1) {
+                        // Atualiza
+                        $itemModel = TabelaPrecoItem::find($item['id']);
+                        $item['preco'] = str_replace(['.', ','], ['', '.'], $item['preco']);
+                        if ($itemModel) {
+
+                            $itemModel->update([
+                                'produto_id' => $item['produto_id'],
+                                'preco' => $item['preco'],
+                                'status' => $item['status'] ?? 'A',
+                            ]);
+                        }
+                    } else if (empty($item['id'])) {
+                        // Cria
+                        $item['preco'] = str_replace(['.', ','], ['', '.'], $item['preco']);
+                        TabelaPrecoItem::create([
+                            'tabela_preco_id' => $this->tabelaPreco->id,
+                            'produto_id' => $item['produto_id'],
+                            'preco' => $item['preco'],
+                            'status' => $item['status'] ?? 'A',
+                        ]);
+                    }
+                }
+            });
+
+
             $this->dispatch('updated');
             $this->toast()->success('Atenção!', 'Tabela de preços atualizada com sucesso.')->send();
 
@@ -83,7 +164,7 @@ class Update extends Component
                 'message' => $e->getMessage(),
                 'exception' => $e,
             ]);
-            $this->error('Atenção!', 'Não foi possivel atualizar a tabela de preços.');
+            $this->error('Atenção!', 'Não foi possivel atualizar a tabela de preços.' . $e->getMessage());
         }
     }
 }

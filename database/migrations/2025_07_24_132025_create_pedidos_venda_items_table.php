@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('pedido_venda_id')->constrained('pedidos_vendas');
             $table->foreignId('produto_id')->constrained();
             $table->integer('quantidade');
-            $table->decimal('preco');
+            $table->decimal('preco')->default(0.00);
             $table->char('status');
             $table->timestamps();
         });

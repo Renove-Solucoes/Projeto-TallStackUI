@@ -46,6 +46,8 @@ class Index extends Component
         return view('livewire.tabelas-precos.index');
     }
 
+    //TODO remover dos rows a condicao ->whereNotIn('id', [Auth::id()])
+    
     #[Computed]
     public function rows(): LengthAwarePaginator
     {
