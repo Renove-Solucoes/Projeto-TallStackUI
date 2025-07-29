@@ -40,17 +40,7 @@ class Update extends Component
 
             foreach ($itemsTabela as $item) {
 
-                // $this->itens[] = [
-                //     'id' => $item->id,
-                //     'produto_id' => $item->produto_id,
-                //     'descricao' => $item->produto->nome ?? '',
-                //     'sku' => $item->produto->sku ?? '',
-                //     'unidade' => $item->produto->unidade ?? '',
-                //     'preco' => $item->preco,
-                //     'status' => $item->status,
-                // ];
-
-                $this->itens[] = [
+                         $this->itens[] = [
                     'id' => $item->id,
                     'produto_id' => $item->produto_id,
                     'sku' => $item->produto->sku ?? '',
@@ -138,7 +128,7 @@ class Update extends Component
                             $itemModel->update([
                                 'produto_id' => $item['produto_id'],
                                 'preco' => $item['preco'],
-                                'status' => $item['status'] ?? 'A',
+                                'status' => $item['status'] == 1 ? 'A' : 'I',
                             ]);
                         }
                     } else if (empty($item['id'])) {

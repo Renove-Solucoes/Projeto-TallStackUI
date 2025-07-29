@@ -21,14 +21,14 @@
             <div class="overflow-hidden dark:ring-dark-600 rounded-lg shadow ring-1 ring-gray-300">
 
                 <x-card header="Produtos">
-                    <x-slot:header class="cursor-pointer w-100" icon="x-mark">
-                        <div class="flex justify-between items-center p-4 ">
+                    <x-slot:header class="w-100" >
+                        <div class="flex justify-between items-center p-2 ">
                             <div class="flex justify-between items-center">
 
                                 <h1 class="text-md font-medium text-secondary-700 dark:text-dark-300 ml-2"> Itens</h1>
                             </div>
                             <div class="flex gap-2">
-                                <x-button icon="x-mark" :text="__('Adicionar')" wire:click="addItem" sm />
+                                <x-button icon="plus" :text="__('Adicionar Item')" wire:click="addItem" sm />
                             </div>
 
                         </div>
@@ -52,9 +52,7 @@
                         @if ($item['deleted'] == 0)
                             <div class="grid md:grid-cols-12 md:gap-2 space-y-2">
                                 <div class="md:col-span-2">
-                                    <x-input wire:model="itens.{{ $index }}.id" />
                                     <x-input wire:model="itens.{{ $index }}.sku" />
-                                    <x-input wire:model="itens.{{ $index }}.produto_id" />
                                 </div>
                                 <div class="md:col-span-6">
                                     <x-input wire:model="itens.{{ $index }}.descricao" />
@@ -63,7 +61,8 @@
                                     <x-currency mutate locale="pt-BR" symbol="R$"
                                         wire:model="itens.{{ $index }}.preco" required />
                                 </div>
-                                <div class="md:col-span-2">
+                                <div class="md:col-span-2 flex gap-1 items-center justify-between">
+                                    <x-toggle label="Ativo" wire:model="itens.{{ $index }}.status" :checked="$item['status'] == 'A' ? true : false" />
                                     <x-button.circle icon="trash" color="amber"
                                         wire:click="removeItem({{ $index }})" outline />
                                 </div>
