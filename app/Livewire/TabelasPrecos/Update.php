@@ -3,6 +3,7 @@
 namespace App\Livewire\TabelasPrecos;
 
 use App\Livewire\Traits\Alert;
+use App\Models\Produto;
 use App\Models\TabelaPreco;
 use App\Models\TabelaPrecoItem;
 use Livewire\Component;
@@ -19,6 +20,9 @@ class Update extends Component
 
     public ?TabelaPreco $tabelaPreco;
     public $itens = [];
+    public $sugestoes = [];
+
+
 
     public bool $modal = false;
 
@@ -40,7 +44,7 @@ class Update extends Component
 
             foreach ($itemsTabela as $item) {
 
-                         $this->itens[] = [
+                $this->itens[] = [
                     'id' => $item->id,
                     'produto_id' => $item->produto_id,
                     'sku' => $item->produto->sku ?? '',
@@ -54,6 +58,10 @@ class Update extends Component
         } else {
             $this->addItem();
         }
+
+
+
+        // dd ($this->sugestoes);
     }
 
     public function addItem()
@@ -97,8 +105,43 @@ class Update extends Component
 
     public function updatedItens($value, $key)
     {
+
         $index = explode('.', $key);
         $this->itens[$index[0]]['updated'] = 1;
+
+        //se alterado descrição buscar produtos
+        if ($index[1] == 'descricao') {
+            $busca = $value ?? '';
+            $this->sugestoes = [];
+            if (strlen($busca) > 2) {
+                $this->sugestoes[$index[0]] = Produto::where('nome', 'like', '%' . $busca . '%')
+                    ->orWhere('sku', 'like', '%' . $busca . '%')
+                    ->limit(10)
+                    ->get()
+                    ->toArray();
+            } else {
+                $this->sugestoes[$index[0]][] = [
+                    'id' => 0,
+                    'nome' => 'Nenhum dado encontrado',
+                    'sku' => '',
+                ];
+            }
+        }
+        // dd($this->sugestoes);
+    }
+
+    public function selecionarItem($index, $produtoId)
+    {
+        dd($index, $produtoId);
+        $produto = \App\Models\Produto::find($produtoId);
+
+        if ($produto) {
+            $this->itens[$index]['produto_id'] = $produto->id;
+            $this->itens[$index]['descricao'] = $produto->nome;
+            $this->itens[$index]['sku'] = $produto->sku;
+            $this->itens[$index]['unidade'] = $produto->unidade;
+            $this->sugestoes[$index] = [];
+        }
     }
 
     public function save()

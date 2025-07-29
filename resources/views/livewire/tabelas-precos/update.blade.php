@@ -18,10 +18,10 @@
             </div>
 
 
-            <div class="overflow-hidden dark:ring-dark-600 rounded-lg shadow ring-1 ring-gray-300">
+            <div class="dark:ring-dark-600 rounded-lg shadow ring-1 ring-gray-300">
 
                 <x-card header="Produtos">
-                    <x-slot:header class="w-100" >
+                    <x-slot:header class="w-100">
                         <div class="flex justify-between items-center p-2 ">
                             <div class="flex justify-between items-center">
 
@@ -34,11 +34,11 @@
                         </div>
                     </x-slot:header>
                     <div class="grid md:grid-cols-12 md:gap-2 space-y-2">
-                        <div class="md:col-span-2">
-                            SKU
-                        </div>
                         <div class="md:col-span-6">
                             DESCRICAO
+                        </div>
+                        <div class="md:col-span-2">
+                            SKU
                         </div>
                         <div class="md:col-span-2">
                             PRECO
@@ -51,18 +51,35 @@
                     @foreach ($itens as $index => $item)
                         @if ($item['deleted'] == 0)
                             <div class="grid md:grid-cols-12 md:gap-2 space-y-2">
-                                <div class="md:col-span-2">
-                                    <x-input wire:model="itens.{{ $index }}.sku" />
+                                <div class="md:col-span-6 relative" x-data="{ aberto: false }" @click.away="aberto = false"
+                                    @keydown.escape.window="aberto = false">
+                                    <x-input wire:model.live.debounce.500ms="itens.{{ $index }}.descricao"
+                                        placeholder="Pesquise aqui por SKU(código) ou descrição" autocomplete="off" 
+                                        @focus="aberto = true" @input="aberto = true" />
+
+                                    @if (!empty($sugestoes[$index]))
+                                        <ul x-show="aberto && {{ !empty($sugestoes[$index]) ? 'true' : 'false' }}"
+                                            x-transition
+                                            class="absolute z-100 w-full bg-white border border-gray-300 rounded-md shadow-md mt-1 max-h-60 overflow-auto">
+                                            @foreach ($sugestoes[$index] as $produto)
+                                                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm" 
+                                                    wire:click="selecionarItem({{ $index }}, '{{ $produto['sku'] }}')">
+                                                    {{ $produto['nome'] }} ({{ $produto['sku'] }})
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </div>
-                                <div class="md:col-span-6">
-                                    <x-input wire:model="itens.{{ $index }}.descricao" />
+                                <div class="md:col-span-2">
+                                    <x-input wire:model="itens.{{ $index }}.sku" readonly />
                                 </div>
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
                                         wire:model="itens.{{ $index }}.preco" required />
                                 </div>
                                 <div class="md:col-span-2 flex gap-1 items-center justify-between">
-                                    <x-toggle label="Ativo" wire:model="itens.{{ $index }}.status" :checked="$item['status'] == 'A' ? true : false" />
+                                    <x-toggle label="Ativo" wire:model="itens.{{ $index }}.status"
+                                        :checked="$item['status'] == 'A' ? true : false" />
                                     <x-button.circle icon="trash" color="amber"
                                         wire:click="removeItem({{ $index }})" outline />
                                 </div>
