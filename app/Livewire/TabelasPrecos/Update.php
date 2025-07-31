@@ -153,6 +153,15 @@ class Update extends Component
         }
     }
 
+    public function currencySanitize($valor)
+    {
+        if (isset($valor) && str_contains($valor, ',')) {
+           return  str_replace(['.', ','], ['', '.'], $valor);
+        }
+
+        return $valor;
+    }
+
 
     public function save()
     {
@@ -165,9 +174,7 @@ class Update extends Component
 
                 foreach ($this->itens as $item) {
 
-                    if (isset($item['preco']) && str_contains($item['preco'], ',')) {
-                        $item['preco'] = str_replace(['.', ','], ['', '.'], $item['preco']);
-                    }
+                    $item['preco'] = $this->currencySanitize($item['preco']);
 
                     if (!empty($item['id']) && $item['deleted'] == 1) {
                         // Deleta
