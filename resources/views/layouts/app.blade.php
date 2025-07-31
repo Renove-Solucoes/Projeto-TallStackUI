@@ -67,6 +67,8 @@
                 <x-side-bar.item text="Produtos" icon="cube" :route="route('produtos.index')" />
                 <x-side-bar.item text="Welcome Page" icon="arrow-uturn-left" :route="route('welcome')" />
                 <x-side-bar.item text="Tabela de preços" icon="table-cells" :route="route('tabelasprecos.index')" />
+                <x-side-bar.item text="Pedidos de Vendas" icon="shopping-cart" :route="route('pedidosvendas.index')" />
+
             </x-side-bar>
         </x-slot:menu>
         {{ $slot }}

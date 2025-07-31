@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class pedidosVendaItem extends Model
+class PedidosVendaItem extends Model
 {
     protected $fillable = [
         'pedidos_venda_id',
@@ -14,9 +14,9 @@ class pedidosVendaItem extends Model
         'status',
     ];
 
-    public function pedidoVenda()
+    public function pedidosVenda()
     {
-        return $this->belongsTo(pedidosVenda::class);
+        return $this->belongsTo(PedidosVenda::class);
     }
 
     public function produto()

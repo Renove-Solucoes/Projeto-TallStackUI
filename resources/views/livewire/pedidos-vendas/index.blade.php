@@ -1,0 +1,29 @@
+<div>
+    <x-card>
+        <div class="flex items-center justify-between">
+            <h1 class="mb-2 font-medium text-2xl">Cadastro de Pedidos</h1>
+            <div class="flex items-center gap-2">
+                <livewire:pedidos-vendas.create @created="$refresh" />
+            </div>
+        </div>
+        <x-table stripped striped :sort :$headers :rows="$this->rows" paginate filter :quantity="[5, 10, 20]">
+            @interact('column_data_emissao', $row)
+                {{ date('d/m/Y', strtotime($row->data_emissao)) }}
+            @endinteract
+            @interact('column_cliente_id', $row)
+                {{ $row->cliente->nome }}
+            @endinteract
+            @interact('column_status', $row)
+                <x-badge text="{{ $row->status->getText() }}" color="{{ $row->status->getColor() }}" outline />
+            @endinteract
+            @interact('column_action', $row)
+                <div class="flex gap-1">
+                    <x-button.circle icon="pencil" color="sky"
+                        wire:click="$dispatch('load::pedidosVenda', { 'pedidosVenda' : '{{ $row->id }}'})" outline />
+                    <livewire:PedidosVendas.delete :pedidosVenda="$row" :key="uniqid('', true)" @deleted="$refresh" />
+                </div>
+            @endinteract
+        </x-table>
+        <livewire:pedidos-vendas.update @updated="$refresh" />
+    </x-card>
+</div>

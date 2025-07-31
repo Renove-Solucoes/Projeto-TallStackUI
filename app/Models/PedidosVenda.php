@@ -5,13 +5,15 @@ namespace App\Models;
 use App\Enum\pedidosVendaStatus;
 use Illuminate\Database\Eloquent\Model;
 
-class pedidosVenda extends Model
+class PedidosVenda extends Model
 {
+
+
+
     protected $fillable = [
         'cliente_id',
-        'data',
+        'data_emissao',
         'status',
-        'total'
     ];
 
 
@@ -25,8 +27,8 @@ class pedidosVenda extends Model
         return $this->belongsTo(Cliente::class);
     }
 
-    public function pedidosVendaProdutos()
+    public function PedidosVendaItems()
     {
-        return $this->hasMany(pedidosVendaProdutos::class);
+        return $this->hasMany(PedidosVendaItem::class);
     }
 }
