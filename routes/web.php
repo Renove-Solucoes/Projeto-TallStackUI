@@ -24,6 +24,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tabelasprecos', App\Livewire\TabelasPrecos\Index::class)->name('tabelasprecos.index');
 
     Route::get('/pedidosvendas', App\Livewire\PedidosVendas\Index::class)->name('pedidosvendas.index');
+
+    Route::get('/pedidosvendas/create', App\Livewire\PedidosVendas\Create::class)->name('pedidosvendas.create');
 });
 
 require __DIR__ . '/auth.php';

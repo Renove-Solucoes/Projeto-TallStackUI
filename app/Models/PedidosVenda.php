@@ -13,6 +13,18 @@ class PedidosVenda extends Model
     protected $fillable = [
         'cliente_id',
         'data_emissao',
+        'tipo_pessoa',
+        'cpf_cnpj',
+        'nome',
+        'email',
+        'telefone',
+        'cep',
+        'endereco',
+        'bairro',
+        'numero',
+        'cidade',
+        'uf',
+        'complemento',
         'status',
     ];
 

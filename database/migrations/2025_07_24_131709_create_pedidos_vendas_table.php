@@ -15,6 +15,18 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cliente_id')->constrained()->onDelete('cascade');
             $table->date('data_emissao');
+            $table->string('tipo_pessoa');
+            $table->string('cpf_cnpj');
+            $table->string('nome');
+            $table->string('email');
+            $table->string('telefone');
+            $table->string('cep', 8);
+            $table->string('endereco', 120);
+            $table->string('bairro', 50);
+            $table->string('numero', 10);
+            $table->string('cidade', 80);
+            $table->string('uf', 2);
+            $table->string('complemento', 120)->nullable();
             $table->char('status');
             $table->timestamps();
         });
