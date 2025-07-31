@@ -6,6 +6,8 @@ use Livewire\Component;
 use Illuminate\Validation\Rule;
 use App\Livewire\Traits\Alert;
 use App\Models\PedidosVenda;
+use App\Services\ViacepServices;
+use FFI;
 
 class Create extends Component
 {
@@ -15,20 +17,23 @@ class Create extends Component
 
     public bool $modal = false;
 
+
+
     public array $clientes = [];
+
+    public string $cepErrorHtml = '';
 
     public function mount()
     {
         $this->pedidosVenda = new PedidosVenda();
         $this->pedidosVenda->status = 'A';
         $this->pedidosVenda->tipo_pessoa = 'F';
+        $this->pedidosVenda->data_emissao = date('Y-m-d');
 
-        $this->clientes = \App\Models\Cliente::orderBy('nome')->get(['id', 'nome'])->map(function ($cliente) {
-            return [
-                'id' => $cliente->id,
-                'nome' => $cliente->nome,
-            ];
-        })->toArray();
+        $this->clientes = \App\Models\Cliente::orderBy('nome')->get(['id', 'nome'])->map(fn($c) => [
+            'id' => $c->id,
+            'nome' => $c->nome,
+        ])->toArray();
     }
 
     public function rules()
@@ -57,14 +62,38 @@ class Create extends Component
         return view('livewire.pedidos-vendas.create');
     }
 
+    public function updatedPedidosVendaCep()
+    {
+
+
+        $viacepService = new ViacepServices();
+
+        $result = $viacepService->getLocation($this->pedidosVenda->cep);
+
+
+        if (!empty($result) or $result != null) {
+            $this->pedidosVenda->endereco = $result['logradouro'];
+            $this->pedidosVenda->bairro = $result['bairro'];
+            $this->pedidosVenda->cidade = $result['localidade'];
+            $this->pedidosVenda->uf = $result['uf'];
+            $this->cepErrorHtml = '';
+        } else {
+            $this->pedidosVenda->endereco = '';
+            $this->pedidosVenda->bairro = '';
+            $this->pedidosVenda->cidade = '';
+            $this->pedidosVenda->uf = '';
+            $this->cepErrorHtml = '<span class="text-red-500 text-sm mt-1">CEP não encontrado. Verifique e tente novamente.</span>';
+        }
+    }
+
     public function save()
     {
 
         $this->validate();
 
         try {
-
             $this->pedidosVenda->save();
+
 
             $this->dispatch('created');
 
@@ -72,10 +101,13 @@ class Create extends Component
             $this->pedidosVenda = new PedidosVenda();
             $this->pedidosVenda->status = 'A';
             $this->pedidosVenda->tipo_pessoa = 'F';
+            $this->pedidosVenda->data_emissao = date('Y-m-d');
 
             $this->modal = false;
 
             $this->toast()->success('Atenção!', 'Pedido de venda criado com sucesso.')->send();
+
+            return redirect()->route('pedidosvendas.index');
         } catch (\Throwable $e) {
             logger()->error('Erro ao salvar pedido', ['exception' => $e]);
             $this->toast()->error('Erro', 'Erro ao salvar: ' . $e->getMessage())->send();

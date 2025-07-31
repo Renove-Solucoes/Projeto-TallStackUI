@@ -124,6 +124,14 @@ class Update extends Component
                     ->limit(10)
                     ->get()
                     ->toArray();
+                //se não encontrar nenhum registro
+                if (count($this->sugestoes[$index[0]]) == 0) {
+                    $this->sugestoes[$index[0]][] = [
+                        'id' => 0,
+                        'nome' => 'Nenhum produto encontrado',
+                        'sku' => '!',
+                    ];
+                }
             } else {
                 $this->sugestoes[$index[0]][] = [
                     'id' => 0,
@@ -156,7 +164,7 @@ class Update extends Component
     public function currencySanitize($valor)
     {
         if (isset($valor) && str_contains($valor, ',')) {
-           return  str_replace(['.', ','], ['', '.'], $valor);
+            return  str_replace(['.', ','], ['', '.'], $valor);
         }
 
         return $valor;

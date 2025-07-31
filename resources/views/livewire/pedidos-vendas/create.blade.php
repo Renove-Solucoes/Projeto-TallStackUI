@@ -3,28 +3,31 @@
     <x-card>
         <form id="pedidos-create" wire:submit="save" class="grid grid-cols-12 gap-4">
 
+            <div class="md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white">
+                Formulario</div>
             <!-- Cliente -->
-            <div class=" md:col-span-6">
+            <div class=" md:col-span-3">
                 <x-select.native label="Cliente *" wire:model="pedidosVenda.cliente_id" :options="$this->clientes"
                     select="label:nome|value:id" required />
             </div>
 
             <!-- Tipo Pessoa -->
-            <div class=" md:col-span-3">
-                <x-select.native label="Tipo Pessoa *" wire:model="pedidosVenda.tipo_pessoa" :options="[['name' => 'Fisica', 'id' => 'F'], ['name' => 'Juridica', 'id' => 'J']]"
-                    select="label:name|value:id" required />
-            </div>
+            <div x-data="{ tipoPessoa: @entangle('pedidosVenda.tipo_pessoa') }" class="md:col-span-12 grid md:grid-cols-12 md:gap-4">
 
-            <!-- CPF/CNPJ -->
-            <div class="md:col-span-3">
-                <x-input label="CPF/CNPJ *" wire:model="pedidosVenda.cpf_cnpj"
-                    x-mask:dynamic="pedidosVenda.tipo_pessoa === 'J' ? '99.999.999/9999-99' : '999.999.999-99'"
-                    required />
-            </div>
+                <div class="md:col-span-3">
+                    <x-select.native label="Tipo Pessoa *" wire:model="pedidosVenda.tipo_pessoa" x-model="tipoPessoa"
+                        :options="[['name' => 'Fisica', 'id' => 'F'], ['name' => 'Juridica', 'id' => 'J']]" select="label:name|value:id" required />
+                </div>
 
-            <!-- Nome -->
-            <div class=" md:col-span-3">
-                <x-input label="Nome *" wire:model="pedidosVenda.nome" x-ref="nome" required />
+                <div class="md:col-span-4">
+                    <x-input label="CPF/CNPJ *" wire:model="pedidosVenda.cpf_cnpj"
+                        x-mask:dynamic="tipoPessoa === 'J' ? '99.999.999/9999-99' : '999.999.999-99'" required />
+                </div>
+
+                <div class="md:col-span-5">
+                    <x-input label="Nome *" wire:model="pedidosVenda.nome" x-ref="nome" required />
+                </div>
+
             </div>
 
             <!-- Email -->
@@ -37,9 +40,14 @@
                 <x-input label="Telefone *" x-mask="(99) 99999-9999" wire:model="pedidosVenda.telefone" required />
             </div>
 
+            <div class="md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white">
+                Endereço
+            </div>
+
             <!-- CEP -->
             <div class=" md:col-span-3">
-                <x-input label="CEP *" wire:model.blur="pedidosVenda.cep" required maxlength="8" />
+                <x-input label="CEP *" wire:model.blur="pedidosVenda.cep" required maxlength="8"  />
+                {!! $cepErrorHtml !!}
             </div>
 
             <!-- Endereço -->
@@ -53,7 +61,7 @@
             </div>
 
             <!-- Cidade -->
-            <div class=" md:col-span-2">
+            <div class=" md:col-span-4">
                 <x-input label="Cidade *" wire:model="pedidosVenda.cidade" required maxlength="80" />
             </div>
 
@@ -97,7 +105,7 @@
             </div>
 
             <!-- Complemento -->
-            <div class=" md:col-span-6">
+            <div class=" md:col-span-5">
                 <x-input label="Complemento" wire:model="pedidosVenda.complemento" maxlength="120" />
             </div>
 
@@ -107,7 +115,7 @@
             </div>
 
             <!-- Status -->
-            <div class=" md:col-span-6">
+            <div class=" md:col-span-2">
                 <x-select.native label="Status *" wire:model="pedidosVenda.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
                     select="label:name|value:id" required />
             </div>
