@@ -62,9 +62,6 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
-
-
-
         // Associa de 1 a 3 categorias a cada produto
         $produtos->each(function ($produto) use ($categorias) {
             $quantidade = min($categorias->count(), rand(1, 3));
@@ -73,6 +70,22 @@ class DatabaseSeeder extends Seeder
                 $categorias->random($quantidade)->pluck('id')->toArray()
             );
         });
+
+
+        //Assoscia de 4 a 8 Produtos na tabela de preco
+        $tabelasPreco->each(function ($tabelaPreco) use ($produtos) {
+            $quantidade = min($produtos->count(), rand(4, 8));
+
+            $produtosSelecionados = $produtos->random($quantidade);
+
+            foreach ($produtosSelecionados as $produto) {
+                $tabelaPreco->items()->create([
+                    'produto_id' => $produto->id,
+                    'preco' => rand(1000, 5000) / 100, // Exemplo de preço aleatório
+                ]);
+            }
+        });
+
 
         // Cria 60 endereços, cada um com cliente_id aleatório
         // Endereco::factory(60)->create([

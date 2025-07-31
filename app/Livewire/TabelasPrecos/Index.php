@@ -33,9 +33,9 @@ class Index extends Component
 
     public $headers = [
         ['index' => 'id', 'label' => '#'],
-        ['index' => 'descricao', 'label' => 'Descricao'],
+        ['index' => 'descricao', 'label' => 'Descrição'],
         ['index' => 'data_de', 'label' => 'Data De'],
-        ['index' => 'data_ate', 'label' => 'Data Ate'],
+        ['index' => 'data_ate', 'label' => 'Data Até'],
         ['index' => 'status', 'label' => 'Status'],
         ['index' => 'action', 'sortable' => false],
         // ...
