@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('tabela_preco_id')->constrained('tabelas_precos');
             $table->foreignId('produto_id')->constrained();
             $table->decimal('preco')->default(0);
-            $table->char('status')->default('A');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

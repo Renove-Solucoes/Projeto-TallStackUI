@@ -34,10 +34,10 @@ class Update extends Component
     #[On('load::tabelaPreco')]
     public function load(tabelaPreco $tabelaPreco)
     {
-        $this->tabelaPreco = $tabelaPreco;
-        $this->modal = true;
 
+        $this->tabelaPreco = $tabelaPreco;
         $this->itens = [];
+        $this->sugestoes = [];
 
         if ($this->tabelaPreco->items()->count() > 0) {
             $itemsTabela = $this->tabelaPreco->items()->get();
@@ -55,25 +55,28 @@ class Update extends Component
                     'deleted' => 0
                 ];
             }
-        } else {
-            $this->addItem();
         }
 
 
-
-        // dd ($this->sugestoes);
+        $this->modal = true;
+        // dd ($this->itens);
     }
 
     public function addItem()
     {
+        //elimina os itens vazios que nao tenham a chave produto_id declarado. Devido comportamento do <x-currency-input>
+        $this->itens = array_values(array_filter($this->itens, function ($item) {
+            return array_key_exists('produto_id', $item);
+        }));
+
         $this->itens[] =
             [
                 'id' => '',
                 'produto_id' => '',
                 'sku' => '',
                 'descricao' => '',
-                'preco' => 0.00,
-                'status' => 'A',
+                'preco' => 1.00,
+                'status' => 1,
                 'updated' => 0,
                 'deleted' => 0
             ];
@@ -83,7 +86,7 @@ class Update extends Component
     public function removeItem($index)
     {
         // unset($this->itens[$index]);
-        // $this->itens = array_values($this->itens); // reindexa
+        $this->itens = array_values($this->itens); // reindexa
         $this->itens[$index]['deleted'] = 1;
     }
 
@@ -105,12 +108,14 @@ class Update extends Component
 
     public function updatedItens($value, $key)
     {
-
+        // dd($this->itens);
         $index = explode('.', $key);
         $this->itens[$index[0]]['updated'] = 1;
+        // $this->itens[$index[0]]['preco'] = str_replace(['.', ','], ['', '.'], $this->itens[$index[0]]['preco']);
+
 
         //se alterado descrição buscar produtos
-        if ($index[1] == 'descricao') {
+        if (isset($index[1]) && $index[1] == 'descricao') {
             $busca = $value ?? '';
             $this->sugestoes = [];
             if (strlen($busca) > 2) {
@@ -122,8 +127,8 @@ class Update extends Component
             } else {
                 $this->sugestoes[$index[0]][] = [
                     'id' => 0,
-                    'nome' => 'Nenhum dado encontrado',
-                    'sku' => '',
+                    'nome' => 'Digite pelo menos 3 caracteres',
+                    'sku' => '!',
                 ];
             }
         }
@@ -132,17 +137,22 @@ class Update extends Component
 
     public function selecionarItem($index, $produtoId)
     {
-        dd($index, $produtoId);
-        $produto = \App\Models\Produto::find($produtoId);
+
+        $produto = Produto::find($produtoId);
 
         if ($produto) {
             $this->itens[$index]['produto_id'] = $produto->id;
             $this->itens[$index]['descricao'] = $produto->nome;
             $this->itens[$index]['sku'] = $produto->sku;
-            $this->itens[$index]['unidade'] = $produto->unidade;
+            $this->itens[$index]['preco'] = '0.00';
+            $this->itens[$index]['status'] = 1;
+            $this->itens[$index]['updated'] = '0';
+            $this->itens[$index]['deleted'] = '0';
+
             $this->sugestoes[$index] = [];
         }
     }
+
 
     public function save()
     {
@@ -154,7 +164,10 @@ class Update extends Component
                 $this->tabelaPreco->save();
 
                 foreach ($this->itens as $item) {
-                    // Atualiza ou cria?
+
+                    if (isset($item['preco']) && str_contains($item['preco'], ',')) {
+                        $item['preco'] = str_replace(['.', ','], ['', '.'], $item['preco']);
+                    }
 
                     if (!empty($item['id']) && $item['deleted'] == 1) {
                         // Deleta
@@ -164,24 +177,25 @@ class Update extends Component
                         }
                     } else if (!empty($item['id']) && $item['updated'] == 1) {
                         // Atualiza
+
                         $itemModel = TabelaPrecoItem::find($item['id']);
-                        $item['preco'] = str_replace(['.', ','], ['', '.'], $item['preco']);
+
                         if ($itemModel) {
 
                             $itemModel->update([
                                 'produto_id' => $item['produto_id'],
                                 'preco' => $item['preco'],
-                                'status' => $item['status'] == 1 ? 'A' : 'I',
+                                'status' => $item['status'],
                             ]);
                         }
                     } else if (empty($item['id'])) {
                         // Cria
-                        $item['preco'] = str_replace(['.', ','], ['', '.'], $item['preco']);
+
                         TabelaPrecoItem::create([
                             'tabela_preco_id' => $this->tabelaPreco->id,
                             'produto_id' => $item['produto_id'],
                             'preco' => $item['preco'],
-                            'status' => $item['status'] ?? 'A',
+                            'status' => $item['status'] ?? 1,
                         ]);
                     }
                 }
