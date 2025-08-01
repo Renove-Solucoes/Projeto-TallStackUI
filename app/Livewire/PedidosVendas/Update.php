@@ -4,6 +4,7 @@ namespace App\Livewire\PedidosVendas;
 
 use App\Livewire\Traits\Alert;
 use App\Models\PedidosVenda;
+use App\Services\ViacepServices;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -20,8 +21,7 @@ class Update extends Component
 
     public ?PedidosVenda $pedidosVenda;
     public array $clientes = [];
-
-    public bool $modal = false;
+    public string $cepErrorHtml = '';
 
 
     public function mount()
@@ -44,7 +44,7 @@ class Update extends Component
     {
         $this->pedidosVenda = $pedidosVenda;
         $this->resetErrorBag();
-        $this->modal = true;
+        $this->redirectRoute('pedidosvendas.edit', ['pedidosVenda' => $pedidosVenda->id]);
     }
 
     public function rules()
@@ -53,7 +53,43 @@ class Update extends Component
             'pedidosVenda.cliente_id' => ['required', Rule::exists('clientes', 'id')],
             'pedidosVenda.data_emissao' => ['required', 'date'],
             'pedidosVenda.status' => ['required', 'string', 'max:1'],
+            'pedidosVenda.tipo_pessoa' => ['required', 'string', 'max:1'],
+            'pedidosVenda.cpf_cnpj' => ['required', 'string', 'max:14'],
+            'pedidosVenda.nome' => ['required', 'string', 'max:255'],
+            'pedidosVenda.email' => ['required', 'email', 'max:100'],
+            'pedidosVenda.telefone' => ['required', 'string', 'max:15'],
+            'pedidosVenda.cep' => ['required', 'string', 'max:9'],
+            'pedidosVenda.endereco' => ['required', 'string', 'max:50'],
+            'pedidosVenda.bairro' => ['required', 'string', 'max:30'],
+            'pedidosVenda.numero' => ['required', 'string', 'max:10'],
+            'pedidosVenda.cidade' => ['required', 'string', 'max:255'],
+            'pedidosVenda.uf' => ['required', 'string', 'max:2'],
+            'pedidosVenda.complemento' => ['nullable', 'string', 'max:255'],
         ];
+    }
+
+    public function updatedPedidosVendaCep()
+    {
+
+
+        $viacepService = new ViacepServicesa();
+
+        $result = $viacepService->getLocation($this->pedidosVenda->cep);
+
+
+        if (!empty($result) or $result != null) {
+            $this->pedidosVenda->endereco = $result['logradouro'];
+            $this->pedidosVenda->bairro = $result['bairro'];
+            $this->pedidosVenda->cidade = $result['localidade'];
+            $this->pedidosVenda->uf = $result['uf'];
+            $this->cepErrorHtml = '';
+        } else {
+            $this->pedidosVenda->endereco = '';
+            $this->pedidosVenda->bairro = '';
+            $this->pedidosVenda->cidade = '';
+            $this->pedidosVenda->uf = '';
+            $this->cepErrorHtml = '<span class="text-red-500 text-sm mt-1">CEP não encontrado. Verifique e tente novamente.</span>';
+        }
     }
 
     public function save()
@@ -65,6 +101,7 @@ class Update extends Component
             $this->dispatch('updated');
             $this->modal = false;
             $this->toast()->success('Atenção!', 'Pedido de venda atualizado com sucesso.')->send();
+            return redirect()->route('pedidosvendas.index');
         } catch (\Throwable $e) {
             logger()->error('Erro ao salvar pedido', ['exception' => $e]);
             $this->toast()->error('Erro', 'Erro ao salvar: ' . $e->getMessage())->send();

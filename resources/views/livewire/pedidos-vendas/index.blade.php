@@ -3,7 +3,6 @@
         <div class="flex items-center justify-between">
             <h1 class="mb-2 font-medium text-2xl">Cadastro de Pedidos</h1>
             <div class="flex items-center gap-2">
-                <x-button :route="route('pedidosvendas.create')" icon="plus" :text="__('Novo Pedido')" sm />
                 <a href="{{ route('pedidosvendas.create') }}" class="text-sm"> <x-button :text="__('Novo')" sm /></a>
             </div>
         </div>
