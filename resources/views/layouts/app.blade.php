@@ -76,8 +76,9 @@
         <x-slot:menu>
             <x-side-bar smart navigate collapsible>
                 <x-slot:brand>
-                    <div class="mt-6 flex items-center justify-center ">
-                        <img src="{{ asset('/assets/images/fav-icon.png') }} " class="max-w-[60px] h-auto" />
+                    <div class="flex items-center justify-center  bg-primary-500 w-full m-0 p-1 rounded-r-full mt-1">
+                        <img src="{{ asset('/assets/images/brand-logo-transparente-pb.png') }} " class="max-w-[50px] h-auto" />
+                        <span x-show="($store['tsui.side-bar'].open &amp;&amp; !$store['tsui.side-bar'].mobile) || $store['tsui.side-bar'].mobile" x-transition="" class="whitespace-nowrap text-mdg font-semibold text-white">BIV Renove</span>
                     </div>
                 </x-slot:brand>
                 <x-side-bar.item text="Dashboard" color="gray-600" icon="home" :route="route('dashboard')" />
