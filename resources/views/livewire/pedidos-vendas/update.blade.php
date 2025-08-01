@@ -1,9 +1,14 @@
 <div>
-    <x-card :title="__('Update Pedido: #:id', ['id' => $pedidosVenda?->id])" wire size="6xl" z-index="z-40">
+    <x-card >
         <form id="pedidos-update-{{ $pedidosVenda?->id }}" wire:submit="save" class="space-y-4">
             <div class="grid grid-cols-12 gap-4">
-                <div class="md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white">
-                    Formulario</div>
+                <div
+                    class="flex items-center justify-between md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white border-b-1 border-gray-200 dark:border-gray-600 pb-4">
+                        <div>Pedido {{ $pedidosVenda?->id }}</div>
+                        <div>
+                            <x-button href="{{ route('pedidosvendas.index') }}" color="gray"  icon='chevron-left'    :text="__('Voltar')" sm loading/>
+                        </div>
+                </div>
                 <!-- Cliente -->
                 <div class=" md:col-span-3">
                     <x-select.native label="Cliente *" wire:model="pedidosVenda.cliente_id" :options="$this->clientes"
@@ -122,8 +127,8 @@
 
         </form>
         <x-slot:footer>
-            <x-button type="submit" form="pedidos-update-{{ $pedidosVenda?->id }}">
-                @lang('Save')
+            <x-button type="submit" icon="check" form="pedidos-update-{{ $pedidosVenda?->id }}">
+                @lang('    Salvar     ' )
             </x-button>
         </x-slot:footer>
     </x-card>

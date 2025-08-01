@@ -14,13 +14,25 @@ class AppServiceProvider extends ServiceProvider
     }
 
     public function boot(): void
-    {
-        TallStackUi::personalize()
-            ->layout('header')
-            ->block('wrapper')->replace('bg-white', 'bg-dark-600');
+    {   
+         TallStackUi::personalize()
+            ->layout()
+            ->block('wrapper.second.expanded')
+            ->replace([
+                'md:pl-72' => 'md:pl-60',
+            ]);
 
         TallStackUi::personalize()
+            ->layout('header')
+            ->block('wrapper')
+            ->replace([
+                'bg-white' => 'bg-dark-600',
+            ]);
+        TallStackUi::personalize()
             ->sideBar()
+            ->block('desktop.sizes.expanded')->replace([
+                'w-72' => 'w-60',
+            ])
             ->block('desktop.wrapper.second')->replace([
                 'bg-white' => 'bg-dark-600',
                 'border-r' => 'border-0',

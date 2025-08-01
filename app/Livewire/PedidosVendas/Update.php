@@ -27,6 +27,7 @@ class Update extends Component
 
     public function mount()
     {
+        
         $this->clientes = Cliente::orderBy('nome')->get(['id', 'nome'])->map(function ($cliente) {
             return [
                 'id' => $cliente->id,
@@ -72,7 +73,7 @@ class Update extends Component
     {
 
 
-        $viacepService = new ViacepServicesa();
+        $viacepService = new ViacepServices();
 
         $result = $viacepService->getLocation($this->pedidosVenda->cep);
 

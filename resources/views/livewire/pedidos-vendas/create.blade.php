@@ -1,5 +1,4 @@
 <div>
-
     <x-card>
         <form id="pedidos-create" wire:submit="save" class="grid grid-cols-12 gap-4">
 
@@ -46,7 +45,7 @@
 
             <!-- CEP -->
             <div class=" md:col-span-3">
-                <x-input label="CEP *" wire:model.blur="pedidosVenda.cep" required maxlength="8"  />
+                <x-input label="CEP *" wire:model.blur="pedidosVenda.cep" required maxlength="8" />
                 {!! $cepErrorHtml !!}
             </div>
 
