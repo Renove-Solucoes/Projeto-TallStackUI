@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('email');
             $table->string('telefone');
-            $table->string('cep', 8);
+            $table->string('cep', 9);
             $table->string('endereco', 120);
             $table->string('bairro', 50);
             $table->string('numero', 10);

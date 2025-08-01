@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\Endereco;
+use App\Models\PedidosVenda;
 use App\Models\Produto;
 use App\Models\TabelaPreco;
 use App\Models\Tag;
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $produtos = Produto::factory(20)->create();
         $tabelasPreco = TabelaPreco::factory(4)->create();
         // $Enderecos = Endereco::factory(24)->create();
+        $PedidosVenda = PedidosVenda::factory(24)->create();
 
 
         // Carrega apenas as tags do tipo CLIENTE

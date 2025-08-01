@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Enum\pedidosVendaStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PedidosVenda extends Model
 {
-
+    /** @use HasFactory<\Database\Factories\PedidosVendaFactory> */
+    use HasFactory;
 
 
     protected $fillable = [
