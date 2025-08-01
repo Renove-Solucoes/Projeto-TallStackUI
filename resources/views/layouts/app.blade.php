@@ -26,7 +26,8 @@
         <x-slot:header>
             <x-layout.header>
                 <x-slot:left>
-                    <button x-on:click="$store['tsui.side-bar'].toggle()" class="cursor-pointer absolute top-4 left-4 rounded-full p-1 bg-gray-700 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-500">
+                    <button x-on:click="$store['tsui.side-bar'].toggle()"
+                        class="cursor-pointer absolute top-4 left-4 rounded-full p-1 bg-gray-700 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-500">
 
                         <svg class="w-5 h-5 text-dark-300 dark:text-dark-300" x-show="$store['tsui.side-bar'].open"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -77,19 +78,36 @@
             <x-side-bar smart navigate collapsible>
                 <x-slot:brand>
                     <div class="flex items-center justify-center  bg-primary-500 w-full m-0 p-1 rounded-r-full mt-1">
-                        <img src="{{ asset('/assets/images/brand-logo-transparente-pb.png') }} " class="max-w-[50px] h-auto" />
-                        <span x-show="($store['tsui.side-bar'].open &amp;&amp; !$store['tsui.side-bar'].mobile) || $store['tsui.side-bar'].mobile" x-transition="" class="whitespace-nowrap text-mdg font-semibold text-white">BIV Renove</span>
+                        <img src="{{ asset('/assets/images/brand-logo-transparente-pb.png') }} "
+                            class="max-w-[50px] h-auto" />
+                        <span
+                            x-show="($store['tsui.side-bar'].open &amp;&amp; !$store['tsui.side-bar'].mobile) || $store['tsui.side-bar'].mobile"
+                            x-transition="" class="whitespace-nowrap text-mdg font-semibold text-white">BIV
+                            Renove</span>
                     </div>
                 </x-slot:brand>
-                <x-side-bar.item text="Dashboard" color="gray-600" icon="home" :route="route('dashboard')" />
-                <x-side-bar.item text="Users" icon="user-circle" :route="route('users.index')" />
-                <x-side-bar.item text="Clientes" icon="users" :route="route('clientes.index')" />
-                <x-side-bar.item text="Tags" icon="tag" :route="route('tags.index')" />
-                <x-side-bar.item text="Categorias" icon="bars-3" :route="route('categorias.index')" />
-                <x-side-bar.item text="Produtos" icon="cube" :route="route('produtos.index')" />
-                <x-side-bar.item text="Tabela de preços" icon="table-cells" :route="route('tabelasprecos.index')" />
-                <x-side-bar.item text="Pedidos de Vendas" icon="shopping-cart" :route="route('pedidosvendas.index')" />
+                
+
+
                 <x-side-bar.item text="Welcome Page" icon="arrow-uturn-left" :route="route('welcome')" />
+                <x-side-bar.item text="Cadastros" icon="home" color="secondary">
+                    <x-side-bar.item text="Users" icon="user-circle" :route="route('users.index')" />
+                    <x-side-bar.item text="Clientes" icon="users" :route="route('clientes.index')" />
+                    <x-side-bar.item text="Tags" icon="tag" :route="route('tags.index')" />
+                    <x-side-bar.item text="Categorias" icon="bars-3" :route="route('categorias.index')" />
+                    <x-side-bar.item text="Produtos" icon="cube" :route="route('produtos.index')" />
+                </x-side-bar.item>
+                <x-side-bar.item text="Vendas" icon="bolt" color="secondary">
+                    <x-side-bar.item text="Tabela de preços" icon="table-cells" :route="route('tabelasprecos.index')" />
+                    <x-side-bar.item text="Pedidos de Vendas" icon="shopping-cart" :route="route('pedidosvendas.index')" />
+                </x-side-bar.item>
+                 <x-side-bar.item text="Finaneiro" icon="currency-dollar" color="secondary">
+                    <x-side-bar.item text="Tabela de preços" icon="table-cells"  />
+                </x-side-bar.item>
+                 <x-side-bar.item text="Configurações" icon="cog-6-tooth" color="secondary">
+                    <x-side-bar.item text="Tabela de preços" icon="table-cells"  />
+                </x-side-bar.item>
+                <x-side-bar.item text="Dashboard" color="gray-600" icon="home" :route="route('dashboard')" />
 
             </x-side-bar>
         </x-slot:menu>
