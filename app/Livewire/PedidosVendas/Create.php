@@ -105,7 +105,7 @@ class Create extends Component
 
             $this->modal = false;
 
-            $this->toast()->success('Atenção!', 'Pedido de venda criado com sucesso.')->send();
+            $this->toast()->success('Atenção!', 'Pedido de venda criado com sucesso.')->flash()->send();
 
             return redirect()->route('pedidosvendas.index');
         } catch (\Throwable $e) {

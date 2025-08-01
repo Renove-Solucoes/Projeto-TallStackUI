@@ -3,6 +3,7 @@
 namespace App\Livewire\PedidosVendas;
 
 use App\Livewire\Traits\Alert;
+use App\Models\Cliente;
 use App\Models\PedidosVenda;
 use App\Services\ViacepServices;
 use Livewire\Component;
@@ -26,7 +27,7 @@ class Update extends Component
 
     public function mount()
     {
-        $this->clientes = \App\Models\Cliente::orderBy('nome')->get(['id', 'nome'])->map(function ($cliente) {
+        $this->clientes = Cliente::orderBy('nome')->get(['id', 'nome'])->map(function ($cliente) {
             return [
                 'id' => $cliente->id,
                 'nome' => $cliente->nome,
@@ -39,7 +40,6 @@ class Update extends Component
         return view('livewire.pedidos-vendas.update');
     }
 
-    #[On('load::pedidosVenda')]
     public function load(PedidosVenda $pedidosVenda)
     {
         $this->pedidosVenda = $pedidosVenda;
@@ -100,7 +100,7 @@ class Update extends Component
             $this->pedidosVenda->save();
             $this->dispatch('updated');
             $this->modal = false;
-            $this->toast()->success('Atenção!', 'Pedido de venda atualizado com sucesso.')->send();
+            $this->toast()->success('Atenção!', 'Pedido de venda atualizado com sucesso.')->flash()->send();
             return redirect()->route('pedidosvendas.index');
         } catch (\Throwable $e) {
             logger()->error('Erro ao salvar pedido', ['exception' => $e]);

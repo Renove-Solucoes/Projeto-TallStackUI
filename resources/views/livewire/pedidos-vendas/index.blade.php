@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <h1 class="mb-2 font-medium text-2xl">Cadastro de Pedidos</h1>
             <div class="flex items-center gap-2">
-                <a href="{{ route('pedidosvendas.create') }}" class="text-sm"> <x-button :text="__('Novo')" sm /></a>
+                <a href="{{ route('pedidosvendas.create') }}" class="text-sm"> <x-button icon='plus' :text="__('Novo')" sm /></a>
             </div>
         </div>
         <x-table stripped striped :sort :$headers :rows="$this->rows" paginate filter :quantity="[5, 10, 20]">
@@ -18,12 +18,10 @@
             @endinteract
             @interact('column_action', $row)
                 <div class="flex gap-1">
-                    <x-button.circle icon="pencil" color="sky"
-                        wire:click="$dispatch('load::pedidosVenda', { 'pedidosVenda' : '{{ $row->id }}'})" outline />
+                    <a href="{{ route('pedidosvendas.edit',$row->id) }}" class="text-sm"><x-button.circle icon="pencil" color="sky" outline  /></a>
                     <livewire:PedidosVendas.delete :pedidosVenda="$row" :key="uniqid('', true)" @deleted="$refresh" />
                 </div>
             @endinteract
         </x-table>
-        <livewire:pedidos-vendas.update @updated="$refresh" />
     </x-card>
 </div>

@@ -26,7 +26,7 @@
         <x-slot:header>
             <x-layout.header>
                 <x-slot:left>
-                    <button x-on:click="$store['tsui.side-bar'].toggle()" class="cursor-pointer absolute top-4 left-4 rounded-full p-1 bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-600">
+                    <button x-on:click="$store['tsui.side-bar'].toggle()" class="cursor-pointer absolute top-4 left-4 rounded-full p-1 bg-gray-700 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-500">
 
                         <svg class="w-5 h-5 text-dark-300 dark:text-dark-300" x-show="$store['tsui.side-bar'].open"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
