@@ -2,8 +2,14 @@
     <x-card>
         <form id="pedidos-create" wire:submit="save" class="grid grid-cols-12 gap-4">
 
-            <div class="md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white">
-                Formulario</div>
+            <div
+                class="flex items-center justify-between md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white border-b-1 border-gray-200 dark:border-gray-600 pb-4">
+                <div>Novo Pedido</div>
+                <div>
+                    <x-button href="{{ route('pedidosvendas.index') }}" color="gray" icon='chevron-left'
+                        :text="__('Voltar')" sm loading />
+                </div>
+            </div>
             <!-- Cliente -->
             <div class=" md:col-span-3">
                 <x-select.native label="Cliente *" wire:model="pedidosVenda.cliente_id" :options="$this->clientes"

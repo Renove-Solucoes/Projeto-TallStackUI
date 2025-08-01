@@ -2,8 +2,7 @@
     <x-card >
         <form id="pedidos-update-{{ $pedidosVenda?->id }}" wire:submit="save" class="space-y-4">
             <div class="grid grid-cols-12 gap-4">
-                <div
-                    class="flex items-center justify-between md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white border-b-1 border-gray-200 dark:border-gray-600 pb-4">
+                <div class="flex items-center justify-between md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white border-b-1 border-gray-200 dark:border-gray-600 pb-4">
                         <div>Pedido {{ $pedidosVenda?->id }}</div>
                         <div>
                             <x-button href="{{ route('pedidosvendas.index') }}" color="gray"  icon='chevron-left'    :text="__('Voltar')" sm loading/>

@@ -17,7 +17,7 @@ class PedidosVendaFactory extends Factory
             'nome'           => $this->faker->name(),
             'email'          => $this->faker->safeEmail(),
             'telefone'       => $this->faker->phoneNumber(),
-            'cep' => $this->faker->numerify('#####-###'),
+            'cep' => $this->faker->numerify('########'),
             'endereco'       => $this->faker->streetAddress(),
             'bairro'         => $this->faker->word(),
             'numero'         => $this->faker->buildingNumber(),
