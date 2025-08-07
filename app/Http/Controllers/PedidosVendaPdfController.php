@@ -14,6 +14,8 @@ class PedidosVendaPdfController
     public function generatePdf(PedidosVenda $pedidosVenda)
     {
         $pdf = Pdf::loadView('pdf.pedidos-venda', ['pedido' => $pedidosVenda]);
+
+
         return $pdf->stream("pedido_{$pedidosVenda->id}.pdf");
     }
 }
