@@ -25,6 +25,7 @@ class Update extends Component
     public array $clientes = [];
     public string $cepErrorHtml = '';
 
+    public $itens = [];
     public $sugestoes = [];
 
     public function mount()
