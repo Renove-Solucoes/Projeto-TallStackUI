@@ -96,10 +96,11 @@
                     <x-side-bar.item text="Tags" icon="tag" :route="route('tags.index')" />
                     <x-side-bar.item text="Categorias" icon="bars-3" :route="route('categorias.index')" />
                     <x-side-bar.item text="Produtos" icon="cube" :route="route('produtos.index')" />
+                    <x-side-bar.item text="Tabela de preços" icon="table-cells" :route="route('tabelasprecos.index')" />
                 </x-side-bar.item>
                 <x-side-bar.item text="Vendas" icon="bolt" color="secondary">
-                    <x-side-bar.item text="Tabela de preços" icon="table-cells" :route="route('tabelasprecos.index')" />
                     <x-side-bar.item text="Pedidos de Vendas" icon="shopping-cart" :route="route('pedidosvendas.index')" />
+                    <x-side-bar.item text="Tabela de preços" icon="table-cells" :route="route('tabelasprecos.index')" />
                 </x-side-bar.item>
                  <x-side-bar.item text="Finaneiro" icon="currency-dollar" color="secondary">
                     <x-side-bar.item text="Tabela de preços" icon="table-cells"  />
