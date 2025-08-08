@@ -5,6 +5,7 @@ namespace App\Livewire\PedidosVendas;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
 use App\Livewire\Traits\Alert;
+use App\Models\Cliente;
 use App\Models\PedidosVenda;
 use App\Services\ViacepServices;
 use FFI;
@@ -17,11 +18,10 @@ class Create extends Component
 
     public bool $modal = false;
 
-
-
     public array $clientes = [];
-
     public string $cepErrorHtml = '';
+
+    public $sugestoes = [];
 
     public function mount()
     {
@@ -84,6 +84,42 @@ class Create extends Component
             $this->pedidosVenda->uf = '';
             $this->cepErrorHtml = '<span class="text-red-500 text-sm mt-1">CEP não encontrado. Verifique e tente novamente.</span>';
         }
+    }
+
+    public function updatedPedidosVendaNome()
+    {
+        $this->sugestoes = Cliente::where('nome', 'like', '%' . trim($this->pedidosVenda->nome) . '%')->get(['id', 'nome', 'cpf_cnpj'])->map(function ($cliente) {
+            return [
+                'id' => $cliente->id,
+                'nome' => $cliente->nome,
+                'cpf_cnpj' => $cliente->cpf_cnpj
+            ];
+        })->toArray();
+    }
+
+    public function selecionarItem(Cliente $cliente)
+    {
+        $this->pedidosVenda->cliente_id = $cliente->id;
+        $this->pedidosVenda->nome = $cliente->nome;
+        $this->pedidosVenda->tipo_pessoa = $cliente->tipo_pessoa;
+        $this->pedidosVenda->cpf_cnpj = $cliente->cpf_cnpj;
+        $this->pedidosVenda->email = $cliente->email;
+        $this->pedidosVenda->telefone = $cliente->telefone;
+
+        $endereco = $cliente->enderecos()->where('principal', true)->first();
+        if (!$endereco) {
+            $endereco = $cliente->enderecos()->first();
+        }
+
+        $this->pedidosVenda->cep = $endereco->cep;
+        $this->pedidosVenda->endereco = $endereco->endereco;
+        $this->pedidosVenda->bairro = $endereco->bairro;
+        $this->pedidosVenda->numero = $endereco->numero;
+        $this->pedidosVenda->cidade = $endereco->cidade;
+        $this->pedidosVenda->uf = $endereco->uf;
+        $this->pedidosVenda->complemento = $endereco->complemento;
+
+        $this->sugestoes = [];
     }
 
     public function save()

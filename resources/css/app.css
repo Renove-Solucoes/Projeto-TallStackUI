@@ -68,3 +68,18 @@
 
 
 }
+
+
+.picotado {
+    border: 1.5px dashed #71787f; /* borda picotada amarela */
+    border-radius: 12px;        /* bordas mais arredondadas */
+    padding: 0.6px;
+    position: relative;
+}
+
+.dark .picotado {
+    border: 1.5px dashed #e3e3e3; /* borda picotada amarela */
+    border-radius: 12px;        /* bordas mais arredondadas */
+    padding: 0.6px;
+    position: relative;
+}

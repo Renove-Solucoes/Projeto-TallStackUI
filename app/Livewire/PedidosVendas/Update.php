@@ -6,6 +6,7 @@ use App\Livewire\Traits\Alert;
 use App\Models\Cliente;
 use App\Models\PedidosVenda;
 use App\Services\ViacepServices;
+use GuzzleHttp\Client;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -24,10 +25,11 @@ class Update extends Component
     public array $clientes = [];
     public string $cepErrorHtml = '';
 
+    public $sugestoes = [];
 
     public function mount()
     {
-        
+
         $this->clientes = Cliente::orderBy('nome')->get(['id', 'nome'])->map(function ($cliente) {
             return [
                 'id' => $cliente->id,
@@ -67,6 +69,42 @@ class Update extends Component
             'pedidosVenda.uf' => ['required', 'string', 'max:2'],
             'pedidosVenda.complemento' => ['nullable', 'string', 'max:255'],
         ];
+    }
+
+    public function updatedPedidosVendaNome()
+    {
+        $this->sugestoes = Cliente::where('nome', 'like', '%' . trim($this->pedidosVenda->nome) . '%')->get(['id', 'nome', 'cpf_cnpj'])->map(function ($cliente) {
+            return [
+                'id' => $cliente->id,
+                'nome' => $cliente->nome,
+                'cpf_cnpj' => $cliente->cpf_cnpj
+            ];
+        })->toArray();
+    }
+
+    public function selecionarItem(Cliente $cliente)
+    {
+        $this->pedidosVenda->cliente_id = $cliente->id;
+        $this->pedidosVenda->nome = $cliente->nome;
+        $this->pedidosVenda->tipo_pessoa = $cliente->tipo_pessoa;
+        $this->pedidosVenda->cpf_cnpj = $cliente->cpf_cnpj;
+        $this->pedidosVenda->email = $cliente->email;
+        $this->pedidosVenda->telefone = $cliente->telefone;
+
+        $endereco = $cliente->enderecos()->where('principal', true)->first();
+        if (!$endereco) {
+            $endereco = $cliente->enderecos()->first();
+        }
+
+        $this->pedidosVenda->cep = $endereco->cep;
+        $this->pedidosVenda->endereco = $endereco->endereco;
+        $this->pedidosVenda->bairro = $endereco->bairro;
+        $this->pedidosVenda->numero = $endereco->numero;
+        $this->pedidosVenda->cidade = $endereco->cidade;
+        $this->pedidosVenda->uf = $endereco->uf;
+        $this->pedidosVenda->complemento = $endereco->complemento;
+
+        $this->sugestoes = [];
     }
 
     public function updatedPedidosVendaCep()

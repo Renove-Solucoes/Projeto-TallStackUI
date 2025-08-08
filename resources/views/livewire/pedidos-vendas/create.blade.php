@@ -1,4 +1,4 @@
-<div>
+<div class="picotado">
     <x-card>
         <form id="pedidos-create" wire:submit="save" class="grid grid-cols-12 gap-4">
 
@@ -10,14 +10,30 @@
                         :text="__('Voltar')" sm loading />
                 </div>
             </div>
-            <!-- Cliente -->
-            <div class=" md:col-span-3">
-                <x-select.native label="Cliente *" wire:model="pedidosVenda.cliente_id" :options="$this->clientes"
-                    select="label:nome|value:id" required />
-            </div>
 
             <!-- Tipo Pessoa -->
             <div x-data="{ tipoPessoa: @entangle('pedidosVenda.tipo_pessoa') }" class="md:col-span-12 grid md:grid-cols-12 md:gap-4">
+
+                                    <div class=" md:col-span-3">
+                        <div class="md:col-span-6 relative" x-data="{ aberto: false }" @click.away="aberto = false"
+                            @keydown.escape.window="aberto = false">
+                            <x-input wire:model.live.debounce.500ms="pedidosVenda.nome" label="Cliente *"
+                                placeholder="Pesquise aqui por nome ou CPF/CNPJ" autocomplete="off"
+                                @focus="aberto = true" @input="aberto = true" re />
+
+                            @if (!empty($sugestoes))
+                                <ul x-show="aberto && {{ !empty($sugestoes) ? 'true' : 'false' }}" x-transition
+                                    class="absolute z-100 w-full bg-white dark:bg-dark-600 border  border-gray-500 rounded-md shadow-md mt-1 max-h-60 overflow-auto">
+                                    @foreach ($sugestoes as $cliente)
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm  text-secondary-700 dark:text-dark-300 dark:hover:bg-gray-700"
+                                            wire:click="selecionarItem('{{ $cliente['id'] }}')">
+                                            {{ $cliente['nome'] }} ( {{ $cliente['cpf_cnpj'] }} )
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
 
                 <div class="md:col-span-3">
                     <x-select.native label="Tipo Pessoa *" wire:model="pedidosVenda.tipo_pessoa" x-model="tipoPessoa"
@@ -29,9 +45,7 @@
                         x-mask:dynamic="tipoPessoa === 'J' ? '99.999.999/9999-99' : '999.999.999-99'" required />
                 </div>
 
-                <div class="md:col-span-5">
-                    <x-input label="Nome *" wire:model="pedidosVenda.nome" x-ref="nome" required />
-                </div>
+
 
             </div>
 
