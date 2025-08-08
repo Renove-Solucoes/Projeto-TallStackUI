@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PedidosVendaPdfController;
 use App\Livewire\User\Profile;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Users\Index;
@@ -26,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pedidosvendas', App\Livewire\PedidosVendas\Index::class)->name('pedidosvendas.index');
     Route::get('/pedidosvendas/create', App\Livewire\PedidosVendas\Create::class)->name('pedidosvendas.create');
     Route::get('/pedidosvendas/{pedidosVenda}/edit', App\Livewire\PedidosVendas\Update::class)->name('pedidosvendas.edit');
+    Route::get('/pedidos-vendas/{pedidosVenda}/pdf', [PedidosVendaPdfController::class, 'generatePdf'])
+        ->name('pedidosvendas.generate-pdf');
 });
 
 require __DIR__ . '/auth.php';
