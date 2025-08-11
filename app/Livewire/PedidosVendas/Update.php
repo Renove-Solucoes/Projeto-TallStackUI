@@ -25,8 +25,10 @@ class Update extends Component
     public array $clientes = [];
     public string $cepErrorHtml = '';
 
+    public $sugestoesClientes = [];
+
     public $itens = [];
-    public $sugestoes = [];
+    public $sugestoesItens = [];
 
     public function mount()
     {
@@ -74,13 +76,32 @@ class Update extends Component
 
     public function updatedPedidosVendaNome()
     {
-        $this->sugestoes = Cliente::where('nome', 'like', '%' . trim($this->pedidosVenda->nome) . '%')->get(['id', 'nome', 'cpf_cnpj'])->map(function ($cliente) {
-            return [
-                'id' => $cliente->id,
-                'nome' => $cliente->nome,
-                'cpf_cnpj' => $cliente->cpf_cnpj
+
+        $caracters = strlen(trim($this->pedidosVenda->nome));
+
+        $this->sugestoesClientes = [];
+        if ($caracters > 2) {
+            $this->sugestoesClientes = Cliente::where('nome', 'like', '%' . trim($this->pedidosVenda->nome) . '%')->get(['id', 'nome', 'cpf_cnpj'])->map(function ($cliente) {
+                return [
+                    'id' => $cliente->id,
+                    'nome' => $cliente->nome,
+                    'cpf_cnpj' => $cliente->cpf_cnpj
+                ];
+            })->toArray();
+            if (count($this->sugestoesClientes) == 0) {
+                $this->sugestoesClientes[] = [
+                    'id' => 0,
+                    'nome' => 'Nenhum cliente encontrado',
+                    'cpf_cnpj' => '!',
+                ];
+            };
+        } elseif ($caracters > 0) {
+            $this->sugestoesClientes[] = [
+                'id' => 0,
+                'nome' => 'Digite pelo menos 3 caracteres',
+                'cpf_cnpj' => '!',
             ];
-        })->toArray();
+        }
     }
 
     public function selecionarItem(Cliente $cliente)
@@ -105,7 +126,7 @@ class Update extends Component
         $this->pedidosVenda->uf = $endereco->uf;
         $this->pedidosVenda->complemento = $endereco->complemento;
 
-        $this->sugestoes = [];
+        $this->sugestoesClientes = [];
     }
 
     public function updatedPedidosVendaCep()

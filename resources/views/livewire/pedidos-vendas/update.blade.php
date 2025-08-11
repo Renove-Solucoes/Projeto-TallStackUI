@@ -21,10 +21,10 @@
                                 placeholder="Pesquise aqui por nome ou CPF/CNPJ" autocomplete="off"
                                 @focus="aberto = true" @input="aberto = true" re />
 
-                            @if (!empty($sugestoes))
-                                <ul x-show="aberto && {{ !empty($sugestoes) ? 'true' : 'false' }}" x-transition
+                            @if (!empty($sugestoesClientes))
+                                <ul x-show="aberto && {{ !empty($sugestoesClientes) ? 'true' : 'false' }}" x-transition
                                     class="absolute z-100 w-full bg-white dark:bg-dark-600 border  border-gray-500 rounded-md shadow-md mt-1 max-h-60 overflow-auto">
-                                    @foreach ($sugestoes as $cliente)
+                                    @foreach ($sugestoesClientes as $cliente)
                                         <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm  text-secondary-700 dark:text-dark-300 dark:hover:bg-gray-700"
                                             wire:click="selecionarItem('{{ $cliente['id'] }}')">
                                             {{ $cliente['nome'] }} ( {{ $cliente['cpf_cnpj'] }} )
@@ -177,11 +177,11 @@
                                         placeholder="Pesquise aqui por SKU(código) ou descrição" autocomplete="off"
                                         @focus="aberto = true" @input="aberto = true" re />
 
-                                    @if (!empty($sugestoes[$index]))
-                                        <ul x-show="aberto && {{ !empty($sugestoes[$index]) ? 'true' : 'false' }}"
+                                    @if (!empty($sugestoesItens[$index]))
+                                        <ul x-show="aberto && {{ !empty($sugestoesProdutos[$index]) ? 'true' : 'false' }}"
                                             x-transition
                                             class="absolute z-100 w-full bg-white dark:bg-dark-600 border  border-gray-500 rounded-md shadow-md mt-1 max-h-60 overflow-auto">
-                                            @foreach ($sugestoes[$index] as $produto)
+                                            @foreach ($sugestoesItens[$index] as $produto)
                                                 <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm  text-secondary-700 dark:text-dark-300 dark:hover:bg-gray-700"
                                                     wire:click="selecionarItem({{ $index }}, '{{ $produto['id'] }}')">
                                                     {{ $produto['nome'] }} ( {{ $produto['sku'] }} )
