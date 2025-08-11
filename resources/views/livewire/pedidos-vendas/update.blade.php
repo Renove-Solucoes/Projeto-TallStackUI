@@ -11,22 +11,22 @@
                     </div>
                 </div>
 
-                <!-- Tipo Pessoa -->
+
                 <div x-data="{ tipoPessoa: @entangle('pedidosVenda.tipo_pessoa') }" class="md:col-span-12 grid md:grid-cols-12 md:gap-4">
 
                     <div class=" md:col-span-3">
-                        <div class="md:col-span-6 relative" x-data="{ aberto: false }" @click.away="aberto = false"
-                            @keydown.escape.window="aberto = false">
+                        <div class="md:col-span-6 relative" x-data="{ abertoCliente: false }" @click.away="abertoCliente = false"
+                            @keydown.escape.window="abertoCliente = false">
                             <x-input wire:model.live.debounce.500ms="pedidosVenda.nome" label="Cliente *"
                                 placeholder="Pesquise aqui por nome ou CPF/CNPJ" autocomplete="off"
-                                @focus="aberto = true" @input="aberto = true" re />
+                                @focus="abertoCliente = true" @input="abertoCliente = true" require />
 
                             @if (!empty($sugestoesClientes))
-                                <ul x-show="aberto && {{ !empty($sugestoesClientes) ? 'true' : 'false' }}" x-transition
+                                <ul x-show="abertoCliente && {{ !empty($sugestoesClientes) ? 'true' : 'false' }}" x-transition
                                     class="absolute z-100 w-full bg-white dark:bg-dark-600 border  border-gray-500 rounded-md shadow-md mt-1 max-h-60 overflow-auto">
                                     @foreach ($sugestoesClientes as $cliente)
                                         <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm  text-secondary-700 dark:text-dark-300 dark:hover:bg-gray-700"
-                                            wire:click="selecionarItem('{{ $cliente['id'] }}')">
+                                            wire:click="selecionarCliente('{{ $cliente['id'] }}')">
                                             {{ $cliente['nome'] }} ( {{ $cliente['cpf_cnpj'] }} )
                                         </li>
                                     @endforeach
@@ -171,14 +171,15 @@
 
                         @if ($item['deleted'] == 0)
                             <div class="grid md:grid-cols-12 md:gap-2 space-y-2">
-                                <div class="md:col-span-6 relative" x-data="{ aberto: false }" @click.away="aberto = false"
-                                    @keydown.escape.window="aberto = false">
+                                <div class="md:col-span-6 relative" x-data="{ abertoItens: false }" @click.away="abertoItens = false"
+                                    @keydown.escape.window="abertoItens = false">
                                     <x-input wire:model.live.debounce.500ms="itens.{{ $index }}.descricao"
                                         placeholder="Pesquise aqui por SKU(código) ou descrição" autocomplete="off"
-                                        @focus="aberto = true" @input="aberto = true" re />
+                                        @focus="abertoItens = true" @input="abertoItens = true" require />
+
 
                                     @if (!empty($sugestoesItens[$index]))
-                                        <ul x-show="aberto && {{ !empty($sugestoesProdutos[$index]) ? 'true' : 'false' }}"
+                                    <ul x-show="abertoItens && {{ !empty($sugestoesItens[$index]) ? 'true' : 'false' }}"
                                             x-transition
                                             class="absolute z-100 w-full bg-white dark:bg-dark-600 border  border-gray-500 rounded-md shadow-md mt-1 max-h-60 overflow-auto">
                                             @foreach ($sugestoesItens[$index] as $produto)

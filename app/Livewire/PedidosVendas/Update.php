@@ -5,6 +5,7 @@ namespace App\Livewire\PedidosVendas;
 use App\Livewire\Traits\Alert;
 use App\Models\Cliente;
 use App\Models\PedidosVenda;
+use App\Models\Produto;
 use App\Services\ViacepServices;
 use GuzzleHttp\Client;
 use Livewire\Component;
@@ -104,7 +105,7 @@ class Update extends Component
         }
     }
 
-    public function selecionarItem(Cliente $cliente)
+    public function selecionarCliente(Cliente $cliente)
     {
         $this->pedidosVenda->cliente_id = $cliente->id;
         $this->pedidosVenda->nome = $cliente->nome;
@@ -128,6 +129,87 @@ class Update extends Component
 
         $this->sugestoesClientes = [];
     }
+
+    public function addItem()
+    {
+        //elimina os itens vazios que nao tenham a chave produto_id declarado. Devido comportamento do <x-currency-input>
+        $this->itens = array_values(array_filter($this->itens, function ($item) {
+            return array_key_exists('produto_id', $item);
+        }));
+
+        $this->itens[] =
+            [
+                'id' => '',
+                'produto_id' => '',
+                'sku' => '',
+                'descricao' => '',
+                'preco' => 0.00,
+                'status' => 1,
+                'updated' => 0,
+                'deleted' => 0
+            ];
+    }
+
+    public function removeItem($index)
+    {
+        // unset($this->itens[$index]);
+        $this->itens = array_values($this->itens); // reindexa
+        $this->itens[$index]['deleted'] = 1;
+    }
+
+    public function updatedItens($value, $key)
+    {
+        $index = explode('.', $key);
+        $this->itens[$index[0]]['updated'] = 1;
+        // dd($index, $key, $value);
+
+        //se alterado descrição buscar produtos
+        if (isset($index[1]) && $index[1] == 'descricao') {
+            $busca = $value ?? '';
+            $this->sugestoesItens = [];
+            if (strlen($busca) > 2) {
+                $this->sugestoesItens[$index[0]] = Produto::where('nome', 'like', '%' . $busca . '%')
+                    ->orWhere('sku', 'like', '%' . $busca . '%')
+                    ->limit(10)
+                    ->get()
+                    ->toArray();
+                //se não encontrar nenhum registro
+                if (count($this->sugestoesItens[$index[0]]) == 0) {
+                    $this->sugestoesItens[$index[0]][] = [
+                        'id' => 0,
+                        'nome' => 'Nenhum produto encontrado',
+                        'sku' => '!',
+                    ];
+                }
+            } else {
+                $this->sugestoesItens[$index[0]][] = [
+                    'id' => 0,
+                    'nome' => 'Digite pelo menos 3 caracteres',
+                    'sku' => '!',
+                ];
+            }
+        }
+        // dd($this->sugestoes);
+    }
+
+    public function selecionarItem($index, $produtoId)
+    {
+
+        $produto = Produto::find($produtoId);
+
+        if ($produto) {
+            $this->itens[$index]['produto_id'] = $produto->id;
+            $this->itens[$index]['descricao'] = $produto->nome;
+            $this->itens[$index]['sku'] = $produto->sku;
+            $this->itens[$index]['preco'] = $produto->preco_padrao;
+            $this->itens[$index]['status'] = 1;
+            $this->itens[$index]['updated'] = '0';
+            $this->itens[$index]['deleted'] = '0';
+
+            $this->sugestoesItens[$index] = [];
+        }
+    }
+
 
     public function updatedPedidosVendaCep()
     {
