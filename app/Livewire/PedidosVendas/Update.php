@@ -143,7 +143,9 @@ class Update extends Component
                 'produto_id' => '',
                 'sku' => '',
                 'descricao' => '',
+                'quantidade' => 1,
                 'preco' => 0.00,
+                'total' => 0.00,
                 'status' => 1,
                 'updated' => 0,
                 'deleted' => 0

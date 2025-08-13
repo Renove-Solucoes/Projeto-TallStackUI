@@ -1,4 +1,4 @@
-<div >
+<div>
     <x-card>
         <form id="pedidos-update-{{ $pedidosVenda?->id }}" wire:submit="save" class="space-y-4">
             <div class="grid grid-cols-12 gap-4">
@@ -22,7 +22,8 @@
                                 @focus="abertoCliente = true" @input="abertoCliente = true" require />
 
                             @if (!empty($sugestoesClientes))
-                                <ul x-show="abertoCliente && {{ !empty($sugestoesClientes) ? 'true' : 'false' }}" x-transition
+                                <ul x-show="abertoCliente && {{ !empty($sugestoesClientes) ? 'true' : 'false' }}"
+                                    x-transition
                                     class="absolute z-100 w-full bg-white dark:bg-dark-600 border  border-gray-500 rounded-md shadow-md mt-1 max-h-60 overflow-auto">
                                     @foreach ($sugestoesClientes as $cliente)
                                         <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm  text-secondary-700 dark:text-dark-300 dark:hover:bg-gray-700"
@@ -153,17 +154,21 @@
                         </div>
                     </x-slot:header>
                     <div class="grid md:grid-cols-12 md:gap-2 space-y-2">
-                        <div class="md:col-span-6">
+                        <div class="md:col-span-4">
                             DESCRICAO
                         </div>
                         <div class="md:col-span-2">
                             SKU
                         </div>
                         <div class="md:col-span-2">
+                            QTD
+                        </div>
+
+                        <div class="md:col-span-2">
                             PRECO
                         </div>
                         <div class="md:col-span-2">
-                            STATUS
+                            Total
                         </div>
                     </div>
 
@@ -171,15 +176,15 @@
 
                         @if ($item['deleted'] == 0)
                             <div class="grid md:grid-cols-12 md:gap-2 space-y-2">
-                                <div class="md:col-span-6 relative" x-data="{ abertoItens: false }" @click.away="abertoItens = false"
-                                    @keydown.escape.window="abertoItens = false">
+                                <div class="md:col-span-4 relative" x-data="{ abertoItens: false }"
+                                    @click.away="abertoItens = false" @keydown.escape.window="abertoItens = false">
                                     <x-input wire:model.live.debounce.500ms="itens.{{ $index }}.descricao"
                                         placeholder="Pesquise aqui por SKU(código) ou descrição" autocomplete="off"
                                         @focus="abertoItens = true" @input="abertoItens = true" require />
 
 
                                     @if (!empty($sugestoesItens[$index]))
-                                    <ul x-show="abertoItens && {{ !empty($sugestoesItens[$index]) ? 'true' : 'false' }}"
+                                        <ul x-show="abertoItens && {{ !empty($sugestoesItens[$index]) ? 'true' : 'false' }}"
                                             x-transition
                                             class="absolute z-100 w-full bg-white dark:bg-dark-600 border  border-gray-500 rounded-md shadow-md mt-1 max-h-60 overflow-auto">
                                             @foreach ($sugestoesItens[$index] as $produto)
@@ -194,16 +199,23 @@
                                 <div class="md:col-span-2">
                                     <x-input wire:model="itens.{{ $index }}.sku" readonly />
                                 </div>
-                                <div class="md:col-span-2">
-                                    <x-currency mutate locale="pt-BR" symbol="R$"
-                                        wire:model.debounce="itens.{{ $index }}.preco" required />
+                                <div>
+                                    <div class="md:col-span-2">
+                                        <x-currency mutate locale="pt-BR"
+                                            wire:model.debounce="itens.{{ $index }}.quantidade"
+                                            x-model="quantidade" />
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <x-currency mutate locale="pt-BR" symbol="R$"
+                                            wire:model.debounce="itens.{{ $index }}.preco" required
+                                            x-model="preco" />
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <x-currency mutate locale="pt-BR" symbol="R$"
+                                            wire:model.debounce="itens.{{ $index }}.total" readonly />
+                                    </div>
                                 </div>
-                                <div class="md:col-span-2 flex gap-1 items-center justify-between">
-                                    <x-toggle label="Ativo" wire:model="itens.{{ $index }}.status"
-                                        :checked="$item['status'] == 1 ? true : false" />
-                                    <x-button.circle icon="trash" color="amber"
-                                        wire:click="removeItem({{ $index }})" outline />
-                                </div>
+
                             </div>
                         @endif
                     @endforeach
