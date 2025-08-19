@@ -27,6 +27,7 @@ class PedidosVenda extends Model
         'cidade',
         'uf',
         'complemento',
+        'total',
         'status',
     ];
 
@@ -41,7 +42,7 @@ class PedidosVenda extends Model
         return $this->belongsTo(Cliente::class);
     }
 
-    public function PedidosVendaItems()
+    public function itens()
     {
         return $this->hasMany(PedidosVendaItem::class);
     }

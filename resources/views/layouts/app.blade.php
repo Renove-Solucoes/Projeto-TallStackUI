@@ -17,7 +17,7 @@
 </head>
 
 <body class="font-sans antialiased" x-cloak x-data="{ name: @js(auth()->user()->name) }" x-on:name-updated.window="name = $event.detail.name"
-    x-bind:class="{ 'dark bg-gray-600': darkTheme, 'bg-gray-400': !darkTheme }">
+  x-bind:class="{ 'dark bg-gray-600': darkTheme, 'bg-gray-400': !darkTheme }">
     <x-layout>
         <x-slot:top>
             <x-dialog />
@@ -86,7 +86,7 @@
                             Renove</span>
                     </div>
                 </x-slot:brand>
-                
+
 
 
                 <x-side-bar.item text="Welcome Page" icon="arrow-uturn-left" :route="route('welcome')" />

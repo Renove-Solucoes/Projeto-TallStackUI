@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pedidos_venda_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pedido_venda_id')->constrained('pedidos_vendas');
+            $table->foreignId('pedidos_venda_id')->constrained('pedidos_vendas');
             $table->foreignId('produto_id')->constrained();
             $table->integer('quantidade');
             $table->decimal('preco')->default(0.00);

@@ -199,23 +199,21 @@
                                 <div class="md:col-span-2">
                                     <x-input wire:model="itens.{{ $index }}.sku" readonly />
                                 </div>
-                                <div>
-                                    <div class="md:col-span-2">
-                                        <x-currency mutate locale="pt-BR"
-                                            wire:model.debounce="itens.{{ $index }}.quantidade"
-                                            x-model="quantidade" />
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <x-currency mutate locale="pt-BR" symbol="R$"
-                                            wire:model.debounce="itens.{{ $index }}.preco" required
-                                            x-model="preco" />
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <x-currency mutate locale="pt-BR" symbol="R$"
-                                            wire:model.debounce="itens.{{ $index }}.total" readonly />
-                                    </div>
-                                </div>
 
+                                    <div class="md:col-span-2">
+                                        <x-number mutate locale="pt-BR"
+                                            wire:model.blur="itens.{{ $index }}.quantidade"
+                                             step="0.5" min="0" max="9999" required/>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <x-currency mutate locale="pt-BR" symbol="R$"
+                                            wire:model="itens.{{ $index }}.preco" required readonly
+                                             />
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <x-currency mutate locale="pt-BR" symbol="R$"
+                                            wire:model="itens.{{ $index }}.total" readonly />
+                                    </div>
                             </div>
                         @endif
                     @endforeach
@@ -223,7 +221,12 @@
                         <x-button icon="plus" :text="__('Adicionar Item')" wire:click="addItem" sm />
                     </div>
                 </x-card>
+
             </div>
+
+            <x-card>
+                <x-currency mutate locale="pt-BR" symbol="R$" wire:model="pedidosVenda.total" readonly />
+            </x-card>
 
         </form>
         <x-slot:footer>

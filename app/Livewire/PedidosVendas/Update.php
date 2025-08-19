@@ -40,6 +40,15 @@ class Update extends Component
                 'nome' => $cliente->nome,
             ];
         })->toArray();
+
+
+
+        if ($this->itens != null) {
+            $this->itens = $this->pedidosVenda->itens;
+        } else {
+            $this->itens = [];
+            $this->addItem();
+        }
     }
 
     public function render()
@@ -50,6 +59,8 @@ class Update extends Component
     public function load(PedidosVenda $pedidosVenda)
     {
         $this->pedidosVenda = $pedidosVenda;
+
+        $this->itens = $this->pedidosVenda->itens;
         $this->resetErrorBag();
         $this->redirectRoute('pedidosvendas.edit', ['pedidosVenda' => $pedidosVenda->id]);
     }
@@ -71,6 +82,7 @@ class Update extends Component
             'pedidosVenda.numero' => ['required', 'string', 'max:10'],
             'pedidosVenda.cidade' => ['required', 'string', 'max:255'],
             'pedidosVenda.uf' => ['required', 'string', 'max:2'],
+            'pedidosVenda.total' => ['required', 'numeric', 'min:0'],
             'pedidosVenda.complemento' => ['nullable', 'string', 'max:255'],
         ];
     }
@@ -191,7 +203,37 @@ class Update extends Component
                 ];
             }
         }
-        // dd($this->sugestoes);
+        //se alterado quantidade calcular total
+        if ($index[1] === 'quantidade') {
+            $this->totalizarPedido();
+        }
+    }
+
+    public function totalizarPedido()
+    {
+        //Percorrer Array Items
+        $totalPedido = 0;
+        foreach ($this->itens as $index => $item) {
+            $qtde = $this->currencySanitize($item['quantidade']);
+            $precounitario = $this->currencySanitize($item['preco']);
+            $total = $qtde * $precounitario;
+            $total = floatval(number_format($total, 2, '.', ''));
+
+            $this->itens[$index]['total']  =  $total;
+
+            $totalPedido += $total;
+        }
+
+        $this->pedidosVenda->total = $totalPedido;
+    }
+
+    public function currencySanitize($valor)
+    {
+        if (isset($valor) && str_contains($valor, ',')) {
+            return  str_replace(['.', ','], ['', '.'], $valor);
+        }
+
+        return $valor;
     }
 
     public function selecionarItem($index, $produtoId)
@@ -207,8 +249,9 @@ class Update extends Component
             $this->itens[$index]['status'] = 1;
             $this->itens[$index]['updated'] = '0';
             $this->itens[$index]['deleted'] = '0';
-
             $this->sugestoesItens[$index] = [];
+
+            $this->totalizarPedido();
         }
     }
 
