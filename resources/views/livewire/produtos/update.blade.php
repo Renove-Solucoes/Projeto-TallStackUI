@@ -53,13 +53,19 @@
 
                         <x-input label="Data Validade *" type="date" wire:model="produto.data_validade" required />
                     </div>
-
+                    <div class="gap-4">
+                        <x-toggle label="Fracionar? Permitir vender em quantidades fracionadas" wire:model="produto.fracionar" :checked="$produto?->fracionar ? true : false" />
+                    </div>
 
                     <div class="grid md:grid-cols-3 gap-4">
                         <x-currency mutate locale="pt-BR" symbol="R$" label="Preço Padrão *"
                             wire:model="produto.preco_padrao" required />
 
-                        <x-select.native label="Tipo Produto *" wire:model="produto.tipo" :options="[['name' => 'Fisico', 'id' => 'F'], ['name' => 'Digital', 'id' => 'D'], ['name' => 'Serviço', 'id' => 'S']]"
+                        <x-select.native label="Tipo Produto *" wire:model="produto.tipo" :options="[
+                            ['name' => 'Fisico', 'id' => 'F'],
+                            ['name' => 'Digital', 'id' => 'D'],
+                            ['name' => 'Serviço', 'id' => 'S'],
+                        ]"
                             select="label:name|value:id" required />
 
                         <x-select.native label="Status *" wire:model="produto.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"

@@ -157,8 +157,11 @@
                         <div class="md:col-span-4">
                             DESCRICAO
                         </div>
-                        <div class="md:col-span-2">
+                        <div class="md:col-span-1">
                             SKU
+                        </div>
+                        <div class="md:col-span-1">
+                            UN
                         </div>
                         <div class="md:col-span-2">
                             QTD
@@ -196,8 +199,11 @@
                                         </ul>
                                     @endif
                                 </div>
-                                <div class="md:col-span-2">
+                                <div class="md:col-span-1">
                                     <x-input wire:model="itens.{{ $index }}.sku" readonly />
+                                </div>
+                                <div class="md:col-span-1">
+                                    <x-input wire:model="itens.{{ $index }}.unidade" readonly />
                                 </div>
 
                                     <div class="md:col-span-2">

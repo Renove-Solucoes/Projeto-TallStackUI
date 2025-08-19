@@ -70,6 +70,7 @@ class Create extends Component
             'produto.sku' => 'required|string|max:100',
             'produto.tipo' => 'required|string|in:F,D,S',
             'produto.unidade' => 'required|string|max:10',
+            'produto.fracionar' => 'required|boolean',
             'produto.data_validade' => 'required|date',
             'produto.preco_padrao' => 'required|numeric|min:0',
             'produto.status' => 'required|string|in:A,I',

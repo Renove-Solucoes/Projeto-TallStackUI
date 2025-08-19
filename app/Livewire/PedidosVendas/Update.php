@@ -154,6 +154,8 @@ class Update extends Component
                 'id' => '',
                 'produto_id' => '',
                 'sku' => '',
+                'unidade' => '',
+                'fracionar' => true,
                 'descricao' => '',
                 'quantidade' => 1,
                 'preco' => 0.00,
@@ -245,13 +247,16 @@ class Update extends Component
             $this->itens[$index]['produto_id'] = $produto->id;
             $this->itens[$index]['descricao'] = $produto->nome;
             $this->itens[$index]['sku'] = $produto->sku;
+            $this->itens[$index]['unidade'] = $produto->unidade;
+            $this->itens[$index]['fracionar'] = $produto->fracionar;
             $this->itens[$index]['preco'] = $produto->preco_padrao;
             $this->itens[$index]['status'] = 1;
             $this->itens[$index]['updated'] = '0';
             $this->itens[$index]['deleted'] = '0';
-            $this->sugestoesItens[$index] = [];
 
             $this->totalizarPedido();
+
+            $this->sugestoesItens[$index] = [];
         }
     }
 

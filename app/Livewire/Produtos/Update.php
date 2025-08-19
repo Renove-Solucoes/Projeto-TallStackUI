@@ -98,6 +98,10 @@ class Update extends Component
                 'string',
                 'max:10'
             ],
+            'produto.fracionar' => [
+                'required',
+                'boolean'
+            ],
             'produto.data_validade' => [
                 'required',
                 'date'
@@ -138,8 +142,19 @@ class Update extends Component
         $this->imagemTemp = is_array($this->imagemTemp) ? $collect->toArray() : $collect->first();
     }
 
+    public function currencySanitize($valor)
+    {
+        if (isset($valor) && str_contains($valor, ',')) {
+            return  str_replace(['.', ','], ['', '.'], $valor);
+        }
+
+        return $valor;
+    }
+
     public function save(): void
     {
+        //todo: Função CurrecySanitize em todo projeto
+        $this->produto->preco_padrao = $this->currencySanitize($this->produto->preco_padrao);
         $this->validate();
 
         try {
@@ -150,8 +165,15 @@ class Update extends Component
                 $this->produto->imagem = $path;
             }
 
+
+
+
             DB::transaction(function () {
+
+
                 $this->produto->update();
+
+
                 $this->produto->categorias()->sync($this->categorias_selecionadas);
                 $this->produto->tags()->sync($this->tags_selecionadas);
             });

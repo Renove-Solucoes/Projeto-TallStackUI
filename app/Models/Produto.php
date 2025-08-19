@@ -17,6 +17,7 @@ class Produto extends Model
         'nome',
         'tipo',
         'unidade',
+        'fracionar',
         'data_validade',
         'preco_padrao',
         'status'

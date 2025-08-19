@@ -119,6 +119,7 @@ class ProdutoFactory extends Factory
             'sku' => strtoupper(fake()->unique()->bothify('???####')),
             'tipo' => $this->faker->randomElement(['F', 'D']),
             'unidade' => $this->faker->randomElement(['UN', 'CX', 'MT', 'EM']),
+            'fracionar' => $this->faker->boolean(true),
             'data_validade' => $this->faker->dateTimeBetween('-1 years', 'now'),
             'preco_padrao' => $this->faker->randomFloat(2, 500.5, 2000),
             'status' => 'A'

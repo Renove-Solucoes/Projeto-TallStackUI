@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('sku');
             $table->string('tipo', 1);
             $table->char('unidade', 2);
+            $table->boolean('fracionar')->default(true);
             $table->date('data_validade');
             $table->decimal('preco_padrao');
             $table->string('imagem')->nullable();
