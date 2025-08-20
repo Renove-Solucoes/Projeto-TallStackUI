@@ -5,6 +5,7 @@ namespace App\Livewire\PedidosVendas;
 use App\Livewire\Traits\Alert;
 use App\Models\Cliente;
 use App\Models\PedidosVenda;
+use App\Models\PedidosVendaItem;
 use App\Models\Produto;
 use App\Services\ViacepServices;
 use GuzzleHttp\Client;
@@ -34,17 +35,32 @@ class Update extends Component
     public function mount()
     {
 
-        $this->clientes = Cliente::orderBy('nome')->get(['id', 'nome'])->map(function ($cliente) {
-            return [
-                'id' => $cliente->id,
-                'nome' => $cliente->nome,
-            ];
-        })->toArray();
+        // dd($this->pedidosVenda);
+        // if ($this->itens != null) {
+        //     $this->itens = $this->pedidosVenda->itens;
+        // } else {
+        //     $this->itens = [];
+        //     $this->addItem();
+        // }
 
+        if ($this->pedidosVenda->itens()->count() > 0) {
+            $itemsPedido = $this->pedidosVenda->itens()->get();
 
+            foreach ($itemsPedido as $item) {
 
-        if ($this->itens != null) {
-            $this->itens = $this->pedidosVenda->itens;
+                $this->itens[] = [
+                    'id' => $item->id,
+                    'produto_id' => $item->produto_id,
+                    'sku' => $item->produto->sku ?? '',
+                    'descricao' => $item->produto->nome ?? '',
+                    'quantidade' => $item->quantidade,
+                    'preco' => $item->preco,
+                    'status' => $item->status,
+                    'updated' => 0,
+                    'deleted' => 0
+                ];
+            }
+            $this->totalizarPedido();
         } else {
             $this->itens = [];
             $this->addItem();
@@ -56,14 +72,7 @@ class Update extends Component
         return view('livewire.pedidos-vendas.update');
     }
 
-    public function load(PedidosVenda $pedidosVenda)
-    {
-        $this->pedidosVenda = $pedidosVenda;
 
-        $this->itens = $this->pedidosVenda->itens;
-        $this->resetErrorBag();
-        $this->redirectRoute('pedidosvendas.edit', ['pedidosVenda' => $pedidosVenda->id]);
-    }
 
     public function rules()
     {
@@ -84,6 +93,9 @@ class Update extends Component
             'pedidosVenda.uf' => ['required', 'string', 'max:2'],
             'pedidosVenda.total' => ['required', 'numeric', 'min:0'],
             'pedidosVenda.complemento' => ['nullable', 'string', 'max:255'],
+            'itens.*.produto_id' => ['required', Rule::exists('produtos', 'id')],
+            'itens.*.quantidade' => ['required', 'numeric', 'min:1'],
+
         ];
     }
 
@@ -171,6 +183,8 @@ class Update extends Component
         // unset($this->itens[$index]);
         $this->itens = array_values($this->itens); // reindexa
         $this->itens[$index]['deleted'] = 1;
+
+        $this->totalizarPedido();
     }
 
     public function updatedItens($value, $key)
@@ -209,21 +223,27 @@ class Update extends Component
         if ($index[1] === 'quantidade') {
             $this->totalizarPedido();
         }
+
+        $this->totalizarPedido();
     }
+
 
     public function totalizarPedido()
     {
         //Percorrer Array Items
         $totalPedido = 0;
         foreach ($this->itens as $index => $item) {
-            $qtde = $this->currencySanitize($item['quantidade']);
-            $precounitario = $this->currencySanitize($item['preco']);
-            $total = $qtde * $precounitario;
-            $total = floatval(number_format($total, 2, '.', ''));
 
-            $this->itens[$index]['total']  =  $total;
+            if ($item['deleted'] != 1) {
+                $qtde = $this->currencySanitize($item['quantidade']);
+                $precounitario = $this->currencySanitize($item['preco']);
+                $total = $qtde * $precounitario;
+                $total = floatval(number_format($total, 2, '.', ''));
 
-            $totalPedido += $total;
+                $this->itens[$index]['total']  =  $total;
+
+                $totalPedido += $total;
+            }
         }
 
         $this->pedidosVenda->total = $totalPedido;
@@ -287,10 +307,54 @@ class Update extends Component
 
     public function save()
     {
+        sleep(2);
+        $this->pedidosVenda->total = $this->currencySanitize($this->pedidosVenda->total);
         $this->validate();
 
         try {
+
             $this->pedidosVenda->save();
+
+            foreach ($this->itens as $index => $item) {
+
+                $item['quantidade'] = $this->currencySanitize($item['quantidade']);
+                $item['preco'] = $this->currencySanitize($item['preco']);
+
+
+                if (!empty($item['id']) && $item['deleted'] == 1) {
+                    // Deleta
+                    $itemModel = PedidosVendaItem::find($item['id']);
+                    if ($itemModel) {
+                        $itemModel->delete();
+                    }
+                } else if (!empty($item['id']) && $item['updated'] == 1) {
+                    // Atualiza
+
+                    $itemModel = PedidosVendaItem::find($item['id']);
+
+                    if ($itemModel) {
+
+                        $itemModel->update([
+                            'produto_id' => $item['produto_id'],
+                            'quantidade' => $item['quantidade'],
+                            'preco' => $item['preco'],
+                            'status' => $item['status'],
+                        ]);
+                    }
+                } else if (empty($item['id'])) {
+                    // Cria
+
+                    PedidosVendaItem::create([
+                        'pedidos_venda_id' => $this->pedidosVenda->id,
+                        'produto_id' => $item['produto_id'],
+                        'quantidade' => $item['quantidade'],
+                        'preco' => $item['preco'],
+                        'status' => $item['status'] ?? 1,
+                    ]);
+                }
+            }
+
+
             $this->dispatch('updated');
             $this->modal = false;
             $this->toast()->success('Atenção!', 'Pedido de venda atualizado com sucesso.')->flash()->send();

@@ -221,7 +221,7 @@
                                     <x-input wire:model="itens.{{ $index }}.unidade" readonly />
                                 </div>
 
-                                <div class="md:col-span-2">
+                                <div class="md:col-span-1">
                                     <x-number mutate locale="pt-BR"
                                         wire:model.blur="itens.{{ $index }}.quantidade" step="0.5"
                                         min="0" max="9999" required />
@@ -233,6 +233,10 @@
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
                                         wire:model="itens.{{ $index }}.total" readonly />
+                                </div>
+                                <div class="md:col-span-1">
+                                    <x-button.circle icon="trash" color="amber"
+                                        wire:click="removeItem({{ $index }})" outline />
                                 </div>
                             </div>
                         @endif
@@ -250,8 +254,9 @@
 
         </form>
         <x-slot:footer>
-            <x-button type="submit" icon="check" form="pedidos-update-{{ $pedidosVenda?->id }}">
+            <x-button type="submit" icon="check"  form="pedidos-update-{{ $pedidosVenda?->id }}" loading>
                 @lang('    Salvar     ')
+
             </x-button>
         </x-slot:footer>
     </x-card>
