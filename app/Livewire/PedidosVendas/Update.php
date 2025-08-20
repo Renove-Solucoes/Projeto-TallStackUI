@@ -307,7 +307,6 @@ class Update extends Component
 
     public function save()
     {
-        sleep(2);
         $this->pedidosVenda->total = $this->currencySanitize($this->pedidosVenda->total);
         $this->validate();
 

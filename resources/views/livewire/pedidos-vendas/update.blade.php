@@ -1,22 +1,22 @@
 <div>
-    <x-card>
+    <x-card class="rounded-lg">
         <form id="pedidos-update-{{ $pedidosVenda?->id }}" wire:submit="save" class="space-y-4">
-
+            <div class="grid grid-cols-12 gap-4">
+                <div
+                    class="flex items-center justify-between md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white border-b-1 border-gray-200 dark:border-gray-600 pb-4">
+                    <div>Pedido {{ $pedidosVenda?->id }}</div>
+                    <div>
+                        <x-button href="{{ route('pedidosvendas.index') }}" color="gray" icon='chevron-left'
+                            :text="__('Voltar')" sm />
+                    </div>
+                </div>
+            </div>
             <x-tab selected="Cliente">
                 <x-tab.items tab="Cliente">
                     <x-slot:left>
                         <x-icon name="user" class="w-5 h-5" />
                     </x-slot:left>
                     <div class="grid grid-cols-12 gap-4">
-                        <div
-                            class="flex items-center justify-between md:col-span-12 text-lg font-semibold text-gray-900 dark:text-white border-b-1 border-gray-200 dark:border-gray-600 pb-4">
-                            <div>Pedido {{ $pedidosVenda?->id }}</div>
-                            <div>
-                                <x-button href="{{ route('pedidosvendas.index') }}" color="gray" icon='chevron-left'
-                                    :text="__('Voltar')" sm loading />
-                            </div>
-                        </div>
-
 
                         <div x-data="{ tipoPessoa: @entangle('pedidosVenda.tipo_pessoa') }" class="md:col-span-12 grid md:grid-cols-12 md:gap-4">
 
@@ -25,7 +25,7 @@
                                     @click.away="abertoCliente = false" @keydown.escape.window="abertoCliente = false">
                                     <x-input wire:model.live.debounce.500ms="pedidosVenda.nome" label="Cliente *"
                                         placeholder="Pesquise aqui por nome ou CPF/CNPJ" autocomplete="off"
-                                        @focus="abertoCliente = true" @input="abertoCliente = true" require />
+                                        @focus="abertoCliente = true" @input="abertoCliente = true" require icon="magnifying-glass" position="right" />
 
                                     @if (!empty($sugestoesClientes))
                                         <ul x-show="abertoCliente && {{ !empty($sugestoesClientes) ? 'true' : 'false' }}"
@@ -43,29 +43,42 @@
                             </div>
 
 
-                            <div class="md:col-span-3">
+                            <div class="md:col-span-2">
                                 <x-select.native label="Tipo Pessoa *" wire:model="pedidosVenda.tipo_pessoa"
                                     x-model="tipoPessoa" :options="[['name' => 'Fisica', 'id' => 'F'], ['name' => 'Juridica', 'id' => 'J']]" select="label:name|value:id" required />
                             </div>
 
-                            <div class="md:col-span-4">
+                            <div class="md:col-span-2">
                                 <x-input label="CPF/CNPJ *" wire:model="pedidosVenda.cpf_cnpj"
                                     x-mask:dynamic="tipoPessoa === 'J' ? '99.999.999/9999-99' : '999.999.999-99'"
                                     required />
                             </div>
 
+                            <!-- Email -->
+                            <div class=" md:col-span-3">
+                                <x-input label="Email *" wire:model="pedidosVenda.email" required />
+                            </div>
+
+                            <!-- Telefone -->
+                            <div class=" md:col-span-2">
+                                <x-input label="Telefone *" x-mask="(99) 99999-9999" wire:model="pedidosVenda.telefone"
+                                    required />
+                            </div>
+
+                            <!-- Data de Emissão -->
+                            <div class=" md:col-span-2">
+                                <x-input type="date" label="Data de Emissão *" wire:model="pedidosVenda.data_emissao"
+                                    required />
+                            </div>
+
+                            <!-- Status -->
+                            <div class=" md:col-span-2">
+                                <x-select.native label="Status *" wire:model="pedidosVenda.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
+                                    select="label:name|value:id" required />
+                            </div>
+
                         </div>
 
-                        <!-- Email -->
-                        <div class=" md:col-span-3">
-                            <x-input label="Email *" wire:model="pedidosVenda.email" required />
-                        </div>
-
-                        <!-- Telefone -->
-                        <div class=" md:col-span-3">
-                            <x-input label="Telefone *" x-mask="(99) 99999-9999" wire:model="pedidosVenda.telefone"
-                                required />
-                        </div>
                     </div>
                 </x-tab.items>
                 <x-tab.items tab="Endereço">
@@ -74,7 +87,7 @@
                     </x-slot:left>
                     <div class="grid grid-cols-12 gap-4">
                         <!-- CEP -->
-                        <div class=" md:col-span-3">
+                        <div class=" md:col-span-2">
                             <x-input label="CEP *" wire:model.blur="pedidosVenda.cep" required maxlength="8" />
                             {!! $cepErrorHtml !!}
                         </div>
@@ -89,18 +102,18 @@
                             <x-input label="Número *" wire:model="pedidosVenda.numero" required maxlength="10" />
                         </div>
 
-                        <!-- Cidade -->
-                        <div class=" md:col-span-4">
-                            <x-input label="Cidade *" wire:model="pedidosVenda.cidade" required maxlength="80" />
-                        </div>
-
                         <!-- Bairro -->
-                        <div class=" md:col-span-5">
+                        <div class=" md:col-span-2">
                             <x-input label="Bairro *" wire:model="pedidosVenda.bairro" required maxlength="80" />
                         </div>
 
-                        <!-- UF -->
+                        <!-- Cidade -->
                         <div class=" md:col-span-2">
+                            <x-input label="Cidade *" wire:model="pedidosVenda.cidade" required maxlength="80" />
+                        </div>
+
+                        <!-- UF -->
+                        <div class=" md:col-span-1">
                             <x-select.native label="UF *" wire:model="pedidosVenda.uf" :options="[
                                 ['name' => 'AC', 'value' => 'AC'],
                                 ['name' => 'AL', 'value' => 'AL'],
@@ -138,17 +151,7 @@
                             <x-input label="Complemento" wire:model="pedidosVenda.complemento" maxlength="120" />
                         </div>
 
-                        <!-- Data de Emissão -->
-                        <div class=" md:col-span-6">
-                            <x-input type="date" label="Data de Emissão *" wire:model="pedidosVenda.data_emissao"
-                                required />
-                        </div>
 
-                        <!-- Status -->
-                        <div class=" md:col-span-2">
-                            <x-select.native label="Status *" wire:model="pedidosVenda.status" :options="[['name' => 'Ativo', 'id' => 'A'], ['name' => 'Inativo', 'id' => 'I']]"
-                                select="label:name|value:id" required />
-                        </div>
                     </div>
                 </x-tab.items>
             </x-tab>
@@ -168,11 +171,11 @@
 
                         </div>
                     </x-slot:header>
-                    <div class="grid md:grid-cols-12 md:gap-2 space-y-2">
-                        <div class="md:col-span-4">
+                    <div class="grid md:grid-cols-20 md:gap-2 space-y-2">
+                        <div class="md:col-span-6">
                             DESCRICAO
                         </div>
-                        <div class="md:col-span-1">
+                        <div class="md:col-span-2">
                             SKU
                         </div>
                         <div class="md:col-span-1">
@@ -186,6 +189,12 @@
                             PRECO
                         </div>
                         <div class="md:col-span-2">
+                            DESC
+                        </div>
+                        <div class="md:col-span-2">
+                            PRECO FINAL
+                        </div>
+                        <div class="md:col-span-2">
                             Total
                         </div>
                     </div>
@@ -193,12 +202,12 @@
                     @foreach ($itens as $index => $item)
 
                         @if ($item['deleted'] == 0)
-                            <div class="grid md:grid-cols-12 md:gap-2 space-y-2">
-                                <div class="md:col-span-4 relative" x-data="{ abertoItens: false }"
+                            <div class="grid md:grid-cols-20 md:gap-2 space-y-2">
+                                <div class="md:col-span-6 relative" x-data="{ abertoItens: false }"
                                     @click.away="abertoItens = false" @keydown.escape.window="abertoItens = false">
                                     <x-input wire:model.live.debounce.500ms="itens.{{ $index }}.descricao"
                                         placeholder="Pesquise aqui por SKU(código) ou descrição" autocomplete="off"
-                                        @focus="abertoItens = true" @input="abertoItens = true" require />
+                                        @focus="abertoItens = true" @input="abertoItens = true" require icon="magnifying-glass" position="right"/>
 
 
                                     @if (!empty($sugestoesItens[$index]))
@@ -214,17 +223,25 @@
                                         </ul>
                                     @endif
                                 </div>
-                                <div class="md:col-span-1">
+                                <div class="md:col-span-2">
                                     <x-input wire:model="itens.{{ $index }}.sku" readonly />
                                 </div>
                                 <div class="md:col-span-1">
                                     <x-input wire:model="itens.{{ $index }}.unidade" readonly />
                                 </div>
 
-                                <div class="md:col-span-1">
-                                    <x-number mutate locale="pt-BR"
-                                        wire:model.blur="itens.{{ $index }}.quantidade" step="0.5"
-                                        min="0" max="9999" required />
+                                <div class="md:col-span-2">
+                                    <x-currency mutate locale="pt-BR"
+                                        wire:model.blur="itens.{{ $index }}.quantidade" max="9999"
+                                        required />
+                                </div>
+                                <div class="md:col-span-2">
+                                    <x-currency mutate locale="pt-BR" symbol="R$"
+                                        wire:model="itens.{{ $index }}.preco" required readonly />
+                                </div>
+                                <div class="md:col-span-2">
+                                    <x-currency mutate locale="pt-BR" symbol="R$"
+                                        wire:model="itens.{{ $index }}.preco" required readonly />
                                 </div>
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
@@ -248,16 +265,16 @@
 
             </div>
 
-            <x-card>
+            <x-card class="mb-4">
                 <x-currency mutate locale="pt-BR" symbol="R$" wire:model="pedidosVenda.total" readonly />
             </x-card>
 
-        </form>
-        <x-slot:footer>
-            <x-button type="submit" icon="check"  form="pedidos-update-{{ $pedidosVenda?->id }}" loading>
+            <x-button type="submit" icon="check" form="pedidos-update-{{ $pedidosVenda?->id }}" loading>
                 @lang('    Salvar     ')
 
             </x-button>
-        </x-slot:footer>
+
+        </form>
+     
     </x-card>
 </div>
