@@ -1,6 +1,7 @@
 <x-guest-layout>
     <div class="my-6 flex items-center justify-center">
-        <img src="{{ asset('/assets/images/tsui.png') }}" />
+        <img class="max-w-[50px]" src="{{ asset('/assets/images/fav-icon.png') }}" />
+        <span class="whitespace-nowrap text-2xl font-bold text-sky-900">BIV Renove</span>
     </div>
 
     <form method="POST" action="{{ route('login') }}">

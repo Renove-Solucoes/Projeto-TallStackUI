@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" href="{{ asset('/assets/images/fav-icon.png') }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -100,7 +101,6 @@
                 </x-side-bar.item>
                 <x-side-bar.item text="Vendas" icon="bolt" color="secondary">
                     <x-side-bar.item text="Pedidos de Vendas" icon="shopping-cart" :route="route('pedidosvendas.index')" />
-                    <x-side-bar.item text="Tabela de preços" icon="table-cells" :route="route('tabelasprecos.index')" />
                 </x-side-bar.item>
                  <x-side-bar.item text="Finaneiro" icon="currency-dollar" color="secondary">
                     <x-side-bar.item text="Tabela de preços" icon="table-cells"  />
