@@ -11,6 +11,7 @@ class PedidosVendaItem extends Model
         'produto_id',
         'quantidade',
         'preco',
+        'desconto',
         'status',
     ];
 

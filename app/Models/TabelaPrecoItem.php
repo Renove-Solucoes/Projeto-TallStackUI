@@ -17,12 +17,13 @@ class TabelaPrecoItem extends Model
         'status',
     ];
 
-    public function tabelaPreco(){
+    public function tabelaPreco()
+    {
         return $this->belongsTo(tabelaPreco::class);
     }
 
-    public function produto(){
+    public function produto()
+    {
         return $this->belongsTo(Produto::class);
     }
-    
 }

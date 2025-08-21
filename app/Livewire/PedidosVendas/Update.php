@@ -32,6 +32,7 @@ class Update extends Component
     public $itens = [];
     public $sugestoesItens = [];
 
+
     public function mount()
     {
 
@@ -55,6 +56,8 @@ class Update extends Component
                     'descricao' => $item->produto->nome ?? '',
                     'quantidade' => $item->quantidade,
                     'preco' => $item->preco,
+                    'desconto' => $item->desconto ?? 0.00,
+                    'preco_final' => 0.00,
                     'status' => $item->status,
                     'updated' => 0,
                     'deleted' => 0
@@ -171,6 +174,8 @@ class Update extends Component
                 'descricao' => '',
                 'quantidade' => 1,
                 'preco' => 0.00,
+                'desconto' => 0.00,
+                'preco_final' => 0.00,
                 'total' => 0.00,
                 'status' => 1,
                 'updated' => 0,
@@ -237,9 +242,15 @@ class Update extends Component
             if ($item['deleted'] != 1) {
                 $qtde = $this->currencySanitize($item['quantidade']);
                 $precounitario = $this->currencySanitize($item['preco']);
-                $total = $qtde * $precounitario;
-                $total = floatval(number_format($total, 2, '.', ''));
+                $desconto = $this->currencySanitize($item['desconto']);
+                $precoFinal = $precounitario - ($precounitario * ($desconto / 100));
 
+                $total = $qtde * $precoFinal;
+
+                $total = floatval(number_format($total, 2, '.', ''));
+                $precoFinal = floatval(number_format($precoFinal, 2, '.', ''));
+
+                $this->itens[$index]['preco_final']  =  $precoFinal;
                 $this->itens[$index]['total']  =  $total;
 
                 $totalPedido += $total;
@@ -269,6 +280,7 @@ class Update extends Component
             $this->itens[$index]['sku'] = $produto->sku;
             $this->itens[$index]['unidade'] = $produto->unidade;
             $this->itens[$index]['fracionar'] = $produto->fracionar;
+            $this->itens[$index]['desconto'] = 0.00;
             $this->itens[$index]['preco'] = $produto->preco_padrao;
             $this->itens[$index]['status'] = 1;
             $this->itens[$index]['updated'] = '0';
@@ -307,6 +319,13 @@ class Update extends Component
 
     public function save()
     {
+
+        foreach ($this->itens as $index => $item) {
+            $this->itens[$index]['quantidade'] = $this->currencySanitize($item['quantidade']);
+            $this->itens[$index]['preco'] = $this->currencySanitize($item['preco']);
+            $this->itens[$index]['desconto'] = $this->currencySanitize($item['desconto']);
+        }
+
         $this->pedidosVenda->total = $this->currencySanitize($this->pedidosVenda->total);
         $this->validate();
 
@@ -314,10 +333,8 @@ class Update extends Component
 
             $this->pedidosVenda->save();
 
-            foreach ($this->itens as $index => $item) {
 
-                $item['quantidade'] = $this->currencySanitize($item['quantidade']);
-                $item['preco'] = $this->currencySanitize($item['preco']);
+            foreach ($this->itens as $index => $item) {
 
 
                 if (!empty($item['id']) && $item['deleted'] == 1) {
@@ -337,6 +354,7 @@ class Update extends Component
                             'produto_id' => $item['produto_id'],
                             'quantidade' => $item['quantidade'],
                             'preco' => $item['preco'],
+                            'desconto' => $item['desconto'],
                             'status' => $item['status'],
                         ]);
                     }
@@ -348,6 +366,7 @@ class Update extends Component
                         'produto_id' => $item['produto_id'],
                         'quantidade' => $item['quantidade'],
                         'preco' => $item['preco'],
+                        'desconto' => $item['desconto'],
                         'status' => $item['status'] ?? 1,
                     ]);
                 }

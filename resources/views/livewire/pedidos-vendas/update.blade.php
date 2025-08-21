@@ -173,7 +173,7 @@
                     </x-slot:header>
                     <div class="grid md:grid-cols-20 md:gap-2 space-y-2">
                         <div class="md:col-span-6">
-                            DESCRICAO
+                            Descrição
                         </div>
                         <div class="md:col-span-2">
                             SKU
@@ -182,20 +182,20 @@
                             UN
                         </div>
                         <div class="md:col-span-2">
-                            QTD
+                            Qtd
                         </div>
 
                         <div class="md:col-span-2">
-                            PRECO
+                            Preço
                         </div>
                         <div class="md:col-span-2">
-                            DESC
+                            Desconto
                         </div>
                         <div class="md:col-span-2">
-                            PRECO FINAL
+                            Preço final
                         </div>
                         <div class="md:col-span-2">
-                            Total
+                            Total item
                         </div>
                     </div>
 
@@ -240,12 +240,12 @@
                                         wire:model="itens.{{ $index }}.preco" required readonly />
                                 </div>
                                 <div class="md:col-span-2">
-                                    <x-currency mutate locale="pt-BR" symbol="R$"
-                                        wire:model="itens.{{ $index }}.preco" required readonly />
+                                    <x-currency mutate locale="pt-BR" symbol="%"
+                                        wire:model.blur="itens.{{ $index }}.desconto"  />
                                 </div>
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
-                                        wire:model="itens.{{ $index }}.preco" required readonly />
+                                        wire:model="itens.{{ $index }}.preco_final" required readonly />
                                 </div>
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
@@ -275,6 +275,6 @@
             </x-button>
 
         </form>
-     
+
     </x-card>
 </div>
