@@ -27,6 +27,10 @@ class PedidosVenda extends Model
         'cidade',
         'uf',
         'complemento',
+        'desc1',
+        'desc2',
+        'desc3',
+        'frete',
         'total',
         'status',
     ];

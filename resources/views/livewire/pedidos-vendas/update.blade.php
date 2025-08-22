@@ -25,7 +25,8 @@
                                     @click.away="abertoCliente = false" @keydown.escape.window="abertoCliente = false">
                                     <x-input wire:model.live.debounce.500ms="pedidosVenda.nome" label="Cliente *"
                                         placeholder="Pesquise aqui por nome ou CPF/CNPJ" autocomplete="off"
-                                        @focus="abertoCliente = true" @input="abertoCliente = true" require icon="magnifying-glass" position="right" />
+                                        @focus="abertoCliente = true" @input="abertoCliente = true" require
+                                        icon="magnifying-glass" position="right" />
 
                                     @if (!empty($sugestoesClientes))
                                         <ul x-show="abertoCliente && {{ !empty($sugestoesClientes) ? 'true' : 'false' }}"
@@ -207,7 +208,8 @@
                                     @click.away="abertoItens = false" @keydown.escape.window="abertoItens = false">
                                     <x-input wire:model.live.debounce.500ms="itens.{{ $index }}.descricao"
                                         placeholder="Pesquise aqui por SKU(código) ou descrição" autocomplete="off"
-                                        @focus="abertoItens = true" @input="abertoItens = true" require icon="magnifying-glass" position="right"/>
+                                        @focus="abertoItens = true" @input="abertoItens = true" require
+                                        icon="magnifying-glass" position="right" />
 
 
                                     @if (!empty($sugestoesItens[$index]))
@@ -241,7 +243,7 @@
                                 </div>
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="%"
-                                        wire:model.blur="itens.{{ $index }}.desconto"  />
+                                        wire:model.blur="itens.{{ $index }}.desconto" />
                                 </div>
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
@@ -265,8 +267,24 @@
 
             </div>
 
-            <x-card class="mb-4">
-                <x-currency mutate locale="pt-BR" symbol="R$" wire:model="pedidosVenda.total" readonly />
+            <x-card>
+
+                <div class="grid grid-cols-12 gap-4">
+
+                    <div class="md:col-span-2">
+                        <x-currency label="{{ __('Desc. Comercial') }} "  mutate locale="pt-BR" symbol="%"
+                            wire:model.blur="pedidosVenda.desc1"  />
+                    </div>
+                    <div class="md:col-span-2">
+                        <x-currency label="{{ __('Frete') }} " mutate locale="pt-BR" symbol="R$"
+                            wire:model.blur="pedidosVenda.frete"  />
+                    </div>
+                    <div class="md:col-span-2">
+                        <x-currency label="{{ __('Total') }} " mutate locale="pt-BR" symbol="R$"
+                            wire:model="pedidosVenda.total" readonly />
+                    </div>
+
+                </div>
             </x-card>
 
             <x-button type="submit" icon="check" form="pedidos-update-{{ $pedidosVenda?->id }}" loading>

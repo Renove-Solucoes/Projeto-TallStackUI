@@ -96,6 +96,10 @@ class Update extends Component
             'pedidosVenda.uf' => ['required', 'string', 'max:2'],
             'pedidosVenda.total' => ['required', 'numeric', 'min:0'],
             'pedidosVenda.complemento' => ['nullable', 'string', 'max:255'],
+            'pedidosVenda.desc1' => ['nullable', 'numeric', 'min:0'],
+            'pedidosVenda.desc2' => ['nullable', 'numeric', 'min:0'],
+            'pedidosVenda.desc3' => ['nullable', 'numeric', 'min:0'],
+            'pedidosVenda.frete' => ['nullable', 'numeric', 'min:0'],
             'itens.*.produto_id' => ['required', Rule::exists('produtos', 'id')],
             'itens.*.quantidade' => ['required', 'numeric', 'min:1'],
 
@@ -243,9 +247,19 @@ class Update extends Component
                 $qtde = $this->currencySanitize($item['quantidade']);
                 $precounitario = $this->currencySanitize($item['preco']);
                 $desconto = $this->currencySanitize($item['desconto']);
+                $desc1 = $this->currencySanitize($this->pedidosVenda->desc1);
+                $desc2 = $this->currencySanitize($this->pedidosVenda->desc2);
+                $desc3 = $this->currencySanitize($this->pedidosVenda->desc3);
+                $frete = $this->currencySanitize($this->pedidosVenda->frete);
+
                 $precoFinal = $precounitario - ($precounitario * ($desconto / 100));
 
+                $precoFinal = $precoFinal - ($precoFinal * ($desc1 / 100));
+                $precoFinal = $precoFinal - ($precoFinal * ($desc2 / 100));
+                $precoFinal = $precoFinal - ($precoFinal * ($desc3 / 100));
+
                 $total = $qtde * $precoFinal;
+                $total = $total + $frete;
 
                 $total = floatval(number_format($total, 2, '.', ''));
                 $precoFinal = floatval(number_format($precoFinal, 2, '.', ''));
@@ -325,6 +339,11 @@ class Update extends Component
             $this->itens[$index]['preco'] = $this->currencySanitize($item['preco']);
             $this->itens[$index]['desconto'] = $this->currencySanitize($item['desconto']);
         }
+
+        $this->pedidosVenda->desc1 = $this->currencySanitize($this->pedidosVenda->desc1);
+        $this->pedidosVenda->desc2 = $this->currencySanitize($this->pedidosVenda->desc2);
+        $this->pedidosVenda->desc3 = $this->currencySanitize($this->pedidosVenda->desc3);
+        $this->pedidosVenda->frete = $this->currencySanitize($this->pedidosVenda->frete);
 
         $this->pedidosVenda->total = $this->currencySanitize($this->pedidosVenda->total);
         $this->validate();

@@ -27,6 +27,10 @@ return new class extends Migration
             $table->string('cidade', 80);
             $table->string('uf', 2);
             $table->string('complemento', 120)->nullable();
+            $table->decimal('desc1', 10, 2)->default(0.00);
+            $table->decimal('desc2', 10, 2)->default(0.00);
+            $table->decimal('desc3', 10, 2)->default(0.00);
+            $table->decimal('frete', 10, 2)->default(0.00);
             $table->decimal('total', 10, 2)->default(0.00);
             $table->char('status');
             $table->timestamps();
