@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Categoria;
 use App\Models\Cliente;
+use App\Models\Empresa;
 use App\Models\Endereco;
+use App\Models\Filial;
 use App\Models\PedidosVenda;
 use App\Models\Produto;
 use App\Models\TabelaPreco;
@@ -24,6 +26,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+
+
         $clientes = Cliente::factory(24)->create();
         $tags = Tag::factory(14)->create();
         $categorias = Categoria::factory(17)->create();
@@ -31,6 +35,15 @@ class DatabaseSeeder extends Seeder
         $tabelasPreco = TabelaPreco::factory(4)->create();
         // $Enderecos = Endereco::factory(24)->create();
         $PedidosVenda = PedidosVenda::factory(24)->create();
+
+        $empresas = Empresa::factory(5)->create();
+        $filiais = Filial::factory(8)->create();
+
+        $filiais->each(function ($filial) use ($empresas) {
+            $filial->empresa_id = $empresas->random()->id;
+            $filial->save();
+        });
+
 
 
         // Carrega apenas as tags do tipo CLIENTE

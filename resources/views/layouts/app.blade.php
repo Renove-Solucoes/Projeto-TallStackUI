@@ -92,6 +92,8 @@
 
                 <x-side-bar.item text="Welcome Page" icon="arrow-uturn-left" :route="route('welcome')" />
                 <x-side-bar.item text="Cadastros" icon="home" color="secondary">
+                    <x-side-bar.item text="Empresas" icon="building-office" :route="route('empresas.index')" />
+                    <x-side-bar.item text="Filiais" icon="building-office-2" :route="route('filiais.index')" />
                     <x-side-bar.item text="Users" icon="user-circle" :route="route('users.index')" />
                     <x-side-bar.item text="Clientes" icon="users" :route="route('clientes.index')" />
                     <x-side-bar.item text="Tags" icon="tag" :route="route('tags.index')" />

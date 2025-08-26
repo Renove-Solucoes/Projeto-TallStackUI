@@ -10,6 +10,10 @@ Route::view('/', 'welcome')->name('welcome');
 Route::middleware(['auth'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
 
+    Route::get('/empresas', App\Livewire\Empresas\Index::class)->name('empresas.index');
+
+    Route::get('/filiais', App\Livewire\Filiais\Index::class)->name('filiais.index');
+
     Route::get('/users', Index::class)->name('users.index');
 
     Route::get('/user/profile', Profile::class)->name('user.profile');
