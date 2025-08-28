@@ -36,7 +36,7 @@ class Index extends Component
 
     public $headers = [
         ['index' => 'id', 'label' => '#'],
-        ['index' => 'empresa_id_nome', 'label' => 'Empresa'],
+        ['index' => 'empresa_nome', 'label' => 'Empresa'],
         ['index' => 'razao_social', 'label' => 'Razão Social'],
         ['index' => 'nome_fantasia', 'label' => 'Nome Fantasia'],
         ['index' => 'tipo_pessoa_nome', 'label' => 'Tipo Pessoa'],

@@ -23,7 +23,7 @@ class Filial extends Model
 
     ];
 
-    public function getEmpresaIdNomeAttribute(): string
+    public function getEmpresaNomeAttribute(): string
     {
         return $this->empresa->nome;
     }
