@@ -25,12 +25,16 @@
                     <x-button.circle href="{{ route('pedidosvendas.edit', $row->id) }}" icon="pencil" color="sky" outline
                         loading />
 
-
-
-                    <x-button.circle href="{{ route('pedidosvendas.generate-pdf', ['pedidosVenda' => $row->id]) }}" icon="printer" color="sky"
-                        outline loading  />
-
                     <livewire:PedidosVendas.delete :pedidosVenda="$row" :key="uniqid('', true)" @deleted="$refresh" />
+
+                    <div class="misc">
+                        <x-dropdown icon="ellipsis-vertical" static>
+                            <x-dropdown.items href="{{ route('pedidosvendas.generate-pdf', ['pedidosVenda' => $row->id]) }}"
+                                text="Gerar PDF" icon="printer" color="sky" outline loading />
+                            <x-dropdown.items
+                                text="Gerar em Excel" icon="table-cells" color="sky" outline loading />
+                        </x-dropdown>
+                    </div>
                 </div>
             @endinteract
         </x-table>
