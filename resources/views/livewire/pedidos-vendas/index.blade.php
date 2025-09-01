@@ -21,13 +21,13 @@
                 <x-badge text="{{ $row->status->getText() }}" color="{{ $row->status->getColor() }}" outline />
             @endinteract
             @interact('column_action', $row)
-                <div class="flex gap-1">
+                <div class="flex flex-row gap-1 justify-end">
                     <x-button.circle href="{{ route('pedidosvendas.edit', $row->id) }}" icon="pencil" color="sky" outline
                         loading />
 
                     <livewire:PedidosVendas.delete :pedidosVenda="$row" :key="uniqid('', true)" @deleted="$refresh" />
 
-                    <div class="misc">
+                    <div class="mt-2" >
                         <x-dropdown icon="ellipsis-vertical" static>
                             <x-dropdown.items href="{{ route('pedidosvendas.generate-pdf', ['pedidosVenda' => $row->id]) }}"
                                 text="Gerar PDF" icon="printer" color="sky" outline loading />
