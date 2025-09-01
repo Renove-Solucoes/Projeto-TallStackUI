@@ -14,8 +14,10 @@ class AppServiceProvider extends ServiceProvider
     }
 
     public function boot(): void
-    {   
-         TallStackUi::personalize()
+    {
+        date_default_timezone_set('America/Sao_Paulo');
+
+        TallStackUi::personalize()
             ->layout()
             ->block('wrapper.second.expanded')
             ->replace([

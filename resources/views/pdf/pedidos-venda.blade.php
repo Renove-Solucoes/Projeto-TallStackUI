@@ -71,6 +71,7 @@
 
 <body>
     <h2>Pedido de Venda #{{ $pedido->id }}</h2>
+    <p align="right"><strong>{{ date('d/m/Y'.' - '.'H:i:s') }}</strong></p>
 
 
     <table class="dados-pedido">
