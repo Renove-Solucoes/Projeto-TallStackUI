@@ -14,6 +14,9 @@
             @interact('column_cliente_id', $row)
                 {{ $row->cliente->nome }}
             @endinteract
+            @interact('column_total', $row)
+                R$ {{ number_format($row->total, 2, ',', '.') }}
+            @endinteract
             @interact('column_status', $row)
                 <x-badge text="{{ $row->status->getText() }}" color="{{ $row->status->getColor() }}" outline />
             @endinteract

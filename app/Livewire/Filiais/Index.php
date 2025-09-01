@@ -50,6 +50,7 @@ class Index extends Component
     public function rows(): LengthAwarePaginator
     {
         return Filial::query()
+            ->with('empresa')
             ->whereNotIn('id', [Auth::id()])
             ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['nome'], 'like', '%' . trim($this->search) . '%'))
             ->orderBy(...array_values($this->sort))

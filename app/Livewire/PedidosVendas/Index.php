@@ -34,6 +34,7 @@ class Index extends Component
         ['index' => 'id', 'label' => '#'],
         ['index' => 'cliente_id', 'label' => 'cliente'],
         ['index' => 'data_emissao', 'label' => 'data'],
+        ['index' => 'total', 'label' => 'Valor'],
         ['index' => 'status', 'label' => 'Status'],
         ['index' => 'action', 'sortable' => false],
         // ...
@@ -49,6 +50,7 @@ class Index extends Component
     public function rows(): LengthAwarePaginator
     {
         return PedidosVenda::query()
+            ->with('cliente')
             ->whereNotIn('id', [Auth::id()])
             ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['cliente_id'], 'like', '%' . trim($this->search) . '%'))
             ->orderBy(...array_values($this->sort))
