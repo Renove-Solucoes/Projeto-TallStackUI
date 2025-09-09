@@ -90,8 +90,9 @@
 
 
 
+                <x-side-bar.item text="Dashboard" color="gray-600" icon="home" :route="route('dashboard')" />
                 <x-side-bar.item text="Welcome Page" icon="arrow-uturn-left" :route="route('welcome')" />
-                <x-side-bar.item text="Cadastros" icon="home" color="secondary">
+                <x-side-bar.item text="Cadastros" icon="squares-plus" >
                     <x-side-bar.item text="Empresas" icon="building-office" :route="route('empresas.index')" />
                     <x-side-bar.item text="Filiais" icon="building-office-2" :route="route('filiais.index')" />
                     <x-side-bar.item text="Users" icon="user-circle" :route="route('users.index')" />
@@ -101,16 +102,15 @@
                     <x-side-bar.item text="Produtos" icon="cube" :route="route('produtos.index')" />
                     <x-side-bar.item text="Tabela de preços" icon="table-cells" :route="route('tabelasprecos.index')" />
                 </x-side-bar.item>
-                <x-side-bar.item text="Vendas" icon="bolt" color="secondary">
+                <x-side-bar.item text="Vendas" icon="bolt" >
                     <x-side-bar.item text="Pedidos de Vendas" icon="shopping-cart" :route="route('pedidosvendas.index')" />
                 </x-side-bar.item>
-                 <x-side-bar.item text="Finaneiro" icon="currency-dollar" color="secondary">
+                 <x-side-bar.item text="Finaneiro" icon="currency-dollar" >
                     <x-side-bar.item text="Tabela de preços" icon="table-cells"  />
                 </x-side-bar.item>
-                 <x-side-bar.item text="Configurações" icon="cog-6-tooth" color="secondary">
+                 <x-side-bar.item text="Configurações" icon="cog-6-tooth" >
                     <x-side-bar.item text="Tabela de preços" icon="table-cells"  />
                 </x-side-bar.item>
-                <x-side-bar.item text="Dashboard" color="gray-600" icon="home" :route="route('dashboard')" />
 
             </x-side-bar>
         </x-slot:menu>
