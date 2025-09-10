@@ -228,35 +228,43 @@
                                 <div class="md:col-span-2">
                                     <x-input wire:model="itens.{{ $index }}.sku" readonly />
                                 </div>
+
                                 <div class="md:col-span-1">
                                     <x-input wire:model="itens.{{ $index }}.unidade" readonly />
                                 </div>
 
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR"
-                                        wire:model.blur="itens.{{ $index }}.quantidade" max="9999"
-                                        required />
+                                        x-on:blur="$wire.set('itens.{{ $index }}.quantidade', $el.value)"
+                                        wire:model="itens.{{ $index }}.quantidade" max="9999" required />
                                 </div>
+
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
                                         wire:model="itens.{{ $index }}.preco" required readonly />
                                 </div>
+
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="%"
-                                        wire:model.blur="itens.{{ $index }}.desconto" />
+                                        x-on:blur="$wire.set('itens.{{ $index }}.desconto', $el.value)"
+                                        wire:model="itens.{{ $index }}.desconto" />
                                 </div>
+
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
                                         wire:model="itens.{{ $index }}.preco_final" required readonly />
                                 </div>
+
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
                                         wire:model="itens.{{ $index }}.total" readonly />
                                 </div>
+
                                 <div class="md:col-span-1">
                                     <x-button.circle icon="trash" color="amber"
                                         wire:click="removeItem({{ $index }})" outline />
                                 </div>
+
                             </div>
                         @endif
                     @endforeach
@@ -272,12 +280,14 @@
                 <div class="grid grid-cols-12 gap-4">
 
                     <div class="md:col-span-2">
-                        <x-currency label="{{ __('Desc. Comercial') }} "  mutate locale="pt-BR" symbol="%"
-                            wire:model.blur="pedidosVenda.desc1"  />
+                        <x-currency label="{{ __('Desc. Comercial') }} " mutate locale="pt-BR" symbol="%"
+                            x-on:blur="$wire.set('pedidosVenda.desc1', $el.value)"
+                            wire:model="pedidosVenda.desc1" />
                     </div>
                     <div class="md:col-span-2">
                         <x-currency label="{{ __('Frete') }} " mutate locale="pt-BR" symbol="R$"
-                            wire:model.blur="pedidosVenda.frete"  />
+                            x-on:blur="$wire.set('pedidosVenda.frete', $el.value)"
+                            wire:model="pedidosVenda.frete" />
                     </div>
                     <div class="md:col-span-2">
                         <x-currency label="{{ __('Total') }} " mutate locale="pt-BR" symbol="R$"

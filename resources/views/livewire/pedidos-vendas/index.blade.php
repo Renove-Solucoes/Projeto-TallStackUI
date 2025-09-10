@@ -29,7 +29,7 @@
 
                     <div class="mt-2" >
                         <x-dropdown icon="ellipsis-vertical" static>
-                            <x-dropdown.items href="{{ route('pedidosvendas.generate-pdf', ['pedidosVenda' => $row->id]) }}"
+                            <x-dropdown.items target="_blank" href="{{ route('pedidosvendas.generate-pdf', ['pedidosVenda' => $row->id]) }}"
                                 text="Gerar PDF" icon="printer" color="sky" outline loading />
                             <x-dropdown.items
                                 text="Gerar em Excel" icon="table-cells" color="sky" outline loading />

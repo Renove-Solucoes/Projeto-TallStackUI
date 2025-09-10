@@ -101,6 +101,29 @@ class DatabaseSeeder extends Seeder
             }
         });
 
+        //Assoscia de 4 a 8 Produtos no pedido de venda
+        $PedidosVenda->each(function ($pedido) use ($produtos) {
+            $quantidade = min($produtos->count(), rand(4, 8));
+
+            $produtosSelecionados = $produtos->random($quantidade);
+
+            $totalItem = 0;
+
+            foreach ($produtosSelecionados as $produto) {
+                $quantidade = rand(1, 10);
+                $preco = rand(1000, 5000) / 100;
+                $totalItem = $totalItem + ($quantidade * $preco);
+                $pedido->itens()->create([
+                    'produto_id' => $produto->id,
+                    'quantidade' => $quantidade,
+                    'preco' => $preco,
+                ]);
+            }
+
+            $pedido->total = $totalItem;
+            $pedido->save();
+        });
+
 
         // Cria 60 endereços, cada um com cliente_id aleatório
         // Endereco::factory(60)->create([

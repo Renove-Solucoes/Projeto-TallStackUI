@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('quantidade')->default(1);
             $table->decimal('preco')->default(0.00);
             $table->decimal('desconto')->default(0);
-            $table->char('status');
+            $table->char('status')->default('A');
             $table->timestamps();
         });
     }
