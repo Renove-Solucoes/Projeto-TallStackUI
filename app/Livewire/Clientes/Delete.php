@@ -5,6 +5,7 @@ namespace App\Livewire\Clientes;
 use App\Livewire\Traits\Alert;
 use App\Models\Cliente;
 use Livewire\Attributes\Renderless;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Delete extends Component

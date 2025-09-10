@@ -4,6 +4,7 @@ namespace App\Livewire\Produtos;
 
 use App\Livewire\Traits\Alert;
 use App\Models\Produto;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;
 

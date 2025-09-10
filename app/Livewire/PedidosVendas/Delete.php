@@ -5,6 +5,7 @@ namespace App\Livewire\PedidosVendas;
 use App\Livewire\Traits\Alert;
 use App\Models\PedidosVenda;
 use Livewire\Component;
+use Illuminate\Support\Facades\Log;
 
 class Delete extends Component
 {

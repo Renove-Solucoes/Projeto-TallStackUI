@@ -6,6 +6,7 @@ use App\Livewire\Traits\Alert;
 use App\Models\TabelaPreco;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;
+use Illuminate\Support\Facades\Log;
 
 class Delete extends Component
 {
