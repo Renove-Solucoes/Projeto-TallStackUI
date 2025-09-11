@@ -118,7 +118,7 @@
                     <th>Quantidade</th>
                     <th>Preço R$</th>
                     <th>Desconto %</th>
-                    <th>Preço Final R$</th>
+                    <th>Preço item R$</th>
                     <th>Total item R$</th>
                 </tr>
             </thead>

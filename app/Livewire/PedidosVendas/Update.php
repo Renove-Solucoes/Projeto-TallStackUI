@@ -44,6 +44,7 @@ class Update extends Component
         //     $this->addItem();
         // }
 
+
         if ($this->pedidosVenda->itens()->count() > 0) {
             $itemsPedido = $this->pedidosVenda->itens()->get();
 
@@ -53,6 +54,7 @@ class Update extends Component
                     'id' => $item->id,
                     'produto_id' => $item->produto_id,
                     'sku' => $item->produto->sku ?? '',
+                    'unidade' => $item->produto->unidade ?? '',
                     'descricao' => $item->produto->nome ?? '',
                     'quantidade' => $item->quantidade,
                     'preco' => $item->preco,
@@ -241,6 +243,7 @@ class Update extends Component
     {
         //Percorrer Array Items
         $totalPedido = 0;
+        $total = 0;
         foreach ($this->itens as $index => $item) {
 
             if ($item['deleted'] != 1) {
@@ -275,6 +278,12 @@ class Update extends Component
 
 
         $this->pedidosVenda->total = $totalPedido + $frete;
+    }
+
+
+    public function updatedPedidosVenda()
+    {
+        $this->totalizarPedido();
     }
 
     public function currencySanitize($valor)
