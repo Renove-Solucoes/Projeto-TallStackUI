@@ -236,7 +236,7 @@
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR"
                                         x-on:blur="$wire.set('itens.{{ $index }}.quantidade', $el.value)"
-                                        wire:model="itens.{{ $index }}.quantidade" max="9999" required />
+                                        wire:model="itens.{{ $index }}.quantidade" max="9999" min="1" required />
                                 </div>
 
                                 <div class="md:col-span-2">

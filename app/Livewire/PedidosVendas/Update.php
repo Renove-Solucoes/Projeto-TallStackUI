@@ -250,7 +250,7 @@ class Update extends Component
                 $desc1 = $this->currencySanitize($this->pedidosVenda->desc1);
                 $desc2 = $this->currencySanitize($this->pedidosVenda->desc2);
                 $desc3 = $this->currencySanitize($this->pedidosVenda->desc3);
-                $frete = $this->currencySanitize($this->pedidosVenda->frete);
+
 
                 $precoFinal = $precounitario - ($precounitario * ($desconto / 100));
 
@@ -259,7 +259,7 @@ class Update extends Component
                 $precoFinal = $precoFinal - ($precoFinal * ($desc3 / 100));
 
                 $total = $qtde * $precoFinal;
-                $total = $total + $frete;
+
 
                 $total = floatval(number_format($total, 2, '.', ''));
                 $precoFinal = floatval(number_format($precoFinal, 2, '.', ''));
@@ -270,8 +270,11 @@ class Update extends Component
                 $totalPedido += $total;
             }
         }
+        $frete = $this->currencySanitize($this->pedidosVenda->frete);
 
-        $this->pedidosVenda->total = $totalPedido;
+
+
+        $this->pedidosVenda->total = $totalPedido + $frete;
     }
 
     public function currencySanitize($valor)
