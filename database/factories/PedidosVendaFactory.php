@@ -11,7 +11,7 @@ class PedidosVendaFactory extends Factory
     {
         return [
             'cliente_id'     => Cliente::inRandomOrder()->first()->id ?? Cliente::factory()->create()->id,
-            'data_emissao'   => $this->faker->date(),
+            'data_emissao'   => $this->faker->dateTimeBetween('-6 months', '+1 years'),
             'tipo_pessoa'    => $this->faker->randomElement(['F', 'J']), // F: Física, J: Jurídica
             'cpf_cnpj'       => $this->faker->numerify('###########'), // CPF/CNPJ fictício
             'nome'           => $this->faker->name(),

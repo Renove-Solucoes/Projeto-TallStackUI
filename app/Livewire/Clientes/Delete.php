@@ -36,10 +36,16 @@ class Delete extends Component
     public function delete(): void
     {
 
-        $this->cliente->delete();
-
-        $this->dispatch('deleted');
-
-        $this->toast()->info('Atenção!', 'Cliente deletado com sucesso.')->send();
+        try {
+            $this->cliente->delete();
+            $this->dispatch('deleted');
+            $this->toast()->info('Atenção!', 'Cliente deletado com sucesso.')->send();
+        } catch (\Exception $e) {
+            Log::error('Erro ao deletar cliente - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
+            $this->error('Atenção!', 'Não foi possivel deletar o cliente. <br> Verifique se o cliente está em uso.');
+        }
     }
 }

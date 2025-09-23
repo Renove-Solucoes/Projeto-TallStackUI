@@ -36,8 +36,16 @@ class Delete extends Component
 
     public function delete(): void
     {
-        $this->tabelaPreco->delete();
-        $this->dispatch('deleted');
-        $this->toast()->info('Atenção!', 'Tabela de preço deletada com sucesso.')->send();
+        try {
+            $this->tabelaPreco->delete();
+            $this->dispatch('deleted');
+            $this->toast()->info('Atenção!', 'Tabela de preços deletada com sucesso.')->send();
+        } catch (\Exception $e) {
+            Log::error('Erro ao deletar tabela de preços - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
+            $this->error('Atenção!', 'Não foi possivel deletar a tabela de preços. <br> Verifique se a tabela de preços está em uso.');
+        }
     }
 }

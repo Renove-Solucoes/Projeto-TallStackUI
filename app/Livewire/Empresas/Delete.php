@@ -44,7 +44,7 @@ class Delete extends Component
                 'message' => $e->getMessage(),
                 'exception' => $e,
             ]);
-            $this->error('Atenção!', 'Não foi possivel deletar a categoria. <br> Verifique se a categoria está em uso.');
+            $this->error('Atenção!', 'Não foi possivel deletar a empresa. <br> Verifique se a empresa está em uso.');
         }
     }
 }
