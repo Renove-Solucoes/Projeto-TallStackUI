@@ -46,6 +46,10 @@ class Update extends Component
         try {
 
             $this->empresa->save();
+
+
+            $this->reset(['modal', 'empresa']);
+
             $this->dispatch('updated');
             $this->reset();
             $this->empresa = new Empresa();

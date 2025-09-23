@@ -216,6 +216,7 @@ class Update extends Component
                 }
             });
 
+            $this->reset(['modal', 'tabelaPreco']);
 
             $this->dispatch('updated');
             $this->toast()->success('Atenção!', 'Tabela de preços atualizada com sucesso.')->send();

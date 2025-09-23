@@ -43,9 +43,14 @@ class Update extends Component
     {
         $this->validate();
 
+
+
         try {
 
             $this->tag->update();
+
+            $this->reset(['modal', 'tag']);
+
             $this->dispatch('updated');
             $this->reset();
             $this->toast()->success('Atenção!', 'Tag atualizada com sucesso.')->send();

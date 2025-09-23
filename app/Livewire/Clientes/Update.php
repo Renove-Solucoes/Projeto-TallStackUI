@@ -217,7 +217,7 @@ class Update extends Component
                 $this->cliente->tags()->sync($this->tags_selecionadas);
             });
 
-
+            $this->reset(['modal', 'cliente']);
             $this->dispatch('updated');
             $this->resetExcept('cliente', 'tags');
             $this->toast()->success('Atenção!', 'Cliente atualizado com sucesso.')->send();

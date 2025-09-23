@@ -65,6 +65,8 @@ class Update extends Component
         $this->user->password = when($this->password !== null, bcrypt($this->password), $this->user->password);
         $this->user->update();
 
+        $this->reset(['modal', 'user']);
+
         $this->dispatch('updated');
 
         $this->resetExcept('user');

@@ -132,6 +132,7 @@ class Update extends Component
     {
         $this->validate();
         try {
+            $this->reset(['modal', 'endereco']);
 
             $this->endereco->update();
             $this->modal = false;

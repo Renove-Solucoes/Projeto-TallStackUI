@@ -403,7 +403,6 @@ class Update extends Component
                 }
             }
 
-
             $this->dispatch('updated');
             $this->modal = false;
             $this->toast()->success('Atenção!', 'Pedido de venda atualizado com sucesso.')->flash()->send();

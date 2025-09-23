@@ -51,9 +51,11 @@ class Update extends Component
 
         try {
             $this->categoria->save();
+
+            $this->reset('modal', 'categoria');
+
             $this->dispatch('updated');
 
-            $this->reset();
 
             $this->toast()->success('Atenção!', 'Categoria atualizada com sucesso.')->send();
         } catch (\Exception $e) {

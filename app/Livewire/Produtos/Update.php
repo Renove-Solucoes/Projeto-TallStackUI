@@ -178,6 +178,8 @@ class Update extends Component
                 $this->produto->tags()->sync($this->tags_selecionadas);
             });
 
+            $this->reset(['modal', 'produto']);
+
             $this->dispatch('updated');
             $this->resetExcept('produto', 'categorias', 'tags');
             $this->toast()->success('Atenção!', 'Produto atualizado com sucesso.')->send();

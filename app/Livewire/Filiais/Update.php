@@ -66,7 +66,7 @@ class Update extends Component
             $this->filial->save();
             $this->dispatch('updated');
 
-            $this->reset();
+            $this->reset('modal', 'filial');
 
             $this->toast()->success('Atenção!', 'Filial atualizada com sucesso.')->send();
 
