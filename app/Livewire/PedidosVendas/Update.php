@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\PedidosVenda;
 use App\Models\PedidosVendaItem;
 use App\Models\Produto;
+use App\Models\TabelaPreco;
 use App\Services\ViacepServices;
 use GuzzleHttp\Client;
 use Livewire\Component;
@@ -28,6 +29,8 @@ class Update extends Component
     public string $cepErrorHtml = '';
 
     public $sugestoesClientes = [];
+
+    public $tabelasPrecos = [];
 
     public $itens = [];
     public $sugestoesItens = [];
@@ -70,10 +73,23 @@ class Update extends Component
             $this->itens = [];
             $this->addItem();
         }
+
+
+
+        $this->tabelasPrecos = TabelaPreco::where('status', 'A')
+            ->get(['id', 'descricao']) // Pega o ID e a descrição
+            ->map(function ($tabela) {
+                return [
+                    'id' => $tabela->id,
+                    'name' => $tabela->descricao, // Usa 'descricao' como nome visível
+                ];
+            })->toArray();
     }
 
     public function render()
     {
+
+
         return view('livewire.pedidos-vendas.update');
     }
 
@@ -98,6 +114,7 @@ class Update extends Component
             'pedidosVenda.uf' => ['required', 'string', 'max:2'],
             'pedidosVenda.total' => ['required', 'numeric', 'min:0'],
             'pedidosVenda.complemento' => ['nullable', 'string', 'max:255'],
+            'pedidosVenda.tabela_preco_id' => ['required', Rule::exists('tabelas_precos', 'id')],
             'pedidosVenda.desc1' => ['nullable', 'numeric', 'min:0'],
             'pedidosVenda.desc2' => ['nullable', 'numeric', 'min:0'],
             'pedidosVenda.desc3' => ['nullable', 'numeric', 'min:0'],
@@ -107,6 +124,7 @@ class Update extends Component
 
         ];
     }
+
 
     public function updatedPedidosVendaNome()
     {

@@ -69,8 +69,6 @@ class Update extends Component
 
         $this->dispatch('updated');
 
-        $this->resetExcept('user');
-
         $this->success();
     }
 }

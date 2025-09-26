@@ -78,6 +78,14 @@
                                     select="label:name|value:id" required />
                             </div>
 
+
+                            <!-- Tabela de Preços -->
+                            <div class="md:col-span-4">
+                                <x-select.native label="Tabela de Preços *" wire:model="pedidosVenda.tabela_preco_id"
+                                    :options="$tabelasPrecos" select="label:name|value:id" required
+                                    placeholder="Selecione uma tabela" />
+                            </div>
+
                         </div>
 
                     </div>
@@ -151,7 +159,6 @@
                         <div class=" md:col-span-5">
                             <x-input label="Complemento" wire:model="pedidosVenda.complemento" maxlength="120" />
                         </div>
-
 
                     </div>
                 </x-tab.items>

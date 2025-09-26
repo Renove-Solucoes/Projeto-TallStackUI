@@ -28,4 +28,9 @@ class TabelaPreco extends Model
     {
         return $this->hasMany(TabelaPrecoItem::class);
     }
+
+    public function pedidosVendas()
+    {
+        return $this->hasMany(PedidosVenda::class);
+    }
 }

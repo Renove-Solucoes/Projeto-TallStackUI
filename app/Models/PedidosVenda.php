@@ -27,6 +27,7 @@ class PedidosVenda extends Model
         'cidade',
         'uf',
         'complemento',
+        'tabela_preco_id',
         'desc1',
         'desc2',
         'desc3',
@@ -44,6 +45,11 @@ class PedidosVenda extends Model
     public function cliente()
     {
         return $this->belongsTo(Cliente::class);
+    }
+
+    public function tabelaPreco()
+    {
+        return $this->belongsTo(TabelaPreco::class);
     }
 
     public function itens()

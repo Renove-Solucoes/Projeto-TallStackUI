@@ -49,4 +49,9 @@ class Cliente extends Model
     {
         return $this->hasMany(Endereco::class);
     }
+
+    public function pedidosVendas()
+    {
+        return $this->hasMany(PedidosVenda::class);
+    }
 }

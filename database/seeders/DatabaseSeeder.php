@@ -124,6 +124,15 @@ class DatabaseSeeder extends Seeder
             $pedido->save();
         });
 
+        // Busca tabelas de preço ativas
+        $tabelasPreco = TabelaPreco::where('status', 'A')->get();
+
+        // Associa cada pedido a uma tabela ativa aleatória
+        $PedidosVenda->each(function ($pedido) use ($tabelasPreco) {
+            $tabelaPreco = $tabelasPreco->random();
+            $pedido->tabelaPreco()->associate($tabelaPreco); // Corrigido aqui
+            $pedido->save();
+        });
 
         // Cria 60 endereços, cada um com cliente_id aleatório
         // Endereco::factory(60)->create([

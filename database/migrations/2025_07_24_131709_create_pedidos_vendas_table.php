@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('numero', 10);
             $table->string('cidade', 80);
             $table->string('uf', 2);
+            $table->foreignId('tabela_preco_id')->constrained('tabelas_precos')->cascadeOnDelete();
             $table->string('complemento', 120)->nullable();
             $table->decimal('desc1', 10, 2)->default(0.00);
             $table->decimal('desc2', 10, 2)->default(0.00);

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Cliente;
+use App\Models\TabelaPreco;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PedidosVendaFactory extends Factory
@@ -18,6 +19,7 @@ class PedidosVendaFactory extends Factory
             'email'          => $this->faker->safeEmail(),
             'telefone'       => $this->faker->phoneNumber(),
             'cep' => $this->faker->numerify('########'),
+            'tabela_preco_id' => TabelaPreco::query()->inRandomOrder()->value('id') ?? TabelaPreco::factory()->create()->id,
             'endereco'       => $this->faker->streetAddress(),
             'bairro'         => $this->faker->word(),
             'numero'         => $this->faker->buildingNumber(),
