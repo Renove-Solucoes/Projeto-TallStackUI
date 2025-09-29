@@ -311,10 +311,9 @@ class Update extends Component
                 ->find($item['produto_id']);
 
             if ($produto) {
-                $novoPreco = $produto->tabela_preco_item->first()->preco ?? $produto->preco_padrao;
+                $novoPreco = $produto->tabela_preco_item->first()->preco ?? '0.00';
 
                 $this->itens[$index]['preco'] = $novoPreco;
-                $this->itens[$index]['preco_alterado'] = $novoPreco != $produto->preco_padrao;
             }
         }
 
@@ -361,7 +360,6 @@ class Update extends Component
             $this->itens[$index]['unidade'] = $produto->unidade;
             $this->itens[$index]['fracionar'] = $produto->fracionar;
             $this->itens[$index]['desconto'] = 0.00;
-
             $this->itens[$index]['status'] = 1;
             $this->itens[$index]['updated'] = '0';
             $this->itens[$index]['deleted'] = '0';

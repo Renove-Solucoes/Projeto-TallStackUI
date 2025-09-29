@@ -81,7 +81,7 @@
 
                             <!-- Tabela de Preços -->
                             <div class="md:col-span-4">
-                                <x-select.native label="Tabela de Preços *" wire:model="pedidosVenda.tabela_preco_id"
+                                <x-select.native label="Tabela de Preços *" wire:model.lazy="pedidosVenda.tabela_preco_id"
                                     :options="$tabelasPrecos" select="label:name|value:id" required
                                     placeholder="Selecione uma tabela" />
                             </div>
