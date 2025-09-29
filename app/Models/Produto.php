@@ -42,6 +42,11 @@ class Produto extends Model
         return $this->belongsToMany(Categoria::class, 'categorias_produtos');
     }
 
+    public function tabela_preco_item()
+    {
+        return $this->hasMany(TabelaPrecoItem::class);
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'tags_produtos');

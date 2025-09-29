@@ -25,12 +25,15 @@ class Update extends Component
     use WithPagination;
 
     public ?PedidosVenda $pedidosVenda;
+    public PedidosVendaItem $pedidosVendaItem;
+
     public array $clientes = [];
     public string $cepErrorHtml = '';
 
     public $sugestoesClientes = [];
 
     public $tabelasPrecos = [];
+
 
     public $itens = [];
     public $sugestoesItens = [];
@@ -298,6 +301,28 @@ class Update extends Component
         $this->pedidosVenda->total = $totalPedido + $frete;
     }
 
+    public function updatedPedidosVendaTabelaPrecoId($value)
+    {
+        // percorre todos os itens do pedido e recalcula o preço
+        foreach ($this->itens as $index => $item) {
+            $produto = Produto::with(['tabela_preco_item' => function ($q) use ($value) {
+                $q->where('tabela_preco_id', $value);
+            }])
+                ->find($item['produto_id']);
+
+            if ($produto) {
+                $novoPreco = $produto->tabela_preco_item->first()->preco ?? $produto->preco_padrao;
+
+                $this->itens[$index]['preco'] = $novoPreco;
+                $this->itens[$index]['preco_alterado'] = $novoPreco != $produto->preco_padrao;
+            }
+        }
+
+        // sempre recalcula o total depois da mudança
+        $this->totalizarPedido();
+    }
+
+
 
     public function updatedPedidosVenda()
     {
@@ -316,7 +341,18 @@ class Update extends Component
     public function selecionarItem($index, $produtoId)
     {
 
-        $produto = Produto::find($produtoId);
+        $pedidosVendaItem = PedidosVendaItem::find($index);
+
+        $produto = Produto::with(['tabela_preco_item' => function ($q) use ($pedidosVendaItem) {
+            $q->where('tabela_preco_id', $this->pedidosVenda->tabela_preco_id);
+        }])
+            ->where('id', $produtoId)
+            ->first();
+
+
+
+
+
 
         if ($produto) {
             $this->itens[$index]['produto_id'] = $produto->id;
@@ -325,7 +361,7 @@ class Update extends Component
             $this->itens[$index]['unidade'] = $produto->unidade;
             $this->itens[$index]['fracionar'] = $produto->fracionar;
             $this->itens[$index]['desconto'] = 0.00;
-            $this->itens[$index]['preco'] = $produto->preco_padrao;
+
             $this->itens[$index]['status'] = 1;
             $this->itens[$index]['updated'] = '0';
             $this->itens[$index]['deleted'] = '0';
@@ -333,7 +369,16 @@ class Update extends Component
             $this->totalizarPedido();
 
             $this->sugestoesItens[$index] = [];
+
+
+            $this->itens[$index]['preco'] = $produto->tabela_preco_item->first()->preco
+                ?? '0.00';
         }
+    }
+
+    public function updatedPreco($value, $index)
+    {
+        $this->itens[$index]['preco'] = $value;
     }
 
 
