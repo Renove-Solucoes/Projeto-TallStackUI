@@ -11,9 +11,13 @@ class PedidosVenda extends Model
     /** @use HasFactory<\Database\Factories\PedidosVendaFactory> */
     use HasFactory;
 
+    protected $attributes = [
+        'vendedor_id' => 1,
+    ];
 
     protected $fillable = [
         'cliente_id',
+        'vendedor_id',
         'data_emissao',
         'tipo_pessoa',
         'cpf_cnpj',
@@ -40,6 +44,11 @@ class PedidosVenda extends Model
     protected $casts = [
         'status' => pedidosVendaStatus::class
     ];
+
+    public function vendedor()
+    {
+        return $this->belongsTo(User::class, 'vendedor_id')->where('vendedor', 1);
+    }
 
 
     public function cliente()

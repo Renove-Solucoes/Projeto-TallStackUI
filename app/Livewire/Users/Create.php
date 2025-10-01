@@ -23,6 +23,8 @@ class Create extends Component
     public function mount(): void
     {
         $this->user = new User();
+
+        $this->user->vendedor = false;
     }
 
     public function render(): View
@@ -50,6 +52,9 @@ class Create extends Component
                 'string',
                 'min:8',
                 'confirmed'
+            ],
+            'user.vendedor' => [
+                'boolean'
             ]
         ];
     }
@@ -57,6 +62,7 @@ class Create extends Component
     public function save(): void
     {
         $this->validate();
+
 
         $this->user->password = bcrypt($this->password);
         $this->user->email_verified_at = now();

@@ -25,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'vendedor',
     ];
 
     protected $hidden = [
@@ -37,6 +38,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'vendedor' => 'boolean'
         ];
+    }
+
+    public function pedidosVendas()
+    {
+        return $this->hasMany(PedidosVenda::class);
     }
 }

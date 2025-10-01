@@ -21,6 +21,10 @@
             <div>
                 <x-password :label="__('Password')" wire:model="password_confirmation" rules />
             </div>
+
+            <div>
+                <x-checkbox label="{{ __('Vendedor') }}" wire:model="user.vendedor" />
+            </div>
         </form>
         <x-slot:footer>
             <x-button type="submit" form="user-update-{{ $user?->id }}">

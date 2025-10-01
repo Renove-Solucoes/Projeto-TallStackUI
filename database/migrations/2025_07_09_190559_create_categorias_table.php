@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('tipo');
             $table->string('nome');
-            // $table->foreignId('empresa_id')->constrained();
             $table->char('status');
             $table->timestamps();
         });

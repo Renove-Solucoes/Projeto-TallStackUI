@@ -2,9 +2,11 @@
 
 namespace App\Livewire\PedidosVendas;
 
+use App\Models\Cliente;
 use App\Models\PedidosVenda;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +22,7 @@ class Index extends Component
 
     public ?string $search = null;
 
+    public Cliente $cliente;
     public PedidosVenda $pedidosVenda;
 
     public bool $slide = false;
@@ -52,7 +55,11 @@ class Index extends Component
         return PedidosVenda::query()
             ->with('cliente')
             ->whereNotIn('id', [Auth::id()])
-            ->when($this->search !== null, fn(Builder $query) => $query->whereAny(['cliente_id'], 'like', '%' . trim($this->search) . '%'))
+            ->when($this->search, function (Builder $query) {
+                $query->whereHas('cliente', function (Builder $q) {
+                    $q->where('nome', 'like', "%{$this->search}%");
+                });
+            })
             ->orderBy(...array_values($this->sort))
             ->paginate($this->quantity)
             ->withQueryString();

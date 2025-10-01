@@ -54,6 +54,9 @@ class Update extends Component
                 'string',
                 'min:8',
                 'confirmed'
+            ],
+            'user.vendedor' => [
+                'boolean'
             ]
         ];
     }
