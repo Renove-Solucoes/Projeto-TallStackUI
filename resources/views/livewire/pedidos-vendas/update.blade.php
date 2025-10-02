@@ -44,6 +44,7 @@
                             </div>
 
 
+
                             <div class="md:col-span-2">
                                 <x-select.native label="Tipo Pessoa *" wire:model="pedidosVenda.tipo_pessoa"
                                     x-model="tipoPessoa" :options="[['name' => 'Fisica', 'id' => 'F'], ['name' => 'Juridica', 'id' => 'J']]" select="label:name|value:id" required />
@@ -84,6 +85,20 @@
                                 <x-select.native label="Tabela de Preços *" wire:model.lazy="pedidosVenda.tabela_preco_id"
                                     :options="$tabelasPrecos" select="label:name|value:id" required
                                     placeholder="Selecione uma tabela" />
+                            </div>
+
+                            <!-- Vendedor -->
+                            <div class="md:col-span-4">
+                                <x-select.native label="Vendedor *" wire:model="pedidosVenda.vendedor_id"
+                                    :options="[['name' => 'Selecione um vendedor', 'id' => null], ...$vendedorId]" select="label:name|value:id" required
+                                    placeholder="Selecione um vendedor" />
+                            </div>
+
+                            <!-- Segundo Vendedor(opcional) -->
+                            <div class="md:col-span-4">
+                                <x-select.native label="Vendedor 2 (Opcional)" wire:model="pedidosVenda.vendedor2_id"
+                                    :options="[['name' => 'Selecione um vendedor', 'id' => null], ...$vendedorId]" select="label:name|value:id"
+                                    placeholder="Selecione um vendedor" />
                             </div>
 
                         </div>

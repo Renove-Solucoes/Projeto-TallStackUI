@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cliente_id')->constrained();
             $table->foreignId('vendedor_id')->constrained('users')->default(1);
+            $table->foreignId('vendedor2_id')->nullable()->constrained('users');
             $table->date('data_emissao');
             $table->string('tipo_pessoa');
             $table->string('cpf_cnpj');

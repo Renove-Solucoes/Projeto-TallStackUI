@@ -18,6 +18,7 @@ class PedidosVenda extends Model
     protected $fillable = [
         'cliente_id',
         'vendedor_id',
+        'vendedor2_id',
         'data_emissao',
         'tipo_pessoa',
         'cpf_cnpj',
@@ -40,6 +41,24 @@ class PedidosVenda extends Model
         'status',
     ];
 
+    public function getVendedoresNomesAttribute(): string
+    {
+        $nomes = [];
+
+
+        if ($this->vendedor?->name) {
+            $nomes[] = $this->vendedor->name;
+        }
+
+        if ($this->vendedor2?->name) {
+            $nomes[] = $this->vendedor2->name;
+        }
+
+
+
+        return implode(' / ', $nomes);
+    }
+
 
     protected $casts = [
         'status' => pedidosVendaStatus::class
@@ -48,6 +67,11 @@ class PedidosVenda extends Model
     public function vendedor()
     {
         return $this->belongsTo(User::class, 'vendedor_id')->where('vendedor', 1);
+    }
+
+    public function vendedor2()
+    {
+        return $this->belongsTo(User::class, 'vendedor2_id')->where('vendedor', 1);
     }
 
 

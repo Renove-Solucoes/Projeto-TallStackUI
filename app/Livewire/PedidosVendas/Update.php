@@ -8,6 +8,7 @@ use App\Models\PedidosVenda;
 use App\Models\PedidosVendaItem;
 use App\Models\Produto;
 use App\Models\TabelaPreco;
+use App\Models\User;
 use App\Services\ViacepServices;
 use GuzzleHttp\Client;
 use Livewire\Component;
@@ -33,6 +34,7 @@ class Update extends Component
     public $sugestoesClientes = [];
 
     public $tabelasPrecos = [];
+    public $vendedorId = [];
 
 
     public $itens = [];
@@ -87,6 +89,16 @@ class Update extends Component
                     'name' => $tabela->descricao, // Usa 'descricao' como nome visível
                 ];
             })->toArray();
+
+
+        $this->vendedorId = User::where('vendedor', 1)
+            ->get(['id', 'name'])
+            ->map(function ($vendedor) {
+                return [
+                    'id' => $vendedor->id,
+                    'name' => $vendedor->name
+                ];
+            })->toArray();
     }
 
     public function render()
@@ -102,6 +114,8 @@ class Update extends Component
     {
         return [
             'pedidosVenda.cliente_id' => ['required', Rule::exists('clientes', 'id')],
+            'pedidosVenda.vendedor_id' => ['required', Rule::exists('users', 'id')],
+            'pedidosVenda.vendedor2_id' => ['nullable', Rule::exists('users', 'id')],
             'pedidosVenda.data_emissao' => ['required', 'date'],
             'pedidosVenda.status' => ['required', 'string', 'max:1'],
             'pedidosVenda.tipo_pessoa' => ['required', 'string', 'max:1'],
@@ -419,6 +433,8 @@ class Update extends Component
         $this->pedidosVenda->frete = $this->currencySanitize($this->pedidosVenda->frete);
 
         $this->pedidosVenda->total = $this->currencySanitize($this->pedidosVenda->total);
+
+        $this->pedidosVenda->vendedor2_id = $this->pedidosVenda->vendedor2_id ?: null;
         $this->validate();
 
         try {
@@ -463,6 +479,10 @@ class Update extends Component
                     ]);
                 }
             }
+
+
+
+
 
             $this->dispatch('updated');
             $this->modal = false;
