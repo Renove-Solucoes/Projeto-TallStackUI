@@ -134,6 +134,84 @@ class DatabaseSeeder extends Seeder
             $pedido->save();
         });
 
+        // --- Define vendedores aleatórios ---
+        $quantidadeVendedores = max(2, rand(5, 10));
+        $vendedores = User::inRandomOrder()->take($quantidadeVendedores)->get();
+
+        // Marca como vendedores
+        $vendedores->each(fn($user) => $user->update(['vendedor' => true]));
+
+        // --- Associa vendedores aos pedidos ---
+        $PedidosVenda->each(function ($pedido) use ($produtos, $vendedores) {
+            $quantidadeItens = min($produtos->count(), rand(4, 8));
+            $produtosSelecionados = $produtos->random($quantidadeItens);
+
+            $totalItem = 0;
+
+            foreach ($produtosSelecionados as $produto) {
+                $quantidade = rand(1, 10);
+                $preco = rand(1000, 5000) / 100;
+                $totalItem += $quantidade * $preco;
+
+                $pedido->itens()->create([
+                    'produto_id' => $produto->id,
+                    'quantidade' => $quantidade,
+                    'preco' => $preco,
+                ]);
+            }
+
+            // Escolhe dois vendedores distintos
+            $vendedor1 = $vendedores->random();
+            $vendedor2 = $vendedores->where('id', '!=', $vendedor1->id)->random();
+
+            $pedido->update([
+                'total' => $totalItem,
+                'vendedor_id' => $vendedor1->id,
+                'vendedor2_id' => $vendedor2->id,
+            ]);
+        });
+        // --- Define vendedores aleatórios ---
+        $quantidadeVendedores = max(2, rand(5, 10));
+        $vendedores = User::inRandomOrder()->take($quantidadeVendedores)->get();
+
+        // Marca como vendedores
+        $vendedores->each(fn($user) => $user->update(['vendedor' => true]));
+
+        // --- Associa vendedores aos pedidos ---
+        $PedidosVenda->each(function ($pedido) use ($produtos, $vendedores) {
+            $quantidadeItens = min($produtos->count(), rand(4, 8));
+            $produtosSelecionados = $produtos->random($quantidadeItens);
+
+            $totalItem = 0;
+
+            foreach ($produtosSelecionados as $produto) {
+                $qtde = rand(1, 10);
+                $preco = rand(1000, 5000) / 100;
+                $totalItem += $qtde * $preco;
+
+                $pedido->itens()->create([
+                    'produto_id' => $produto->id,
+                    'quantidade' => $qtde,
+                    'preco' => $preco,
+                ]);
+            }
+
+            // --- Vendedor 1 (sempre obrigatório) ---
+            $vendedor1 = $vendedores->random();
+
+            // --- Vendedor 2 (opcional) ---
+            $vendedor2 = rand(0, 1) // 50% de chance de ter um segundo vendedor
+                ? $vendedores->where('id', '!=', $vendedor1->id)->random()
+                : null;
+
+            $pedido->update([
+                'total' => $totalItem,
+                'vendedor_id' => $vendedor1->id,
+                'vendedor2_id' => $vendedor2?->id,
+            ]);
+        });
+
+
         // Cria 60 endereços, cada um com cliente_id aleatório
         // Endereco::factory(60)->create([
         //     'cliente_id' => function () use ($clientes) {
