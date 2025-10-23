@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pedidosvendas/{pedidosVenda}/edit', App\Livewire\PedidosVendas\Update::class)->name('pedidosvendas.edit');
     Route::get('/pedidos-vendas/{pedidosVenda}/pdf', [PedidosVendaPdfController::class, 'generatePdf'])
         ->name('pedidosvendas.generate-pdf');
+
+    Route::get('/formaspagamentos', App\Livewire\FormasPagamentos\Index::class)->name('formas-pagamentos.index');
 });
 
 require __DIR__ . '/auth.php';

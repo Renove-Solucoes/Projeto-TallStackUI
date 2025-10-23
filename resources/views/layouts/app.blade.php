@@ -106,6 +106,7 @@
                     <x-side-bar.item text="Pedidos de Vendas" icon="shopping-cart" :route="route('pedidosvendas.index')" />
                 </x-side-bar.item>
                  <x-side-bar.item text="Finaneiro" icon="currency-dollar" >
+                    <x-side-bar.item text="Formas de Pagamentos" icon="credit-card" :route="route('formas-pagamentos.index')" />
                     <x-side-bar.item text="Tabela de preços" icon="table-cells"  />
                 </x-side-bar.item>
                  <x-side-bar.item text="Configurações" icon="cog-6-tooth" >

@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\Empresa;
 use App\Models\Endereco;
 use App\Models\Filial;
+use App\Models\FormasPagamentos;
 use App\Models\PedidosVenda;
 use App\Models\Produto;
 use App\Models\TabelaPreco;
@@ -25,6 +26,21 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        //Criando Formas de Pagamentos
+        $formasPagamentos = [
+            ['descricao' => 'Pix', 'tipo_pagamento' => 0, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
+            ['descricao' => 'Dinheiro', 'tipo_pagamento' => 1, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
+            ['descricao' => 'Boleto', 'tipo_pagamento' => 2, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
+            ['descricao' => 'Cartão Debito', 'tipo_pagamento' => 4, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
+            ['descricao' => 'Cartão 1x', 'tipo_pagamento' => 5, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
+            ['descricao' => 'Cartão 2x', 'tipo_pagamento' => 5, 'condicao_pagamento' => '30, 60', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
+            ['descricao' => 'Cartão 3x', 'tipo_pagamento' => 5, 'condicao_pagamento' => '30, 60, 90', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
+        ];
+
+        foreach ($formasPagamentos as $formaPagamento) {
+            FormasPagamentos::create($formaPagamento);
+        }
 
 
 
