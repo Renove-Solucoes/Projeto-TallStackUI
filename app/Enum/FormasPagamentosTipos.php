@@ -11,6 +11,7 @@ enum FormasPagamentosTipos: int
     case TRANSF_BANCO = 3;
     case CARTAO_DEBITO = 4;
     case CARTAO_CREDITO = 5;
+    case OUTROS = 6;
 
 
     public function getText(): string
@@ -21,7 +22,8 @@ enum FormasPagamentosTipos: int
             self::BOLETO => 'BOLETO',
             self::TRANSF_BANCO => 'TRANSF. BANCO',
             self::CARTAO_DEBITO => 'CARTÃO DÉBITO',
-            self::CARTAO_CREDITO => 'CARTÃO CREDITO',
+            self::CARTAO_CREDITO => 'CARTÃO CRÉDITO',
+            self::OUTROS => 'OUTROS',
         };
     }
 }

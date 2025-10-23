@@ -2,6 +2,7 @@
 
 namespace App\Livewire\FormasPagamentos;
 
+use App\Enum\FormasPagamentosTipos;
 use App\Livewire\Traits\Alert;
 use App\Models\FormasPagamentos;
 use Illuminate\Contracts\View\View;
@@ -16,7 +17,7 @@ class Update extends Component
     use WithPagination;
 
     public ?FormasPagamentos $FormasPagamentos;
-
+    public $tipo_pagamentos = [];
     public bool $modal = false;
 
     #[On('load::FormasPagamentos')]
@@ -31,7 +32,7 @@ class Update extends Component
     {
         return [
             'FormasPagamentos.descricao' => ['required', 'string', 'max:20'],
-            'FormasPagamentos.tipo_pagamento' => ['required', 'string', 'max:50'],
+            'FormasPagamentos.tipo_pagamento' => ['required', 'int'],
             'FormasPagamentos.condicao_pagamento' => ['required', 'string', 'max:20'],
             'FormasPagamentos.aplicavel_em' => [
                 'required',
@@ -54,21 +55,18 @@ class Update extends Component
     public function save(): void
     {
         $this->validate();
-
         try {
-            $this->FormasPagamentos->save();
 
+            $this->FormasPagamentos->update();
             $this->reset(['modal', 'FormasPagamentos']);
             $this->dispatch('updated');
-            $this->toast()
-                ->success('Atenção!', 'Forma de pagamento atualizada com sucesso.')
-                ->send();
+            $this->toast()->success('Atenção!', 'Forma de pagamento atualizada com sucesso.')->send();
         } catch (\Exception $e) {
-            \Log::error('Erro ao atualizar forma de pagamento', [
-                'user_id' => auth()->id(),
+            Log::error('Erro ao atualizar forma de pagamento - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
                 'message' => $e->getMessage(),
+                'exception' => $e,
             ]);
-            $this->error('Atenção!', 'Não foi possível atualizar a forma de pagamento.');
+            $this->error('Atenção!', 'Não foi possivel atualizar a forma de pagamento.');
         }
     }
 }

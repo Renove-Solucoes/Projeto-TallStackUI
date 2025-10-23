@@ -9,9 +9,15 @@
 
                 <!-- Tipo de Pagamento -->
                 <div class="md:col-span-6">
-                    <x-input label="{{ __('Tipo de Pagamento') }} *" wire:model="FormasPagamentos.tipo_pagamento"
-                        required />
+                    <x-select.native label="{{ __('Tipo de Pagamento') }} *" wire:model="FormasPagamentos.tipo_pagamento"
+                        :options="collect(\App\Enum\FormasPagamentosTipos::cases())->map(
+                            fn($tipo) => [
+                                'label' => $tipo->getText(),
+                                'value' => $tipo->value,
+                            ],
+                        )" required />
                 </div>
+
 
                 <!-- Condição de Pagamento -->
                 <div class="md:col-span-6">

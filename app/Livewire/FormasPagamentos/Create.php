@@ -20,8 +20,10 @@ class Create extends Component
     public function mount()
     {
         $this->FormasPagamentos = new FormasPagamentos();
+        $this->FormasPagamentos->tipo_pagamento = 0;
         $this->FormasPagamentos->aplicavel_em = 'A';
         $this->FormasPagamentos->status = 'A';
+
         $this->FormasPagamentos->lancar_dia_util = false;
     }
 
