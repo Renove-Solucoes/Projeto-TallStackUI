@@ -37,12 +37,12 @@
 
                 <!-- Juros -->
                 <div class="md:col-span-6">
-                    <x-input label="{{ __('Juros') }} *" wire:model="FormasPagamentos.juros" required />
+                    <x-currency mutate locale="pt-BR" symbol="%" label="{{ __('Juros') }} *" wire:model="FormasPagamentos.juros" required />
                 </div>
 
                 <!-- Multa -->
                 <div class="md:col-span-6">
-                    <x-input label="{{ __('Multa') }} *" wire:model="FormasPagamentos.multa" required />
+                    <x-currency mutate locale="pt-BR" symbol="%" label="{{ __('Multa') }} *" wire:model="FormasPagamentos.multa" required />
                 </div>
 
                 <!-- Status -->

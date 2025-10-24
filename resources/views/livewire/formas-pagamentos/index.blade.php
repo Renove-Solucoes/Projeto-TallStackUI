@@ -22,7 +22,7 @@
 
 
             @interact('column_multa', $row)
-                 {{ number_format($row->multa, 2, ',', '.') }} %
+                {{ number_format($row->multa, 2, ',', '.') }} %
             @endinteract
 
             @interact('column_aplicavel_em', $row)
@@ -34,7 +34,7 @@
                         wire:click="$dispatch('load::FormasPagamentos', { FormasPagamentos: {{ $row->id }} })"
                         outline />
 
-                    {{-- <livewire:formas-pagamentos.delete :forma_pagamento="$row" :key="uniqid('', true)" @deleted="$refresh" /> --}}
+                    <livewire:formas-pagamentos.delete :formas_pagamentos="$row" :key="uniqid('', true)" @deleted="$refresh" />
                 </div>
             @endinteract
 

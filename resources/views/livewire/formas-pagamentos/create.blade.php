@@ -11,8 +11,13 @@
 
                 <!-- Tipo de Pagamento -->
                 <div class="md:col-span-6">
-                    <x-input label="{{ __('Tipo de Pagamento') }} *" wire:model="FormasPagamentos.tipo_pagamento"
-                        required />
+                    <x-select.native label="{{ __('Tipo de Pagamento') }} *" wire:model="FormasPagamentos.tipo_pagamento"
+                        :options="collect(\App\Enum\FormasPagamentosTipos::cases())->map(
+                            fn($tipo) => [
+                                'label' => $tipo->getText(),
+                                'value' => $tipo->value,
+                            ],
+                        )" required />
                 </div>
 
                 <!-- Condição de Pagamento -->
@@ -33,12 +38,12 @@
 
                 <!-- Juros -->
                 <div class="md:col-span-6">
-                    <x-input label="{{ __('Juros') }} *" wire:model="FormasPagamentos.juros" required />
+                    <x-currency mutate locale="pt-BR" symbol="%" label="{{ __('Juros') }} *" wire:model="FormasPagamentos.juros" required />
                 </div>
 
                 <!-- Multa -->
                 <div class="md:col-span-6">
-                    <x-input label="{{ __('Multa') }} *" wire:model="FormasPagamentos.multa" required />
+                    <x-currency mutate locale="pt-BR" symbol="%" label="{{ __('Multa') }} *" wire:model="FormasPagamentos.multa" required />
                 </div>
 
                 <!-- lança dia util -->

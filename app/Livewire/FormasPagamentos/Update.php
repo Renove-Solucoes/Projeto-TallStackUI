@@ -51,10 +51,22 @@ class Update extends Component
         return view('livewire.formas-pagamentos.update');
     }
 
+    public function currencySanitize($valor)
+    {
+        if (isset($valor) && str_contains($valor, ',')) {
+            return  str_replace(['.', ','], ['', '.'], $valor);
+        }
+
+        return $valor;
+    }
+
 
     public function save(): void
     {
+        $this->FormasPagamentos->juros = $this->currencySanitize($this->FormasPagamentos->juros);
+        $this->FormasPagamentos->multa = $this->currencySanitize($this->FormasPagamentos->multa);
         $this->validate();
+
         try {
 
             $this->FormasPagamentos->update();

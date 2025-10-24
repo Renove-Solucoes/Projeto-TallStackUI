@@ -31,7 +31,7 @@ class Create extends Component
     {
         return [
             'FormasPagamentos.descricao' => ['required', 'string', 'max:20', Rule::unique('formas_pagamentos', 'descricao')],
-            'FormasPagamentos.tipo_pagamento' => ['required', 'string', 'max:50'],
+            'FormasPagamentos.tipo_pagamento' => ['required', 'int'],
             'FormasPagamentos.condicao_pagamento' => ['required', 'string', 'max:20'],
             'FormasPagamentos.aplicavel_em' => [
                 'required',
@@ -45,6 +45,15 @@ class Create extends Component
         ];
     }
 
+    public function currencySanitize($valor)
+    {
+        if (isset($valor) && str_contains($valor, ',')) {
+            return  str_replace(['.', ','], ['', '.'], $valor);
+        }
+
+        return $valor;
+    }
+
 
     public function render()
     {
@@ -53,6 +62,8 @@ class Create extends Component
 
     public function save()
     {
+        $this->FormasPagamentos->juros = $this->currencySanitize($this->FormasPagamentos->juros);
+        $this->FormasPagamentos->multa = $this->currencySanitize($this->FormasPagamentos->multa);
         $this->validate();
 
         try {
