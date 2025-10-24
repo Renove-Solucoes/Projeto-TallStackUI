@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use PhpOffice\PhpSpreadsheet\Calculation\TextData\Replace;
 
 class Update extends Component
 {
@@ -63,6 +64,7 @@ class Update extends Component
 
     public function save(): void
     {
+        $this->FormasPagamentos->condicao_pagamento = str_replace(' ', '', $this->FormasPagamentos->condicao_pagamento);
         $this->FormasPagamentos->juros = $this->currencySanitize($this->FormasPagamentos->juros);
         $this->FormasPagamentos->multa = $this->currencySanitize($this->FormasPagamentos->multa);
         $this->validate();

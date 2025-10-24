@@ -60,8 +60,11 @@ class Create extends Component
         return view('livewire.formas-pagamentos.create');
     }
 
+
+
     public function save()
     {
+        $this->FormasPagamentos->condicao_pagamento = str_replace(' ', '', $this->FormasPagamentos->condicao_pagamento);
         $this->FormasPagamentos->juros = $this->currencySanitize($this->FormasPagamentos->juros);
         $this->FormasPagamentos->multa = $this->currencySanitize($this->FormasPagamentos->multa);
         $this->validate();
