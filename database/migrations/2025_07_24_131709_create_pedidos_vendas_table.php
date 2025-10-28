@@ -35,6 +35,10 @@ return new class extends Migration
             $table->decimal('desc3', 10, 2)->default(0.00);
             $table->decimal('frete', 10, 2)->default(0.00);
             $table->decimal('total', 10, 2)->default(0.00);
+            $table->foreignId('forma_pagamento_id')
+                ->nullable()
+                ->constrained('formas_pagamentos')
+                ->nullOnDelete();
             $table->char('status');
             $table->timestamps();
         });

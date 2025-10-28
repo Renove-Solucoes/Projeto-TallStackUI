@@ -31,11 +31,12 @@ class DatabaseSeeder extends Seeder
         $formasPagamentos = [
             ['descricao' => 'Pix', 'tipo_pagamento' => 0, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
             ['descricao' => 'Dinheiro', 'tipo_pagamento' => 1, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
-            ['descricao' => 'Boleto', 'tipo_pagamento' => 2, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
+            ['descricao' => 'Boleto', 'tipo_pagamento' => 2, 'condicao_pagamento' => '0', 'aplicavel_em' => 'R', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
             ['descricao' => 'Cartão Debito', 'tipo_pagamento' => 4, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
             ['descricao' => 'Cartão 1x', 'tipo_pagamento' => 5, 'condicao_pagamento' => '0', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
             ['descricao' => 'Cartão 2x', 'tipo_pagamento' => 5, 'condicao_pagamento' => '30, 60', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
             ['descricao' => 'Cartão 3x', 'tipo_pagamento' => 5, 'condicao_pagamento' => '30, 60, 90', 'aplicavel_em' => 'A', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
+            ['descricao' => 'Cartão 10x', 'tipo_pagamento' => 5, 'condicao_pagamento' => '30, 60, 90', 'aplicavel_em' => 'P', 'juros' => 0.00, 'multa' => 0.00, 'lancar_dia_util' => true, 'status' => 'A'],
         ];
 
         foreach ($formasPagamentos as $formaPagamento) {
@@ -119,7 +120,7 @@ class DatabaseSeeder extends Seeder
 
         //Assoscia de 4 a 8 Produtos no pedido de venda
         $PedidosVenda->each(function ($pedido) use ($produtos) {
-            $quantidade = min($produtos->count(), rand(4, 8));
+            $quantidade = min($produtos->count(), rand(2, 4));
 
             $produtosSelecionados = $produtos->random($quantidade);
 
@@ -146,7 +147,7 @@ class DatabaseSeeder extends Seeder
         // Associa cada pedido a uma tabela ativa aleatória
         $PedidosVenda->each(function ($pedido) use ($tabelasPreco) {
             $tabelaPreco = $tabelasPreco->random();
-            $pedido->tabelaPreco()->associate($tabelaPreco); // Corrigido aqui
+            $pedido->tabelaPreco()->associate($tabelaPreco);
             $pedido->save();
         });
 
@@ -158,59 +159,7 @@ class DatabaseSeeder extends Seeder
         $vendedores->each(fn($user) => $user->update(['vendedor' => true]));
 
         // --- Associa vendedores aos pedidos ---
-        $PedidosVenda->each(function ($pedido) use ($produtos, $vendedores) {
-            $quantidadeItens = min($produtos->count(), rand(4, 8));
-            $produtosSelecionados = $produtos->random($quantidadeItens);
-
-            $totalItem = 0;
-
-            foreach ($produtosSelecionados as $produto) {
-                $quantidade = rand(1, 10);
-                $preco = rand(1000, 5000) / 100;
-                $totalItem += $quantidade * $preco;
-
-                $pedido->itens()->create([
-                    'produto_id' => $produto->id,
-                    'quantidade' => $quantidade,
-                    'preco' => $preco,
-                ]);
-            }
-
-            // Escolhe dois vendedores distintos
-            $vendedor1 = $vendedores->random();
-            $vendedor2 = $vendedores->where('id', '!=', $vendedor1->id)->random();
-
-            $pedido->update([
-                'total' => $totalItem,
-                'vendedor_id' => $vendedor1->id,
-                'vendedor2_id' => $vendedor2->id,
-            ]);
-        });
-        // --- Define vendedores aleatórios ---
-        $quantidadeVendedores = max(2, rand(5, 10));
-        $vendedores = User::inRandomOrder()->take($quantidadeVendedores)->get();
-
-        // Marca como vendedores
-        $vendedores->each(fn($user) => $user->update(['vendedor' => true]));
-
-        // --- Associa vendedores aos pedidos ---
-        $PedidosVenda->each(function ($pedido) use ($produtos, $vendedores) {
-            $quantidadeItens = min($produtos->count(), rand(4, 8));
-            $produtosSelecionados = $produtos->random($quantidadeItens);
-
-            $totalItem = 0;
-
-            foreach ($produtosSelecionados as $produto) {
-                $qtde = rand(1, 10);
-                $preco = rand(1000, 5000) / 100;
-                $totalItem += $qtde * $preco;
-
-                $pedido->itens()->create([
-                    'produto_id' => $produto->id,
-                    'quantidade' => $qtde,
-                    'preco' => $preco,
-                ]);
-            }
+        $PedidosVenda->each(function ($pedido) use ($vendedores) {
 
             // --- Vendedor 1 (sempre obrigatório) ---
             $vendedor1 = $vendedores->random();
@@ -221,12 +170,17 @@ class DatabaseSeeder extends Seeder
                 : null;
 
             $pedido->update([
-                'total' => $totalItem,
                 'vendedor_id' => $vendedor1->id,
                 'vendedor2_id' => $vendedor2?->id,
             ]);
         });
 
+        $formasPagamentos = FormasPagamentos::where('status', ['A', 'R'])->get();
+
+        $PedidosVenda->each(function ($pedido) use ($formasPagamentos) {
+            $pedido->formaPagamento()->associate($formasPagamentos->random());
+            $pedido->save();
+        });
 
         // Cria 60 endereços, cada um com cliente_id aleatório
         // Endereco::factory(60)->create([

@@ -101,6 +101,13 @@
                                     placeholder="Selecione um vendedor" />
                             </div>
 
+                            <!-- Forma de Pagamento -->
+                            <div class="md:col-span-4">
+                                <x-select.native label="Forma de Pagamento *" wire:model="pedidosVenda.forma_pagamento_id"
+                                    :options="$formaPagamentos" select="label:name|value:id" required
+                                    placeholder="Selecione uma forma de pagamento" />
+                            </div>
+
                         </div>
 
                     </div>

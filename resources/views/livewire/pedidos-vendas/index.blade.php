@@ -1,7 +1,7 @@
 <div>
     <x-card>
         <div class="flex items-center justify-between">
-            <h1 class="mb-2 font-medium text-2xl">Cadastro de Pedidos</h1>
+            <h1 class="mb-2 font-medium text-2xl">Pedidos de Vendas</h1>
             <div class="flex items-center gap-2">
                 <x-button href="{{ route('pedidosvendas.create') }}" icon='plus' :text="__('Novo Pedido')" sm loading />
             </div>
@@ -11,6 +11,7 @@
             @interact('column_data_emissao', $row)
                 {{ date('d/m/Y', strtotime($row->data_emissao)) }}
             @endinteract
+
             @interact('column_cliente_id', $row)
                 {{ $row->cliente->nome }}
             @endinteract

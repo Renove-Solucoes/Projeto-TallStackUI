@@ -54,7 +54,7 @@ class Index extends Component
     public function rows(): LengthAwarePaginator
     {
         return PedidosVenda::query()
-            ->with('cliente', 'vendedor')
+            ->with('cliente', 'vendedor', 'vendedor2')
             ->whereNotIn('id', [Auth::id()])
             ->when($this->search, function (Builder $query) {
                 $query->whereHas('cliente', function (Builder $q) {

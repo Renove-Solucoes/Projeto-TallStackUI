@@ -33,6 +33,7 @@ class PedidosVenda extends Model
         'uf',
         'complemento',
         'tabela_preco_id',
+        'forma_pagamento_id',
         'desc1',
         'desc2',
         'desc3',
@@ -83,6 +84,11 @@ class PedidosVenda extends Model
     public function tabelaPreco()
     {
         return $this->belongsTo(TabelaPreco::class);
+    }
+
+    public function formaPagamento()
+    {
+        return $this->belongsTo(FormasPagamentos::class);
     }
 
     public function itens()

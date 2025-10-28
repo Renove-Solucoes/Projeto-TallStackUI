@@ -4,6 +4,7 @@ namespace App\Livewire\PedidosVendas;
 
 use App\Livewire\Traits\Alert;
 use App\Models\Cliente;
+use App\Models\FormasPagamentos;
 use App\Models\PedidosVenda;
 use App\Models\PedidosVendaItem;
 use App\Models\Produto;
@@ -35,6 +36,8 @@ class Update extends Component
 
     public $tabelasPrecos = [];
     public $vendedorId = [];
+
+    public $formaPagamentos = [];
 
 
     public $itens = [];
@@ -99,6 +102,16 @@ class Update extends Component
                     'name' => $vendedor->name
                 ];
             })->toArray();
+
+        $this->formaPagamentos = FormasPagamentos::whereIn('status', ['A', 'R'])
+            ->get(['id', 'descricao'])
+            ->map(function ($formaPagamento) {
+                return [
+                    'id' => $formaPagamento->id,
+                    'name' => $formaPagamento->descricao
+                ];
+            })
+            ->toArray();
     }
 
     public function render()
@@ -136,6 +149,7 @@ class Update extends Component
             'pedidosVenda.desc2' => ['nullable', 'numeric', 'min:0'],
             'pedidosVenda.desc3' => ['nullable', 'numeric', 'min:0'],
             'pedidosVenda.frete' => ['nullable', 'numeric', 'min:0'],
+            'pedidosVenda.forma_pagamento_id' => ['required', Rule::exists('formas_pagamentos', 'id')],
             'itens.*.produto_id' => ['required', Rule::exists('produtos', 'id')],
             'itens.*.quantidade' => ['required', 'numeric', 'min:1'],
 
