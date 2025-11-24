@@ -11,6 +11,8 @@ use App\Models\Produto;
 use App\Models\TabelaPreco;
 use App\Models\User;
 use App\Services\ViacepServices;
+use App\Services\PedidoVendaTotalizador;
+use App\Traits\Currency;
 use GuzzleHttp\Client;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -25,6 +27,7 @@ class Update extends Component
 {
     use Alert;
     use WithPagination;
+    use Currency;
 
     public ?PedidosVenda $pedidosVenda;
     public PedidosVendaItem $pedidosVendaItem;
@@ -290,43 +293,7 @@ class Update extends Component
 
     public function totalizarPedido()
     {
-        //Percorrer Array Items
-        $totalPedido = 0;
-        $total = 0;
-        foreach ($this->itens as $index => $item) {
-
-            if ($item['deleted'] != 1) {
-                $qtde = $this->currencySanitize($item['quantidade']);
-                $precounitario = $this->currencySanitize($item['preco']);
-                $desconto = $this->currencySanitize($item['desconto']);
-                $desc1 = $this->currencySanitize($this->pedidosVenda->desc1);
-                $desc2 = $this->currencySanitize($this->pedidosVenda->desc2);
-                $desc3 = $this->currencySanitize($this->pedidosVenda->desc3);
-
-
-                $precoFinal = $precounitario - ($precounitario * ($desconto / 100));
-
-                $precoFinal = $precoFinal - ($precoFinal * ($desc1 / 100));
-                $precoFinal = $precoFinal - ($precoFinal * ($desc2 / 100));
-                $precoFinal = $precoFinal - ($precoFinal * ($desc3 / 100));
-
-                $total = $qtde * $precoFinal;
-
-
-                $total = floatval(number_format($total, 2, '.', ''));
-                $precoFinal = floatval(number_format($precoFinal, 2, '.', ''));
-
-                $this->itens[$index]['preco_final']  =  $precoFinal;
-                $this->itens[$index]['total']  =  $total;
-
-                $totalPedido += $total;
-            }
-        }
-        $frete = $this->currencySanitize($this->pedidosVenda->frete);
-
-
-
-        $this->pedidosVenda->total = $totalPedido + $frete;
+        app(PedidoVendaTotalizador::class)->calcular($this->itens, $this->pedidosVenda);
     }
 
     public function updatedPedidosVendaTabelaPrecoId($value)
@@ -354,15 +321,6 @@ class Update extends Component
     public function updatedPedidosVenda()
     {
         $this->totalizarPedido();
-    }
-
-    public function currencySanitize($valor)
-    {
-        if (isset($valor) && str_contains($valor, ',')) {
-            return  str_replace(['.', ','], ['', '.'], $valor);
-        }
-
-        return $valor;
     }
 
     public function selecionarItem($index, $produtoId)
