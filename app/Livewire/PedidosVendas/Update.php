@@ -43,6 +43,7 @@ class Update extends Component
     public $itens = [];
     public $sugestoesItens = [];
 
+    public $alertaItensZerados = false;
 
     public function mount()
     {
@@ -350,7 +351,6 @@ class Update extends Component
     }
 
 
-
     public function updatedPedidosVenda()
     {
         $this->totalizarPedido();
@@ -365,22 +365,16 @@ class Update extends Component
         return $valor;
     }
 
+    private function alertaItemSemPreco($produto = null)
+    {
+        $mensagem = $produto ? "O produto '{$produto->nome}' não possui preço na tabela selecionada." : "Existem itens sem preço definido na tabela selecionada.";
+        $this->toast()->error('Atenção!', $mensagem)->send();
+    }
     public function selecionarItem($index, $produtoId)
     {
-
-        $pedidosVendaItem = PedidosVendaItem::find($index);
-
-        $produto = Produto::with(['tabela_preco_item' => function ($q) use ($pedidosVendaItem) {
+        $produto = Produto::with(['tabela_preco_item' => function ($q) {
             $q->where('tabela_preco_id', $this->pedidosVenda->tabela_preco_id);
-        }])
-            ->where('id', $produtoId)
-            ->first();
-
-
-
-
-
-
+        }])->find($produtoId);
         if ($produto) {
             $this->itens[$index]['produto_id'] = $produto->id;
             $this->itens[$index]['descricao'] = $produto->nome;
@@ -391,14 +385,16 @@ class Update extends Component
             $this->itens[$index]['status'] = 1;
             $this->itens[$index]['updated'] = '0';
             $this->itens[$index]['deleted'] = '0';
-
+            $precoTabela = $produto->tabela_preco_item->first()->preco ?? null;
+            if ($precoTabela === null) {
+                $this->alertaItemSemPreco($produto);
+                $precoTabela = '0.00';
+            }
+            $this->itens[$index]['preco'] = $precoTabela;
             $this->totalizarPedido();
 
+
             $this->sugestoesItens[$index] = [];
-
-
-            $this->itens[$index]['preco'] = $produto->tabela_preco_item->first()->preco
-                ?? '0.00';
         }
     }
 
@@ -434,6 +430,18 @@ class Update extends Component
 
     public function save()
     {
+
+
+        foreach ($this->itens as $item) {
+            $preco = $this->currencySanitize($item['preco']);
+
+            if (($preco === '0.00' || $preco === 0 || $preco === null) and $item['deleted'] === 0) {
+                $this->alertaItemSemPreco();
+                return;
+            }
+        }
+
+
 
         foreach ($this->itens as $index => $item) {
             $this->itens[$index]['quantidade'] = $this->currencySanitize($item['quantidade']);

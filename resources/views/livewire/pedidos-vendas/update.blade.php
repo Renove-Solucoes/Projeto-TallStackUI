@@ -82,9 +82,9 @@
 
                             <!-- Tabela de Preços -->
                             <div class="md:col-span-4">
-                                <x-select.native label="Tabela de Preços *" wire:model.lazy="pedidosVenda.tabela_preco_id"
-                                    :options="$tabelasPrecos" select="label:name|value:id" required
-                                    placeholder="Selecione uma tabela" />
+                                <x-select.native label="Tabela de Preços *"
+                                    wire:model.lazy="pedidosVenda.tabela_preco_id" :options="$tabelasPrecos"
+                                    select="label:name|value:id" required placeholder="Selecione uma tabela" />
                             </div>
 
                             <!-- Vendedor -->
@@ -103,8 +103,9 @@
 
                             <!-- Forma de Pagamento -->
                             <div class="md:col-span-4">
-                                <x-select.native label="Forma de Pagamento *" wire:model="pedidosVenda.forma_pagamento_id"
-                                    :options="$formaPagamentos" select="label:name|value:id" required
+                                <x-select.native label="Forma de Pagamento *"
+                                    wire:model="pedidosVenda.forma_pagamento_id" :options="$formaPagamentos"
+                                    select="label:name|value:id" required
                                     placeholder="Selecione uma forma de pagamento" />
                             </div>
 
@@ -231,6 +232,7 @@
 
                     @foreach ($itens as $index => $item)
 
+
                         @if ($item['deleted'] == 0)
                             <div class="grid md:grid-cols-20 md:gap-2 space-y-2">
                                 <div class="md:col-span-6 relative" x-data="{ abertoItens: false }"
@@ -251,6 +253,7 @@
                                                     {{ $produto['nome'] }} ( {{ $produto['sku'] }} )
                                                 </li>
                                             @endforeach
+
                                         </ul>
                                     @endif
                                 </div>
@@ -269,10 +272,15 @@
                                         min="1" required />
                                 </div>
 
-                                <div class="md:col-span-2">
+                                <div class="md:col-span-2 relative">
                                     <x-currency mutate locale="pt-BR" symbol="R$"
                                         wire:model="itens.{{ $index }}.preco" required readonly />
+
+                                    @if (($item['preco'] <= 0) and $item['deleted'] == 0 and $item['preco'] != null)
+                                        <div class="absolute right-1 top-1 text-yellow-400">⚠️</div>
+                                    @endif
                                 </div>
+
 
                                 <div class="md:col-span-2">
                                     <x-currency mutate locale="pt-BR" symbol="%"
