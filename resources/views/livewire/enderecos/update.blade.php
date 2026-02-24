@@ -2,6 +2,8 @@
 
 
     <x-modal :title="__('Editar Endereço', ['id' => $endereco?->id])" wire blur size="5xl">
+        <x-loading />
+
         <form id="endereco-update-{{ $endereco?->id }}" wire:submit="save" class="space-y-6">
 
             <div class="grid md:grid-cols-12 md:gap-4">

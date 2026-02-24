@@ -3,6 +3,7 @@
         <x-button icon="plus" :text="__('Novo Endereço')" wire:click="$toggle('modal')" sm />
     </div>
     <x-modal :title="__('Criar Novo Endereço')" wire size="5xl" blur>
+        <x-loading />
         <form id="endereco-create" wire:submit="save" class="space-y-6">
             <div class="grid md:grid-cols-12 md:gap-4">
                 <div class="md:col-span-4">

@@ -31,6 +31,7 @@ class Create extends Component
     {
         $this->endereco = new Endereco();
         $this->endereco->status = 'A';
+        $this->endereco->principal = 0;
     }
 
     public function rules(): array
@@ -120,7 +121,7 @@ class Create extends Component
             $this->endereco->bairro = '';
             $this->endereco->cidade = '';
             $this->endereco->uf = '';
-            $this->dispatch('message', ['tipo_message' => 'info', 'message' => 'CEP não encontrado']);
+            $this->toast()->warning('Atenção!', 'CEP não encontrado.')->send();
         }
     }
 

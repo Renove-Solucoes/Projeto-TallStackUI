@@ -116,7 +116,10 @@ class Update extends Component
             $this->endereco->bairro = '';
             $this->endereco->cidade = '';
             $this->endereco->uf = '';
-            $this->dispatch('message', ['tipo_message' => 'info', 'message' => 'CEP não encontrado']);
+            $this->endereco->numero = '';
+            $this->endereco->complemento = '';
+
+            $this->toast()->warning('Atenção!', 'CEP não encontrado.')->send();
         }
     }
 
@@ -131,18 +134,28 @@ class Update extends Component
     public function save(): void
     {
         $this->validate();
+
         try {
+
+            // salva o endereço
+            $this->endereco->save(); // ou update([...]) se preferir
+
+            // agora sim pode resetar
             $this->reset(['modal', 'endereco']);
 
-            $this->endereco->update();
             $this->modal = false;
             $this->dispatch('refresh::endereco');
         } catch (\Exception $e) {
-            Log::error('Erro ao atualizar endereco - User ID: ' . auth()->user()->id . ' nome: ' . auth()->user()->name . '', [
-                'message' => $e->getMessage(),
-                'exception' => $e,
-            ]);
-            $this->error('Atenção!', 'Não foi possivel atualizar o endereco.');
+            Log::error(
+                'Erro ao atualizar endereco - User ID: ' . auth()->user()->id .
+                    ' nome: ' . auth()->user()->name,
+                [
+                    'message' => $e->getMessage(),
+                    'exception' => $e,
+                ]
+            );
+
+            $this->error('Atenção!', 'Não foi possível atualizar o endereço.');
         }
     }
 }
